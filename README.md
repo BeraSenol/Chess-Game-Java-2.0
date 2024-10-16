@@ -9,4 +9,4 @@ The project's code includes:<br>
 - Game Panel / Window
 - Game Loop
 - Chess Board & File/Rank Labels
-![Screenshot_1](https://github.com/BeraSenol/Chess-Game-Java-2.0/res/readme/chess-board.png)
+![Screenshot_1](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board.png)
