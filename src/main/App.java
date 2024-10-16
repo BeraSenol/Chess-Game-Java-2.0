@@ -11,6 +11,7 @@ public class App {
         GameWindow gameWindow = new GameWindow();
         window.add(gameWindow);
         window.pack();
+        gameWindow.launchGame();
         // Center window inside screen
         window.setLocationRelativeTo(null);
     }

@@ -1,18 +1,12 @@
-## Getting Started
+# Chess 2.0
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+I started from scratch after making [Chess 1.0](https://github.com/BeraSenol/Chess-Game-Java), the previous version was inspired from a youtuber to get started with the logic, Java libraries.<br>
+Previous version contained sloppy code (checking if a piece was between a certain range of pixels to detect check/moves/etc).<br>
+The goal of this version is to use a two dimension array of Tile objects instead, so re-write worthy in my opinion.<br>
 
-## Folder Structure
+The project's code includes:<br>
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+- Game Panel / Window
+- Game Loop
+- Chess Board & File/Rank Labels
+![Screenshot_1](https://github.com/BeraSenol/Chess-Game-Java-2.0/res/readme/chess-board.png)
