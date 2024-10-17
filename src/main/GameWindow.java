@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import board.Board;
+import player.PlayerColor;
 
 public class GameWindow extends JPanel implements Runnable {
 
@@ -18,8 +19,10 @@ public class GameWindow extends JPanel implements Runnable {
 	public Color windowBackgroundColor = Color.DARK_GRAY;
 	public Dimension windowDimension = new Dimension(windowWidth, windowHeight);
 	public Thread gameThread;
-	public Board board = new Board();
 
+	// CLASS VARIABLES
+	public Board board = new Board();
+	public static PlayerColor playerColor = PlayerColor.WHITE;
 
 	public GameWindow() {
 		setPreferredSize(windowDimension);
@@ -32,7 +35,6 @@ public class GameWindow extends JPanel implements Runnable {
 		board.draw(g2);
 	}
 
-	
 
 	// Runnable interface
 	@Override

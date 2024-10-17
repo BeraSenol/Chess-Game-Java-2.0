@@ -1,6 +1,10 @@
 package board;
 
 import java.awt.Graphics2D;
+
+import main.GameWindow;
+import player.PlayerColor;
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -32,20 +36,43 @@ public class Board {
 	public void draw(Graphics2D g2) {
 		g2.setFont(new Font("Arial", Font.PLAIN, 14));
 		Color inverseColor;
+		// Draw the tiles
 		for (int file = 0; file < BOARD_SIZE; file++) {
 			for (int rank = 0; rank < BOARD_SIZE; rank++) {
 				g2.setColor(board[file][rank].tileColor);
 				g2.fillRect(file * tileSize, rank * tileSize, tileSize, tileSize);
 				inverseColor = (file + rank) % 2 == 0 ? blackTileColor : whiteTileColor;
 				g2.setColor(inverseColor);
-				if (file == 0) {
-					g2.drawString(RANK_LABELS[rank], (file * tileSize) + LABEL_MARGIN_X,
-							(rank * tileSize) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
-				}
-				if (rank == 7) {
-					g2.drawString(FILE_LABELS[file], (file * tileSize) + (100 - LABEL_MARGIN_Y),
-							(rank * tileSize) + (100 - LABEL_MARGIN_X));
-				}
+			}
+		}
+
+		if (GameWindow.playerColor == PlayerColor.WHITE) {
+			// Draw the rank and file label for white
+			for (int file = 0; file < BOARD_SIZE; file++) {
+				inverseColor = file % 2 == 0 ? blackTileColor : whiteTileColor;
+				g2.setColor(inverseColor);
+				g2.drawString(RANK_LABELS[file], LABEL_MARGIN_X,
+						(file * tileSize) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
+			}
+			for (int rank = 0; rank < BOARD_SIZE; rank++) {
+				inverseColor = rank % 2 == 1 ? blackTileColor : whiteTileColor;
+				g2.setColor(inverseColor);
+				g2.drawString(FILE_LABELS[rank], (rank * tileSize) + (100 - LABEL_MARGIN_Y),
+						(BOARD_SIZE - 1) * tileSize + (100 - LABEL_MARGIN_X));
+			}
+		} else {
+			// Draw the rank and file label for black
+			for (int file = 0; file < BOARD_SIZE; file++) {
+				inverseColor = file % 2 == 0 ? blackTileColor : whiteTileColor;
+				g2.setColor(inverseColor);
+				g2.drawString(RANK_LABELS[7 - file], LABEL_MARGIN_X,
+						(file * tileSize) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
+			}
+			for (int rank = 0; rank < BOARD_SIZE; rank++) {
+				inverseColor = rank % 2 == 1 ? blackTileColor : whiteTileColor;
+				g2.setColor(inverseColor);
+				g2.drawString(FILE_LABELS[7 - rank], (rank * tileSize) + (100 - LABEL_MARGIN_Y),
+						(BOARD_SIZE - 1) * tileSize + (100 - LABEL_MARGIN_X));
 			}
 		}
 	}
