@@ -10,3 +10,5 @@ The project's code includes:<br>
 - Game Loop
 - Chess Board & File/Rank Labels
 ![Screenshot_1](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board.png)
+- Chess Pieces
+![Screenshot_2](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces.png)

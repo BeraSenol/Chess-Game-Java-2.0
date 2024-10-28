@@ -28,9 +28,8 @@ public class Piece {
 	public BufferedImage getImage(PieceType pieceType, PieceColor pieceColor) {
 		bufferedImage = null;
 		try {
-			bufferedImage = ImageIO.read(
-					new FileInputStream("res/pieces/" + pieceType.getPieceTypeName()
-							+ "_" + pieceColor.getPieceColorName() + ".png"));
+			bufferedImage = ImageIO.read(new FileInputStream("res/pieces/" + pieceType.getPieceTypeName()
+					+ "_" + pieceColor.getPieceColorName() + ".png"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
