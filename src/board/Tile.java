@@ -5,7 +5,8 @@ import java.awt.Color;
 import piece.Piece;
 
 public class Tile {
-	public int file, rank, tileSize;
+	public int file, rank;
+	public static int tileSize;
 	public Color tileColor;
 	public String fileLabel, rankLabel;
 	public Piece tilePiece;
