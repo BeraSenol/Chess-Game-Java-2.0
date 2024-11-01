@@ -5,11 +5,11 @@ import java.awt.Color;
 import piece.Piece;
 
 public class Tile {
-	public int file, rank;
-	public static int tileSize;
-	public Color tileColor;
-	public String fileLabel, rankLabel;
-	public Piece tilePiece;
+	private int file, rank;
+	public static int tileSize = 100;
+	private Color tileColor;
+	private String fileLabel, rankLabel;
+	private Piece tilePiece;
 
 	public Tile(int file, int rank, Color tileColor, String fileLabel, String rankLabel, Piece tilePiece) {
 		this.file = file;
@@ -18,5 +18,55 @@ public class Tile {
 		this.fileLabel = fileLabel;
 		this.rankLabel = rankLabel;
 		this.tilePiece = tilePiece;
+	}
+
+	// GETTERS
+	public int getFile() {
+		return file;
+	}
+
+	public int getRank() {
+		return rank;
+	}
+
+	public static int getTileSize() {
+		return tileSize;
+	}
+
+	public Color getTileColor() {
+		return tileColor;
+	}
+
+	public String getFileLabel() {
+		return fileLabel;
+	}
+
+	public String getRankLabel() {
+		return rankLabel;
+	}
+
+	public String getTileLabel() {
+		return fileLabel + rankLabel;
+	}
+
+	public Piece getTilePiece() {
+		return tilePiece;
+	}
+
+	// SETTERS
+	public void setFile(int file) {
+		this.file = file;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
+	public void setPiece(Piece tilePiece) {
+		this.tilePiece = tilePiece;
+	}
+
+	public void removePiece() {
+		this.tilePiece = null;
 	}
 }

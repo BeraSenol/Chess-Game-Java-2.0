@@ -19,20 +19,20 @@ public class Board {
 	private final int PAWN_RANK_BLACK = 1;
 	private final int PAWN_RANK_WHITE = 6;
 	private final int PIECE_RANK_WHITE = 7;
-	public static final int BOARD_SIZE = 8;
-	public static final int LABEL_MARGIN_X = 5;
-	public static final int LABEL_MARGIN_Y = 13;
-	public final String[] RANK_LABELS = { "8", "7", "6", "5", "4", "3", "2", "1" };
-	public final String[] FILE_LABELS = { "a", "b", "c", "d", "e", "f", "g", "h" };
-	
-	public static int tileSize = 100;
-	public static Color whiteTileColor = new Color(210, 165, 125);
-	public static Color blackTileColor = new Color(175, 115, 70);
+	private static final int BOARD_SIZE = 8;
+	private static final int LABEL_MARGIN_X = 5;
+	private static final int LABEL_MARGIN_Y = 13;
+	private final String[] RANK_LABELS = { "8", "7", "6", "5", "4", "3", "2", "1" };
+	private final String[] FILE_LABELS = { "a", "b", "c", "d", "e", "f", "g", "h" };
 
-	public Player whitePlayer = new Player(PlayerColor.WHITE);
-	public Player blackPlayer = new Player(PlayerColor.BLACK);
+	public static int tileSize = Tile.getTileSize();
+	protected static Color whiteTileColor = new Color(210, 165, 125);
+	protected static Color blackTileColor = new Color(175, 115, 70);
 
-	public static final ArrayList<Piece> INITIAL_PIECES = new ArrayList<>();
+	private Player whitePlayer = new Player(PlayerColor.WHITE);
+	private Player blackPlayer = new Player(PlayerColor.BLACK);
+
+	private static final ArrayList<Piece> INITIAL_PIECES = new ArrayList<>();
 	public static ArrayList<Piece> inGamePieces = new ArrayList<>();
 	public Tile[][] board;
 
@@ -56,7 +56,7 @@ public class Board {
 		// Draws the tiles
 		for (int file = 0; file < BOARD_SIZE; file++) {
 			for (int rank = 0; rank < BOARD_SIZE; rank++) {
-				g2.setColor(board[file][rank].tileColor);
+				g2.setColor(board[file][rank].getTileColor());
 				g2.fillRect(file * tileSize, rank * tileSize, tileSize, tileSize);
 				inverseColor = (file + rank) % 2 == 0 ? blackTileColor : whiteTileColor;
 				g2.setColor(inverseColor);
@@ -95,8 +95,6 @@ public class Board {
 		}
 	}
 
-	
-
 	// Voids Functions
 	public void initializePieces() {
 		// Add pieces to the INITIAL_PIECES ArrayList
@@ -130,10 +128,5 @@ public class Board {
 
 	public void initializeInGamePieces() {
 		inGamePieces = INITIAL_PIECES;
-	}
-
-	// Getters
-	public static int getTileSize() {
-		return tileSize;
 	}
 }

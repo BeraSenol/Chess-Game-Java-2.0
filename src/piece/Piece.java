@@ -19,10 +19,10 @@ public class Piece {
 		this.pieceColor = pieceColor;
 		this.pieceType = pieceType;
 		this.tile = tile;
-		this.file = tile.file;
-		this.rank = tile.rank;
-		this.x = getX(tile.file);
-		this.y = getY(tile.rank);
+		this.file = tile.getFile();
+		this.rank = tile.getRank();
+		this.x = getX(tile.getFile());
+		this.y = getY(tile.getRank());
 	}
 
 	public BufferedImage getImage(PieceType pieceType, PieceColor pieceColor) {
@@ -37,13 +37,14 @@ public class Piece {
 		return bufferedImage;
 	}
 
-	// Getters
+	// GETTERS
+
 	public int getX(int file) {
-		return file * Board.getTileSize();
+		return file * Tile.getTileSize();
 	}
 
 	public int getY(int rank) {
-		return rank * Board.getTileSize();
+		return rank * Tile.getTileSize();
 	}
 
 	public void draw(Graphics2D g2) {
