@@ -11,6 +11,7 @@ public class Tile {
 	private String fileLabel, rankLabel;
 	private Piece tilePiece;
 
+	// CONSTRUCTOR
 	public Tile(int file, int rank, Color tileColor, String fileLabel, String rankLabel, Piece tilePiece) {
 		this.file = file;
 		this.rank = rank;

@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import board.*;
-import piece.Piece;
 import player.PlayerColor;
 
 public class GameWindow extends JPanel implements Runnable {
@@ -26,22 +25,21 @@ public class GameWindow extends JPanel implements Runnable {
 	private Color windowBackgroundColor = Color.DARK_GRAY;
 	private Dimension windowDimension = new Dimension(windowWidth, windowHeight);
 	private Thread gameThread;
-	private Board board = new Board();
+	private Board chessBoard = new Board();
 
+	// CONSTRUCTOR
 	protected GameWindow() {
 		setPreferredSize(windowDimension);
 		setBackground(windowBackgroundColor);
-		board.initializePieces();
-		board.initializeInGamePieces();
+		chessBoard.initializePieces();
+		chessBoard.initializeInGamePieces();
 	}
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		board.drawChessBoard(g2);
-		for (Piece p: Board.inGamePieces) {
-			p.draw(g2);
-		}
+		chessBoard.drawChessBoard(g2);
+		chessBoard.drawInitialChessPieces(g2);
 	}
 
 	// Runnable interface implementation
@@ -60,7 +58,7 @@ public class GameWindow extends JPanel implements Runnable {
 				repaint();
 				deltaTime--;
 			}
-		} 
+		}
 	}
 
 	protected void launchGame() {
@@ -68,6 +66,6 @@ public class GameWindow extends JPanel implements Runnable {
 		gameThread.start();
 	}
 
-	private void update() {	
+	private void update() {
 	}
 }

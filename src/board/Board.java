@@ -32,10 +32,10 @@ public class Board {
 	private int tileSize = Tile.getTileSize();
 
 	// VARIABLES - NON-PRIMITIVE
-	public static ArrayList<Piece> inGamePieces = new ArrayList<>();
+	private static ArrayList<Piece> inGamePieces = new ArrayList<>();
 	protected static Color whiteTileColor = new Color(210, 165, 125);
 	protected static Color blackTileColor = new Color(175, 115, 70);
-	public Tile[][] chessBoard;
+	private Tile[][] chessBoard;
 
 	// CONSTRUCTOR
 	public Board() {
@@ -52,7 +52,6 @@ public class Board {
 	}
 
 	// VOID
-	// Draws the board
 	public void drawChessBoard(Graphics2D g2) {
 		g2.setFont(new Font("Arial", Font.PLAIN, 14));
 		Color inverseColor = null;
@@ -95,6 +94,12 @@ public class Board {
 				g2.drawString(FILE_LABELS[7 - rank], (rank * tileSize) + (100 - LABEL_MARGIN_Y),
 						(BOARD_SIZE - 1) * tileSize + (100 - LABEL_MARGIN_X));
 			}
+		}
+	}
+
+	public void drawInitialChessPieces(Graphics2D g2) {
+		for (Piece p : INITIAL_PIECES) {
+			p.drawPiece(g2);
 		}
 	}
 

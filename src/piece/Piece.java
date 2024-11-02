@@ -92,7 +92,7 @@ public class Piece {
 	}
 	
 	// VOID
-	public void draw(Graphics2D g2) {
+	public void drawPiece(Graphics2D g2) {
 		g2.drawImage(bufferedImage, x, y, tileSize, tileSize, null);
 	}
 }
