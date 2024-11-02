@@ -13,5 +13,4 @@ public class Knight extends Piece {
 		super(pieceColor, PieceType.KNIGHT, tile);
 		bufferedImage = getImage(PIECE_TYPE, pieceColor);
 	}
-
 }

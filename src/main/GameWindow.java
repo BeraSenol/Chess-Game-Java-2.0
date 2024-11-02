@@ -12,14 +12,18 @@ import player.PlayerColor;
 
 public class GameWindow extends JPanel implements Runnable {
 
+	// VARIABLES - CONSTANTS
 	private final int INTERVAL = 100000000;
+
+	// VARIABLES - PRIMITIVE
 	protected static int windowWidth = 800;
 	protected static int windowHeight = 800;
 	private int fps = 120;
 	private double drawInterval = INTERVAL / fps;
 
-	public Color windowBackgroundColor = Color.DARK_GRAY;
+	// VARIABLES - NON-PRIMITIVE
 	public static PlayerColor playerColor = PlayerColor.WHITE;
+	private Color windowBackgroundColor = Color.DARK_GRAY;
 	private Dimension windowDimension = new Dimension(windowWidth, windowHeight);
 	private Thread gameThread;
 	private Board board = new Board();
@@ -64,7 +68,6 @@ public class GameWindow extends JPanel implements Runnable {
 		gameThread.start();
 	}
 
-	private void update() {
-		
+	private void update() {	
 	}
 }

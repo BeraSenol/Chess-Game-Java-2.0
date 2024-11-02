@@ -13,5 +13,4 @@ public class Rook extends Piece {
 		super(pieceColor, PieceType.ROOK, tile);
 		bufferedImage = getImage(PIECE_TYPE, pieceColor);
 	}
-
 }

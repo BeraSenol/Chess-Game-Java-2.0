@@ -66,6 +66,7 @@ public class Tile {
 		this.tilePiece = tilePiece;
 	}
 
+	// VOID
 	public void removePiece() {
 		this.tilePiece = null;
 	}
