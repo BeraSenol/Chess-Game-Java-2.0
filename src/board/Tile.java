@@ -3,6 +3,7 @@ package board;
 import java.awt.Color;
 
 import piece.Piece;
+import piece.PieceColor;
 
 public class Tile {
 	private int file, rank;
@@ -22,6 +23,13 @@ public class Tile {
 	}
 
 	// GETTERS
+	public boolean isPieceOnTile() {
+		if (tilePiece == null) {
+			return false;
+		}
+		return true;
+	}
+
 	public int getFile() {
 		return file;
 	}
@@ -52,6 +60,14 @@ public class Tile {
 
 	public Piece getTilePiece() {
 		return tilePiece;
+	}
+
+	public PieceColor getTilePieceColor() {
+		return tilePiece.getPieceColor();
+	}
+
+	public String getTilePieceColorName() {
+		return tilePiece.getPieceColorName();
 	}
 
 	// SETTERS

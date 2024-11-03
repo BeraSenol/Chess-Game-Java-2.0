@@ -25,21 +25,20 @@ public class Board {
 	private final String[] RANK_LABELS = { "8", "7", "6", "5", "4", "3", "2", "1" };
 	private final String[] FILE_LABELS = { "a", "b", "c", "d", "e", "f", "g", "h" };
 	private static final ArrayList<Piece> INITIAL_PIECES = new ArrayList<>();
-	private final Player WHITE_PLAYER = new Player(PlayerColor.WHITE);
-	private final Player BLACK_PLAYER = new Player(PlayerColor.BLACK);
 
 	// VARIABLES - PRIMITIVE
 	private int tileSize = Tile.getTileSize();
 
 	// VARIABLES - NON-PRIMITIVE
-	private static ArrayList<Piece> inGamePieces = new ArrayList<>();
+	public static ArrayList<Piece> inGamePieces = new ArrayList<>();
 	protected static Color whiteTileColor = new Color(210, 165, 125);
 	protected static Color blackTileColor = new Color(175, 115, 70);
-	private Tile[][] chessBoard;
+	public static Tile[][] chessBoard = null;
 
 	// CONSTRUCTOR
 	public Board() {
-		this.chessBoard = new Tile[BOARD_SIZE][BOARD_SIZE];
+		chessBoard = new Tile[BOARD_SIZE][BOARD_SIZE];
+		// Generates all the Tile objects into a chess board
 		for (int file = 0; file < BOARD_SIZE; file++) {
 			for (int rank = 0; rank < BOARD_SIZE; rank++) {
 				chessBoard[file][rank] = (file + rank) % 2 == 0
@@ -49,6 +48,38 @@ public class Board {
 								RANK_LABELS[rank], null);
 			}
 		}
+		// Add pieces to the INITIAL_PIECES ArrayList
+		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[PAWN_RANK_WHITE][i]));
+			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[PAWN_RANK_BLACK][i]));
+			switch (i) {
+			case 0, 7 -> {
+				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
+				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+			}
+			case 1, 6 -> {
+				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
+				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+			}
+			case 2, 5 -> {
+				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
+				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+			}
+			case 3 -> {
+				INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
+				INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+			}
+			case 4 -> {
+				INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
+				INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+			}
+			}
+		}
+		// Add pieces of INITIAL_PIECES to chess board
+		for (Piece piece : INITIAL_PIECES) {
+			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
+		}
+		inGamePieces = INITIAL_PIECES;
 	}
 
 	// VOID
@@ -101,39 +132,5 @@ public class Board {
 		for (Piece p : INITIAL_PIECES) {
 			p.drawPiece(g2);
 		}
-	}
-
-	public void initializePieces() {
-		// Add pieces to the INITIAL_PIECES ArrayList
-		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[PAWN_RANK_WHITE][i]));
-			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[PAWN_RANK_BLACK][i]));
-			switch (i) {
-			case 0, 7 -> {
-				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
-			}
-			case 1, 6 -> {
-				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
-			}
-			case 2, 5 -> {
-				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
-			}
-			case 3 -> {
-				INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
-			}
-			case 4 -> {
-				INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
-			}
-			}
-		}
-	}
-
-	public void initializeInGamePieces() {
-		inGamePieces = INITIAL_PIECES;
 	}
 }
