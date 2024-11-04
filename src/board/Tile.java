@@ -22,7 +22,7 @@ public class Tile {
 		this.tilePiece = tilePiece;
 	}
 
-	// GETTERS
+	// BOOLEANS
 	public boolean isPieceOnTile() {
 		if (tilePiece == null) {
 			return false;
@@ -30,6 +30,7 @@ public class Tile {
 		return true;
 	}
 
+	// GETTERS
 	public int getFile() {
 		return file;
 	}

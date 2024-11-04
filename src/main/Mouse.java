@@ -48,7 +48,7 @@ public class Mouse extends MouseAdapter {
 		setMouseY(e.getY());
 	}
 
-	// GETTERS
+	// BOOLEANS
 	public boolean isMousePressed() {
 		return mousePressed;
 	}
@@ -57,6 +57,7 @@ public class Mouse extends MouseAdapter {
 		return mouseClicked;
 	}
 
+	// GETTERS
 	public int getMouseX() {
 		return x;
 	}

@@ -14,6 +14,7 @@ public class GameWindow extends JPanel implements Runnable {
 
 	// VARIABLES - CONSTANTS
 	private final int INTERVAL = 100000000;
+	private final int TILE_SIZE_HALF = Tile.getTileSize() / 2;
 
 	// VARIABLES - PRIMITIVE
 	protected static int windowWidth = 800;
@@ -75,19 +76,36 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	private void update() {
-		hoveringTile = playerMouse.getHoveringTile();
 		if (playerMouse.isMousePressed()) {
-			selectedTile = hoveringTile;
+			setSelectedTile(playerMouse.getHoveringTile());
 			if (selectedPiece == null) {
-				if (selectedTile.isPieceOnTile() && selectedTile.getTilePieceColorName() == playerColor
-						.getPlayerColorName()) {
-					selectedPiece = selectedTile.getTilePiece();
+				if (isSelectedTilePieceColorAlsoPlayerColor(selectedTile)) {
+					setSelectedPiece(selectedTile.getTilePiece());
 				}
-			} else {
-				selectedPiece.setX(playerMouse.getMouseX() - tileSize / 2);
-				selectedPiece.setY(playerMouse.getMouseY() - tileSize / 2);
 			}
-
 		}
+		if (selectedPiece != null) {
+			setPieceToFollowMouse(selectedPiece);
+		}
+	}
+
+	// BOOLEANS
+	private boolean isSelectedTilePieceColorAlsoPlayerColor(Tile tile) {
+		return tile.isPieceOnTile() && tile.getTilePieceColorName() == playerColor.getPlayerColorName();
+	}
+
+	// GETTERS
+	// SETTERS
+	private void setSelectedTile(Tile tile) {
+		this.selectedTile = tile;
+	}
+
+	private void setSelectedPiece(Piece piece) {
+		this.selectedPiece = piece;
+	}
+
+	private void setPieceToFollowMouse(Piece piece) {
+		piece.setX(playerMouse.getMouseX() - TILE_SIZE_HALF);
+		piece.setY(playerMouse.getMouseY() - TILE_SIZE_HALF);
 	}
 }

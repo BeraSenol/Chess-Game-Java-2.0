@@ -82,7 +82,7 @@ public class Board {
 		inGamePieces = INITIAL_PIECES;
 	}
 
-	// VOID
+	// DRAW
 	public void drawChessBoard(Graphics2D g2) {
 		g2.setFont(new Font("Arial", Font.PLAIN, 14));
 		Color inverseColor = null;

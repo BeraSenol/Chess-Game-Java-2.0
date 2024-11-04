@@ -93,8 +93,12 @@ public class Piece {
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
+		setFile(tile.getFile());
+		setRank(tile.getRank());
+		setX(tile.getFile() * tileSize);
+		setY(tile.getRank() * tileSize);
 	}
-	
+
 	// VOID
 	public void drawPiece(Graphics2D g2) {
 		g2.drawImage(bufferedImage, x, y, tileSize, tileSize, null);
