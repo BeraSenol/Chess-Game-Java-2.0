@@ -75,7 +75,7 @@ public class Board {
 			}
 			}
 		}
-		// Add pieces of INITIAL_PIECES to chess board
+		// Add pieces of INITIAL_PIECES to chess board object
 		for (Piece piece : INITIAL_PIECES) {
 			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
 		}
@@ -129,7 +129,7 @@ public class Board {
 	}
 
 	public void drawInitialChessPieces(Graphics2D g2) {
-		for (Piece p : INITIAL_PIECES) {
+		for (Piece p : inGamePieces) {
 			p.drawPiece(g2);
 		}
 	}

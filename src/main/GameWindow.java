@@ -1,7 +1,7 @@
 package main;
 
 import javax.swing.JPanel;
-import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,32 +15,26 @@ public class GameWindow extends JPanel implements Runnable {
 	// VARIABLES - CONSTANTS
 	private final int INTERVAL = 100000000;
 	private final int TILE_SIZE_HALF = Tile.getTileSize() / 2;
-
-	// VARIABLES - PRIMITIVE
-	protected static int windowWidth = 800;
-	protected static int windowHeight = 800;
-	private int tileSize = Tile.getTileSize();
-	private int fps = 120;
-	private double drawInterval = INTERVAL / fps;
+	protected final static int WINDOW_WIDTH = 800;
+	protected final static int WINDOW_HEIGHT = 800;
+	private final int FPS = 120;
+	private final double DRAW_INTERVAL = INTERVAL / FPS;
 
 	// VARIABLES - CLASS INSTANCES
 	private Board chessBoard = new Board();
 	private Mouse playerMouse = new Mouse();
-	private Tile hoveringTile = null;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
 	public static PlayerColor playerColor = PlayerColor.WHITE;
 
 	// VARIABLES - NON-PRIMITIVE
-	private Color windowBackgroundColor = Color.DARK_GRAY;
-	private Dimension windowDimension = new Dimension(windowWidth, windowHeight);
+	private Dimension windowDimension = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private Graphics2D graphics2d = null;
-	private Thread gameThread;
+	private Thread gameThread = null;
 
 	// CONSTRUCTOR
 	protected GameWindow() {
 		setPreferredSize(windowDimension);
-		setBackground(windowBackgroundColor);
 		addMouseListener(playerMouse);
 		addMouseMotionListener(playerMouse);
 	}
@@ -60,7 +54,7 @@ public class GameWindow extends JPanel implements Runnable {
 		long currentTime;
 		while (gameThread != null) {
 			currentTime = System.nanoTime();
-			deltaTime += (currentTime - previousTime) / drawInterval;
+			deltaTime += (currentTime - previousTime) / DRAW_INTERVAL;
 			previousTime = currentTime;
 			if (deltaTime >= 1) {
 				update();
@@ -78,10 +72,17 @@ public class GameWindow extends JPanel implements Runnable {
 	private void update() {
 		if (playerMouse.isMousePressed()) {
 			setSelectedTile(playerMouse.getHoveringTile());
-			if (selectedPiece == null) {
+			if (getSelectedPiece() == null) {
 				if (isSelectedTilePieceColorAlsoPlayerColor(selectedTile)) {
 					setSelectedPiece(selectedTile.getTilePiece());
 				}
+			}
+		}
+		if (!playerMouse.isMousePressed()) {
+			setSelectedTile(playerMouse.getHoveringTile());
+			if (getSelectedPiece() != null) {
+				getSelectedPiece().setTile(selectedTile);
+				setSelectedPiece(null);
 			}
 		}
 		if (selectedPiece != null) {
@@ -95,6 +96,10 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	// GETTERS
+	private Piece getSelectedPiece() {
+		return selectedPiece;
+	}
+
 	// SETTERS
 	private void setSelectedTile(Tile tile) {
 		this.selectedTile = tile;

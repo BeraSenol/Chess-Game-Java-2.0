@@ -47,11 +47,11 @@ public class Piece {
 	}
 
 	public int getX() {
-		return x;
+		return file * tileSize;
 	}
 
 	public int getY() {
-		return y;
+		return rank * tileSize;
 	}
 
 	public PieceColor getPieceColor() {
@@ -95,8 +95,8 @@ public class Piece {
 		this.tile = tile;
 		setFile(tile.getFile());
 		setRank(tile.getRank());
-		setX(tile.getFile() * tileSize);
-		setY(tile.getRank() * tileSize);
+		setX(tile.getRank() * tileSize);
+		setY(tile.getFile() * tileSize);
 	}
 
 	// VOID

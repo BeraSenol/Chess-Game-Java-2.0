@@ -7,24 +7,8 @@ import board.*;
 
 public class Mouse extends MouseAdapter {
 	private boolean mousePressed = false;
-	private boolean mouseClicked = false;
 	private int x, y;
 	private int tileSize = Tile.getTileSize();
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		setMouseClicked(true);
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -53,10 +37,6 @@ public class Mouse extends MouseAdapter {
 		return mousePressed;
 	}
 
-	public boolean isMouseClicked() {
-		return mouseClicked;
-	}
-
 	// GETTERS
 	public int getMouseX() {
 		return x;
@@ -80,10 +60,6 @@ public class Mouse extends MouseAdapter {
 
 	// SETTERS
 	private void setMousePressed(boolean mousePressed) {
-		this.mousePressed = mousePressed;
-	}
-
-	private void setMouseClicked(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}
 
