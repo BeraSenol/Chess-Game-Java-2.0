@@ -3,6 +3,7 @@ package piece;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.awt.Graphics2D;
 
 import board.Tile;
@@ -13,7 +14,7 @@ public class Piece {
 	private PieceColor pieceColor;
 	private PieceType pieceType;
 	private Tile tile;
-	public BufferedImage bufferedImage;
+	public BufferedImage pieceImage;
 
 	public Piece(PieceColor pieceColor, PieceType pieceType, Tile tile) {
 		this.file = tile.getFile();
@@ -27,14 +28,14 @@ public class Piece {
 
 	// Loads the image for each PieceType and PieceColor
 	public BufferedImage getImage(PieceType pieceType, PieceColor pieceColor) {
-		bufferedImage = null;
+		pieceImage = null;
 		try {
-			bufferedImage = ImageIO.read(new FileInputStream("res/pieces/" + pieceType.getPieceTypeName()
+			pieceImage = ImageIO.read(new FileInputStream("res/pieces/" + pieceType.getPieceTypeName()
 					+ "_" + pieceColor.getPieceColorName() + ".png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return bufferedImage;
+		return pieceImage;
 	}
 
 	// GETTERS
@@ -95,12 +96,12 @@ public class Piece {
 		this.tile = tile;
 		setFile(tile.getFile());
 		setRank(tile.getRank());
-		setX(tile.getRank() * tileSize);
-		setY(tile.getFile() * tileSize);
+		setX(tile.getFile() * tileSize);
+		setY(tile.getRank() * tileSize);
 	}
 
 	// VOID
 	public void drawPiece(Graphics2D g2) {
-		g2.drawImage(bufferedImage, x, y, tileSize, tileSize, null);
+		g2.drawImage(pieceImage, x, y, tileSize, tileSize, null);
 	}
 }

@@ -11,6 +11,6 @@ public class King extends Piece {
 
 	public King(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.KING, tile);
-		bufferedImage = getImage(PIECE_TYPE, pieceColor);
+		pieceImage = getImage(PIECE_TYPE, pieceColor);
 	}
 }

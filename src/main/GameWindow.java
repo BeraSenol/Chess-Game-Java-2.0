@@ -17,12 +17,12 @@ public class GameWindow extends JPanel implements Runnable {
 	private final int TILE_SIZE_HALF = Tile.getTileSize() / 2;
 	protected final static int WINDOW_WIDTH = 800;
 	protected final static int WINDOW_HEIGHT = 800;
-	private final int FPS = 120;
+	private final int FPS = 60;
 	private final double DRAW_INTERVAL = INTERVAL / FPS;
 
 	// VARIABLES - CLASS INSTANCES
 	private Board chessBoard = new Board();
-	private Mouse playerMouse = new Mouse();
+	private final Mouse playerMouse = new Mouse();
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
 	public static PlayerColor playerColor = PlayerColor.WHITE;
@@ -72,22 +72,18 @@ public class GameWindow extends JPanel implements Runnable {
 	private void update() {
 		if (playerMouse.isMousePressed()) {
 			setSelectedTile(playerMouse.getHoveringTile());
-			if (getSelectedPiece() == null) {
-				if (isSelectedTilePieceColorAlsoPlayerColor(selectedTile)) {
-					setSelectedPiece(selectedTile.getTilePiece());
-				}
+			if (getSelectedTile().isPieceOnTile()) {
+				setSelectedPiece(getSelectedTile().getTilePiece());
+				
 			}
 		}
-		if (!playerMouse.isMousePressed()) {
-			setSelectedTile(playerMouse.getHoveringTile());
-			if (getSelectedPiece() != null) {
-				getSelectedPiece().setTile(selectedTile);
-				setSelectedPiece(null);
-			}
-		}
-		if (selectedPiece != null) {
-			setPieceToFollowMouse(selectedPiece);
-		}
+		// System.out.println(selectedTile.getTileLabel());
+		// System.out.println(selectedTile.getFile());
+		// System.out.println(selectedTile.getTilePiece().getFile());
+		// System.out.println(selectedTile.getRank());
+		// System.out.println(selectedTile.getTilePiece().getRank());
+		// System.out.println(selectedTile.getTilePieceColor());
+		// System.out.println(selectedTile.getTilePieceType());
 	}
 
 	// BOOLEANS
@@ -100,6 +96,14 @@ public class GameWindow extends JPanel implements Runnable {
 		return selectedPiece;
 	}
 
+	private Tile getSelectedTile() {
+		return selectedTile;
+	}
+
+	public static PlayerColor getPlayerColor() {
+		return playerColor;
+	}
+
 	// SETTERS
 	private void setSelectedTile(Tile tile) {
 		this.selectedTile = tile;
@@ -107,10 +111,5 @@ public class GameWindow extends JPanel implements Runnable {
 
 	private void setSelectedPiece(Piece piece) {
 		this.selectedPiece = piece;
-	}
-
-	private void setPieceToFollowMouse(Piece piece) {
-		piece.setX(playerMouse.getMouseX() - TILE_SIZE_HALF);
-		piece.setY(playerMouse.getMouseY() - TILE_SIZE_HALF);
 	}
 }

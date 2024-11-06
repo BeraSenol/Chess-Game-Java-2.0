@@ -39,39 +39,37 @@ public class Board {
 	public Board() {
 		chessBoard = new Tile[BOARD_SIZE][BOARD_SIZE];
 		// Generates all the Tile objects into a chess board
-		for (int file = 0; file < BOARD_SIZE; file++) {
-			for (int rank = 0; rank < BOARD_SIZE; rank++) {
-				chessBoard[file][rank] = (file + rank) % 2 == 0
-						? new Tile(rank, file, whiteTileColor, FILE_LABELS[file],
-								RANK_LABELS[rank], null)
-						: new Tile(rank, file, blackTileColor, FILE_LABELS[file],
-								RANK_LABELS[rank], null);
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
+				chessBoard[i][j] = (i + j) % 2 == 0
+						? new Tile(i, j, whiteTileColor, FILE_LABELS[i], RANK_LABELS[j], null)
+						: new Tile(i, j, blackTileColor, FILE_LABELS[i], RANK_LABELS[j], null);
 			}
 		}
 		// Add pieces to the INITIAL_PIECES ArrayList
 		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[PAWN_RANK_WHITE][i]));
-			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[PAWN_RANK_BLACK][i]));
+			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_WHITE]));
+			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_BLACK]));
 			switch (i) {
 			case 0, 7 -> {
-				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
 			}
 			case 1, 6 -> {
-				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
 			}
 			case 2, 5 -> {
-				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
 			}
 			case 3 -> {
-				INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+				INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+				INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
 			}
 			case 4 -> {
-				INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[PIECE_RANK_WHITE][i]));
-				INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[PIECE_RANK_BLACK][i]));
+				INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+				INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
 			}
 			}
 		}

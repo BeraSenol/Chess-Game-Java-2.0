@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import piece.Piece;
 import piece.PieceColor;
+import piece.PieceType;
 
 public class Tile {
 	private int file, rank;
@@ -67,8 +68,16 @@ public class Tile {
 		return tilePiece.getPieceColor();
 	}
 
+	public PieceType getTilePieceType() {
+		return tilePiece.getPieceType();
+	}
+
 	public String getTilePieceColorName() {
-		return tilePiece.getPieceColorName();
+		return tilePiece.getPieceColor().getPieceColorName();
+	}
+
+	public String getTilePieceTypeName() {
+		return tilePiece.getPieceType().getPieceTypeName();
 	}
 
 	// SETTERS
@@ -80,8 +89,8 @@ public class Tile {
 		this.rank = rank;
 	}
 
-	public void setPiece(Piece tilePiece) {
-		this.tilePiece = tilePiece;
+	public void setPiece(Piece piece) {
+		this.tilePiece = piece;
 	}
 
 	// VOID
