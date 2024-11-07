@@ -1,12 +1,12 @@
 package piece;
 
 public enum PieceType {
-	PAWN("pawn"),
-        ROOK("rook"),
-        KNIGHT("knight"),
-        BISHOP("bishop"),
-        QUEEN("queen"),
-        KING("king");
+	PAWN("PAWN"),
+        ROOK("ROOK"),
+        KNIGHT("KNIGHT"),
+        BISHOP("BISHOP"),
+        QUEEN("QUEEN"),
+        KING("KING");
 
         private final String name;
         private PieceType(String name) {

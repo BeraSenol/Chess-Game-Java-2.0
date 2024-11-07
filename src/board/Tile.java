@@ -40,6 +40,14 @@ public class Tile {
 		return rank;
 	}
 
+	public int getX() {
+		return file * tileSize;
+	}
+
+	public int getY() {
+		return rank * tileSize;
+	}
+
 	public static int getTileSize() {
 		return tileSize;
 	}
@@ -79,6 +87,8 @@ public class Tile {
 	public String getTilePieceTypeName() {
 		return tilePiece.getPieceType().getPieceTypeName();
 	}
+
+	
 
 	// SETTERS
 	public void setFile(int file) {

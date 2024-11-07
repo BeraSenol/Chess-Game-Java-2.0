@@ -1,8 +1,8 @@
 package piece;
 
 public enum PieceColor {
-	    WHITE("white"),
-        BLACK("black");
+	    WHITE("WHITE"),
+        BLACK("BLACK");
         
         private final String name;
         private PieceColor(String name) {

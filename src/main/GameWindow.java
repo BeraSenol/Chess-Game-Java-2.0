@@ -1,10 +1,13 @@
 package main;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 
 import board.*;
 import piece.Piece;
@@ -14,7 +17,6 @@ public class GameWindow extends JPanel implements Runnable {
 
 	// VARIABLES - CONSTANTS
 	private final int INTERVAL = 100000000;
-	private final int TILE_SIZE_HALF = Tile.getTileSize() / 2;
 	protected final static int WINDOW_WIDTH = 800;
 	protected final static int WINDOW_HEIGHT = 800;
 	private final int FPS = 60;
@@ -39,11 +41,14 @@ public class GameWindow extends JPanel implements Runnable {
 		addMouseMotionListener(playerMouse);
 	}
 
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		graphics2d = (Graphics2D) g;
-		chessBoard.drawChessBoard(graphics2d);
-		chessBoard.drawInitialChessPieces(graphics2d);
+	public BufferedImage getMoveableTileImage() {
+		BufferedImage moveableTileImage = null;
+		try {
+			moveableTileImage = ImageIO.read(new FileInputStream("res/board/gray-circle.png"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return moveableTileImage;
 	}
 
 	@Override
@@ -69,26 +74,23 @@ public class GameWindow extends JPanel implements Runnable {
 		gameThread.start();
 	}
 
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		graphics2d = (Graphics2D) g;
+		chessBoard.drawChessBoard(graphics2d);
+		chessBoard.drawInitialChessPieces(graphics2d);
+		if (getSelectedTile() != null) {
+			getSelectedPiece().drawMoveableTileCircles(graphics2d, getSelectedPiece().getMoveableTiles());
+		}
+	}
+
 	private void update() {
 		if (playerMouse.isMousePressed()) {
 			setSelectedTile(playerMouse.getHoveringTile());
 			if (getSelectedTile().isPieceOnTile()) {
 				setSelectedPiece(getSelectedTile().getTilePiece());
-				
 			}
 		}
-		// System.out.println(selectedTile.getTileLabel());
-		// System.out.println(selectedTile.getFile());
-		// System.out.println(selectedTile.getTilePiece().getFile());
-		// System.out.println(selectedTile.getRank());
-		// System.out.println(selectedTile.getTilePiece().getRank());
-		// System.out.println(selectedTile.getTilePieceColor());
-		// System.out.println(selectedTile.getTilePieceType());
-	}
-
-	// BOOLEANS
-	private boolean isSelectedTilePieceColorAlsoPlayerColor(Tile tile) {
-		return tile.isPieceOnTile() && tile.getTilePieceColorName() == playerColor.getPlayerColorName();
 	}
 
 	// GETTERS

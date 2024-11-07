@@ -11,6 +11,6 @@ public class Queen extends Piece {
 
 	public Queen(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.QUEEN, tile);
-		pieceImage = getImage(PIECE_TYPE, pieceColor);
+		pieceImage = getPieceImage(PIECE_TYPE, pieceColor);
 	}
 }

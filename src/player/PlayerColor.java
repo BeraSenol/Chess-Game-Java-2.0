@@ -1,8 +1,8 @@
 package player;
 
 public enum PlayerColor {
-	    WHITE("white"),
-        BLACK("black");
+	    WHITE("WHITE"),
+        BLACK("BLACK");
         
         private final String name;
         private PlayerColor(String name) {

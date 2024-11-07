@@ -11,6 +11,6 @@ public class Knight extends Piece {
 
 	public Knight(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.KNIGHT, tile);
-		pieceImage = getImage(PIECE_TYPE, pieceColor);
+		pieceImage = getPieceImage(PIECE_TYPE, pieceColor);
 	}
 }

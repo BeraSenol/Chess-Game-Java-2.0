@@ -11,6 +11,6 @@ public class Bishop extends Piece {
 
 	public Bishop(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.BISHOP, tile);
-		pieceImage = getImage(PIECE_TYPE, pieceColor);
+		pieceImage = getPieceImage(PIECE_TYPE, pieceColor);
 	}
 }
