@@ -80,7 +80,7 @@ public class GameWindow extends JPanel implements Runnable {
 		chessBoard.drawChessBoard(graphics2d);
 		chessBoard.drawInitialChessPieces(graphics2d);
 		if (getSelectedTile() != null) {
-			getSelectedPiece().drawMoveableTileCircles(graphics2d, getSelectedPiece().getMoveableTiles());
+			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 		}
 	}
 

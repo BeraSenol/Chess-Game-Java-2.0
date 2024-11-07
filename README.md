@@ -13,6 +13,6 @@ The project's code includes:<br>
 - Chess Pieces
 ![Screenshot_2](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces.png)
 - Piece Movement & Snap Into Place
-![Screenshot_3](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-in-position.png)
+![Screenshot_3](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-position.png)
 - Possible Moves Indicator 
-![Screenshot_4](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-in-position.png)
+![Screenshot_4](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-indicators.png)

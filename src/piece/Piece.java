@@ -13,8 +13,8 @@ public class Piece {
 	private int file, rank, x, y;
 	private int tileSize = Tile.getTileSize();
 	private final int TILE_SIZE_HALF = Tile.getTileSize() / 2;
-	private final int IMAGE_MOVEABLE_SIZE = 30;
-	private final int IMAGE_MOVEABLE_OFFSET = TILE_SIZE_HALF - (IMAGE_MOVEABLE_SIZE / 2);
+	private final int INDICATOR_SIZE = 30;
+	private final int INDICATOR_OFFSET = TILE_SIZE_HALF - (INDICATOR_SIZE / 2);
 	private PieceColor pieceColor;
 	private PieceType pieceType;
 	private Tile tile;
@@ -32,8 +32,8 @@ public class Piece {
 		this.tile = tile;
 	}
 
-	// Loads the image for each PieceType and PieceColor
 	public BufferedImage getPieceImage(PieceType pieceType, PieceColor pieceColor) {
+		// Loads the image for each PieceType and PieceColor
 		pieceImage = null;
 		try {
 			pieceImage = ImageIO.read(new FileInputStream("res/pieces/" + pieceType.getPieceTypeName() + "_"
@@ -45,6 +45,7 @@ public class Piece {
 	}
 
 	private BufferedImage getMoveableTileImage() {
+		// Loads the image for the moveableTileIndicator
 		moveableTileImage = null;
 		try {
 			moveableTileImage = ImageIO.read(new FileInputStream("res/board/circle.png"));
@@ -129,12 +130,11 @@ public class Piece {
 		g2.drawImage(pieceImage, x, y, tileSize, tileSize, null);
 	}
 
-	public void drawMoveableTileCircles(Graphics2D g2, ArrayList<Tile> tiles) {
+	public void drawIndicators(Graphics2D g2, ArrayList<Tile> tiles) {
 		for (Tile tile : tiles) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f));
-			g2.drawImage(getMoveableTileImage(), tile.getX() + IMAGE_MOVEABLE_OFFSET,
-					tile.getY() + IMAGE_MOVEABLE_OFFSET, IMAGE_MOVEABLE_SIZE, IMAGE_MOVEABLE_SIZE,
-					null);
+			g2.drawImage(getMoveableTileImage(), tile.getX() + INDICATOR_OFFSET,
+					tile.getY() + INDICATOR_OFFSET, INDICATOR_SIZE, INDICATOR_SIZE, null);
 		}
 	}
 }
