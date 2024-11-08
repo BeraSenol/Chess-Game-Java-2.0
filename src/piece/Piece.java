@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 
+import board.Board;
 import board.Tile;
 
 public class Piece {
@@ -19,8 +20,10 @@ public class Piece {
 	private PieceType pieceType;
 	private Tile tile;
 	private ArrayList<Tile> moveableTiles = new ArrayList<Tile>();
+	private ArrayList<Tile> indicatedTiles = new ArrayList<Tile>();
 	protected BufferedImage pieceImage;
 	private BufferedImage moveableTileImage;
+	private Tile[][] chessBoard = Board.chessBoard;
 
 	public Piece(PieceColor pieceColor, PieceType pieceType, Tile tile) {
 		this.file = tile.getFile();
@@ -53,6 +56,17 @@ public class Piece {
 			e.printStackTrace();
 		}
 		return moveableTileImage;
+	}
+
+	// BOOLEANS
+	protected boolean isWithinBounds(int n) {
+		if (n < 0) {
+			return false;
+		}
+		if (n > 7) {
+			return false;
+		}
+		return true;
 	}
 
 	// GETTERS
@@ -88,8 +102,16 @@ public class Piece {
 		return tile;
 	}
 
+	public Tile[][] getChessBoard() {
+		return Board.chessBoard;
+	}
+
 	public ArrayList<Tile> getMoveableTiles() {
 		return moveableTiles;
+	}
+
+	public ArrayList<Tile> getIndicatedTiles() {
+		return indicatedTiles;
 	}
 
 	// SETTERS
@@ -119,10 +141,6 @@ public class Piece {
 		setRank(tile.getRank());
 		setX(tile.getX());
 		setY(tile.getY());
-	}
-
-	public void setMoveableTiles(ArrayList<Tile> tiles) {
-		this.moveableTiles = tiles;
 	}
 
 	// VOID

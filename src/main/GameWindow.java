@@ -80,7 +80,7 @@ public class GameWindow extends JPanel implements Runnable {
 		chessBoard.drawChessBoard(graphics2d);
 		chessBoard.drawInitialChessPieces(graphics2d);
 		if (getSelectedPiece() != null) {
-			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
+			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getIndicatedTiles());
 		}
 	}
 
@@ -92,6 +92,7 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			if (getSelectedPiece() != null) {
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
+					getSelectedPiece().getTile().removePiece();;
 					getSelectedPiece().setTile(getSelectedTile());
 					getSelectedTile().setPiece(getSelectedPiece());
 					setSelectedPiece(null);

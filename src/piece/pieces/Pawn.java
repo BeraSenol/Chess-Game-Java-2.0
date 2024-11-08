@@ -2,7 +2,6 @@ package piece.pieces;
 
 import java.util.ArrayList;
 
-import board.Board;
 import board.Tile;
 import piece.Piece;
 import piece.PieceColor;
@@ -11,7 +10,6 @@ import piece.PieceType;
 public class Pawn extends Piece {
 
 	private final PieceType PIECE_TYPE = PieceType.PAWN;
-	private Tile[][] chessBoard = Board.chessBoard;
 
 	public Pawn(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.PAWN, tile);
@@ -21,6 +19,7 @@ public class Pawn extends Piece {
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
 		ArrayList<Tile> moveableTiles = new ArrayList<Tile>();
+		Tile[][] chessBoard = getChessBoard();
 		int file = this.getFile();
 		int rank = this.getRank();
 		if (this.getPieceColor().getPieceColorName() == PieceColor.WHITE.name()) {
@@ -52,5 +51,10 @@ public class Pawn extends Piece {
 			return moveableTiles;
 		}
 		return moveableTiles;
+	}
+
+	@Override
+	public ArrayList<Tile> getIndicatedTiles() {
+		return getMoveableTiles();
 	}
 }
