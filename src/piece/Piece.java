@@ -65,11 +65,11 @@ public class Piece {
 	}
 
 	public int getX() {
-		return file * tileSize;
+		return x;
 	}
 
 	public int getY() {
-		return rank * tileSize;
+		return y;
 	}
 
 	public PieceColor getPieceColor() {
