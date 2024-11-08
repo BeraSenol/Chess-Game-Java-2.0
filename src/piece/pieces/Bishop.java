@@ -23,22 +23,30 @@ public class Bishop extends Piece {
 		int file = this.getFile();
 		int rank = this.getRank();
 		int i = 1;
-		while (isWithinBounds(file + i) && isWithinBounds(rank - i)) {
+		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
+				&& !chessBoard[file + i][rank - i].isPieceOnTile()) {
+			// Tiles right-above the bishop
 			moveableTiles.add(chessBoard[file + i][rank - i]);
 			i++;
 		}
 		i = 1;
-		while (isWithinBounds(file + i) && isWithinBounds(rank + i)) {
+		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
+				&& !chessBoard[file + i][rank + i].isPieceOnTile()) {
+			// Tiles right-bellow the bishop
 			moveableTiles.add(chessBoard[file + i][rank + i]);
 			i++;
 		}
 		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank + i)) {
+		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
+				&& !chessBoard[file - i][rank + i].isPieceOnTile()) {
+			// Tiles left-above the bishop
 			moveableTiles.add(chessBoard[file - i][rank + i]);
 			i++;
 		}
 		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank - i)) {
+		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
+				&& !chessBoard[file - i][rank - i].isPieceOnTile()) {
+			// Tiles left-bellow the bishop
 			moveableTiles.add(chessBoard[file - i][rank - i]);
 			i++;
 		}
@@ -47,13 +55,6 @@ public class Bishop extends Piece {
 
 	@Override
 	public ArrayList<Tile> getIndicatedTiles() {
-		ArrayList<Tile> moveableTiles = getMoveableTiles();
-		ArrayList<Tile> indicatedTiles = new ArrayList<Tile>();
-		for (Tile tile : moveableTiles) {
-			if (!tile.isPieceOnTile()) {
-				indicatedTiles.add(tile);
-			}
-		}
-		return indicatedTiles;
+		return getMoveableTiles();
 	}
 }
