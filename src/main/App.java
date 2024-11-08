@@ -5,15 +5,15 @@ import javax.swing.JFrame;
 public class App {
     public static void main(String[] args) throws Exception {
         // Create a window
-        JFrame window = new JFrame("Chess Game");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setVisible(true);
-        window.setResizable(false);
+        JFrame jFrame = new JFrame("Chess Game");
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setVisible(true);
+        jFrame.setResizable(false);
         GameWindow gameWindow = new GameWindow();
-        window.add(gameWindow);
-        window.pack();
+        jFrame.add(gameWindow);
+        jFrame.pack();
         gameWindow.launchGame();
         // Center window inside screen
-        window.setLocationRelativeTo(null);
+        jFrame.setLocationRelativeTo(null);
     }
 }

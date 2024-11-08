@@ -11,14 +11,12 @@ import board.Board;
 import board.Tile;
 
 public class Piece {
-	// VARIABLES - CONSTANTS
 	private final int TILE_SIZE = Tile.getTileSize();
 	private final int TILE_SIZE_HALF = TILE_SIZE / 2;
 	private final int INDICATOR_SIZE = 30;
 	private final int INDICATOR_OFFSET = TILE_SIZE_HALF - (INDICATOR_SIZE / 2);
 	private final float ALPHA = 0.15f;
 
-	// VARIABLES - PRIMITIVE
 	private int file, rank, x, y = 0;
 	private PieceColor pieceColor = null;
 	private PieceType pieceType = null;
@@ -42,8 +40,8 @@ public class Piece {
 		// Loads the image for each PieceType and PieceColor
 		pieceImage = null;
 		try {
-			pieceImage = ImageIO.read(new FileInputStream("res/pieces/" + pieceType.getPieceTypeName() + "_"
-					+ pieceColor.getPieceColorName() + ".png"));
+			pieceImage = ImageIO.read(new FileInputStream(
+					"res/pieces/" + pieceType.getName() + "_" + pieceColor.getName() + ".png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,10 +93,6 @@ public class Piece {
 
 	public PieceType getPieceType() {
 		return pieceType;
-	}
-
-	public String getPieceColorName() {
-		return pieceColor.getPieceColorName();
 	}
 
 	public Tile getTile() {

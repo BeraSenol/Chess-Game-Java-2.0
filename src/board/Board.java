@@ -13,8 +13,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 public class Board {
-
-	// VARIABLES - CONSTANTS
 	private final int PIECE_RANK_BLACK = 0;
 	private final int PAWN_RANK_BLACK = 1;
 	private final int PAWN_RANK_WHITE = 6;
@@ -30,7 +28,6 @@ public class Board {
 	private final Color BLACK_TILE_COLOR = new Color(175, 115, 70);
 	private final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
 
-	// VARIABLES - NON-PRIMITIVE
 	private ArrayList<Piece> inGamePieces = new ArrayList<>();
 	public static Tile[][] chessBoard = null;
 

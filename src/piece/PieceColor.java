@@ -8,7 +8,7 @@ public enum PieceColor {
         private PieceColor(String name) {
             this.name = name;
         }
-        public String getPieceColorName() {
+        public String getName() {
             return name;
         }
 }

@@ -23,8 +23,9 @@ public class Pawn extends Piece {
 		Tile[][] chessBoard = getChessBoard();
 		int file = this.getFile();
 		int rank = this.getRank();
+		String pieceColorName = this.getPieceColor().getName();
 		if (playerColor == PlayerColor.WHITE) {
-			if (this.getPieceColor().getPieceColorName() == PieceColor.WHITE.name()) {
+			if (pieceColorName == PieceColor.WHITE.name()) {
 				// Pawn movement when playerColor is white for the white pieces
 				if (chessBoard[file][rank - 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
@@ -39,7 +40,7 @@ public class Pawn extends Piece {
 				moveableTiles.add(chessBoard[file][rank - 1]);
 				return moveableTiles;
 			}
-			if (this.getPieceColor().getPieceColorName() == PieceColor.BLACK.name()) {
+			if (pieceColorName == PieceColor.BLACK.name()) {
 				// Pawn movement when playerColor is white for the black pieces
 				if (chessBoard[file][rank + 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
@@ -55,7 +56,7 @@ public class Pawn extends Piece {
 				return moveableTiles;
 			}
 		} else {
-			if (this.getPieceColor().getPieceColorName() == PieceColor.WHITE.name()) {
+			if (pieceColorName == PieceColor.WHITE.name()) {
 				// Pawn movement when playerColor is black for the white pieces
 				if (chessBoard[file][rank + 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
@@ -70,7 +71,7 @@ public class Pawn extends Piece {
 				moveableTiles.add(chessBoard[file][rank + 1]);
 				return moveableTiles;
 			}
-			if (this.getPieceColor().getPieceColorName() == PieceColor.BLACK.name()) {
+			if (pieceColorName == PieceColor.BLACK.name()) {
 				// Pawn movement when playerColor is black for the black pieces
 				if (chessBoard[file][rank - 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();

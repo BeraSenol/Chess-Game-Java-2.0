@@ -8,7 +8,7 @@ public enum PlayerColor {
         private PlayerColor(String name) {
             this.name = name;
         }
-        public String getPlayerColorName() {
+        public String getName() {
             return name;
         }
 }

@@ -81,11 +81,11 @@ public class Tile {
 	}
 
 	public String getTilePieceColorName() {
-		return tilePiece.getPieceColor().getPieceColorName();
+		return tilePiece.getPieceColor().getName();
 	}
 
 	public String getTilePieceTypeName() {
-		return tilePiece.getPieceType().getPieceTypeName();
+		return tilePiece.getPieceType().getName();
 	}
 
 	// SETTERS

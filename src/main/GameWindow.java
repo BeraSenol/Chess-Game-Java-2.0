@@ -14,7 +14,6 @@ import piece.Piece;
 import player.PlayerColor;
 
 public class GameWindow extends JPanel implements Runnable {
-	// VARIABLES - CONSTANTS
 	private final int INTERVAL = 100000000;
 	private final int WINDOW_WIDTH = 800;
 	private final int WINDOW_HEIGHT = 800;
@@ -24,12 +23,9 @@ public class GameWindow extends JPanel implements Runnable {
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private final Mouse PLAYER_MOUSE = new Mouse();
 
-	// VARIABLES - CLASS INSTANCES
 	public static PlayerColor playerColor = PlayerColor.WHITE;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
-
-	// VARIABLES - NON-PRIMITIVE
 	private Graphics2D graphics2d = null;
 	private Thread gameThread = null;
 
@@ -40,19 +36,9 @@ public class GameWindow extends JPanel implements Runnable {
 		addMouseMotionListener(PLAYER_MOUSE);
 	}
 
-	protected BufferedImage getMoveableTileImage() {
-		BufferedImage moveableTileImage = null;
-		try {
-			moveableTileImage = ImageIO.read(new FileInputStream("res/board/gray-circle.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return moveableTileImage;
-	}
-
+	// GAME LOOP
 	@Override
 	public void run() {
-		// Game loop
 		double deltaTime = 0;
 		long previousTime = System.nanoTime();
 		long currentTime;
@@ -99,6 +85,16 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	// GETTERS
+	protected BufferedImage getMoveableTileImage() {
+		BufferedImage moveableTileImage = null;
+		try {
+			moveableTileImage = ImageIO.read(new FileInputStream("res/board/gray-circle.png"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return moveableTileImage;
+	}
+
 	private Piece getSelectedPiece() {
 		return selectedPiece;
 	}

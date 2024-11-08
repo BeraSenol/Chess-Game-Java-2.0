@@ -12,7 +12,7 @@ public enum PieceType {
         private PieceType(String name) {
                 this.name = name;
         }
-        public String getPieceTypeName() {
+        public String getName() {
                 return name;
         }
 }
