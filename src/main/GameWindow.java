@@ -92,12 +92,10 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			if (getSelectedPiece() != null) {
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
-					getSelectedPiece().getTile().removePiece();;
-					getSelectedPiece().setTile(getSelectedTile());
-					getSelectedTile().setPiece(getSelectedPiece());
-					setSelectedPiece(null);
+					movePiece(getSelectedTile(), getSelectedPiece());
 				}
 			}
+			setSelectedTile(null);
 		}
 	}
 
@@ -121,5 +119,13 @@ public class GameWindow extends JPanel implements Runnable {
 
 	private void setSelectedPiece(Piece piece) {
 		this.selectedPiece = piece;
+	}
+
+	// VOID
+	private void movePiece(Tile tile, Piece piece) {
+		piece.getTile().removePiece();
+		piece.setTile(tile);
+		tile.setPiece(piece);
+		setSelectedPiece(null);
 	}
 }

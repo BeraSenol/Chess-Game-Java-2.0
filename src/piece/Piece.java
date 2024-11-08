@@ -23,7 +23,6 @@ public class Piece {
 	private ArrayList<Tile> indicatedTiles = new ArrayList<Tile>();
 	protected BufferedImage pieceImage;
 	private BufferedImage moveableTileImage;
-	private Tile[][] chessBoard = Board.chessBoard;
 
 	public Piece(PieceColor pieceColor, PieceType pieceType, Tile tile) {
 		this.file = tile.getFile();
