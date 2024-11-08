@@ -31,6 +31,7 @@ public class Board {
 
 	// VARIABLES - NON-PRIMITIVE
 	public static ArrayList<Piece> inGamePieces = new ArrayList<>();
+	private PlayerColor playerColor = GameWindow.playerColor;
 	protected static Color whiteTileColor = new Color(210, 165, 125);
 	protected static Color blackTileColor = new Color(175, 115, 70);
 	public static Tile[][] chessBoard = null;
@@ -38,62 +39,105 @@ public class Board {
 	// CONSTRUCTOR
 	public Board() {
 		chessBoard = new Tile[BOARD_SIZE][BOARD_SIZE];
-		// Generates all the Tile objects into a chess board
-		for (int i = 0; i < BOARD_SIZE; i++) {
-			for (int j = 0; j < BOARD_SIZE; j++) {
+		// Initializes chessBoard object with corresponding tiles
+		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
 				chessBoard[i][j] = (i + j) % 2 == 0
 						? new Tile(i, j, whiteTileColor, FILE_LABELS[i], RANK_LABELS[j], null)
 						: new Tile(i, j, blackTileColor, FILE_LABELS[i], RANK_LABELS[j], null);
 			}
 		}
-		// Add pieces to the INITIAL_PIECES ArrayList
-		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_WHITE]));
-			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_BLACK]));
-			switch (i) {
-			case 0, 7 -> {
-				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
+		if (playerColor == PlayerColor.WHITE) {
+			for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+				// Add pieces to the INITIAL_PIECES ArrayList when playerColor is white
+				INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_WHITE]));
+				INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_BLACK]));
+				switch (i) {
+				case 0, 7 -> {
+					INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+					INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
+				}
+				case 1, 6 -> {
+					INITIAL_PIECES.add(
+							new Knight(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+					INITIAL_PIECES.add(
+							new Knight(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
+				}
+				case 2, 5 -> {
+					INITIAL_PIECES.add(
+							new Bishop(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+					INITIAL_PIECES.add(
+							new Bishop(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
+				}
+				case 3 -> {
+					INITIAL_PIECES.add(
+							new Queen(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+					INITIAL_PIECES.add(
+							new Queen(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
+				}
+				case 4 -> {
+					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
+					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
+				}
+				}
 			}
-			case 1, 6 -> {
-				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-			}
-			case 2, 5 -> {
-				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-			}
-			case 3 -> {
-				INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-				INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-			}
-			case 4 -> {
-				INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-				INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-			}
+		} else {
+			for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+				// Add pieces to the INITIAL_PIECES ArrayList when playerColor is black
+				INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_BLACK]));
+				INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_WHITE]));
+				switch (i) {
+				case 0, 7 -> {
+					INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
+					INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
+				}
+				case 1, 6 -> {
+					INITIAL_PIECES.add(
+							new Knight(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
+					INITIAL_PIECES.add(
+							new Knight(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
+				}
+				case 2, 5 -> {
+					INITIAL_PIECES.add(
+							new Bishop(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
+					INITIAL_PIECES.add(
+							new Bishop(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
+				}
+				case 3 -> {
+					INITIAL_PIECES.add(
+							new Queen(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
+					INITIAL_PIECES.add(
+							new Queen(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
+				}
+				case 4 -> {
+					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
+					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
+				}
+				}
 			}
 		}
-		// Add pieces of INITIAL_PIECES to chess board object
+
 		for (Piece piece : INITIAL_PIECES) {
+			// Add pieces of INITIAL_PIECES to chessBoard object
 			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
 		}
 		inGamePieces = INITIAL_PIECES;
 	}
 
-	// DRAW
+	// VOID
 	public void drawChessBoard(Graphics2D g2) {
 		g2.setFont(new Font("Arial", Font.PLAIN, 14));
 		Color inverseColor = null;
 		// Draws the tiles
-		for (int file = 0; file < BOARD_SIZE; file++) {
-			for (int rank = 0; rank < BOARD_SIZE; rank++) {
-				g2.setColor(chessBoard[file][rank].getTileColor());
-				g2.fillRect(file * tileSize, rank * tileSize, tileSize, tileSize);
-				inverseColor = (file + rank) % 2 == 0 ? blackTileColor : whiteTileColor;
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
+				g2.setColor(chessBoard[i][j].getTileColor());
+				g2.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+				inverseColor = (i + j) % 2 == 0 ? blackTileColor : whiteTileColor;
 				g2.setColor(inverseColor);
 			}
 		}
-		if (GameWindow.playerColor == PlayerColor.WHITE) {
+		if (playerColor == PlayerColor.WHITE) {
 			// Draws the file labels for white
 			for (int file = 0; file < BOARD_SIZE; file++) {
 				inverseColor = file % 2 == 0 ? blackTileColor : whiteTileColor;

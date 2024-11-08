@@ -9,10 +9,12 @@ The project's code includes:<br>
 - Game Panel / Window
 - Game Loop
 - Chess Board & File/Rank Labels
-![Screenshot_1](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board.png)
+  ![Screenshot_1](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board.png)
 - Chess Pieces
-![Screenshot_2](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces.png)
+  ![Screenshot_2](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces.png)
 - Piece Movement & Snap Into Place
-![Screenshot_3](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-position.png)
-- Possible Moves Indicator 
-![Screenshot_4](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-indicators.png)
+  ![Screenshot_3](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-position.png)
+- Possible Move Indicators
+  ![Screenshot_4](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-indicators.png)
+- Playable as Black
+  ![Screenshot_5](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-position-black.png)
