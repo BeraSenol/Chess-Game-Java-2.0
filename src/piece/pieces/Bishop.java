@@ -8,12 +8,9 @@ import piece.PieceColor;
 import piece.PieceType;
 
 public class Bishop extends Piece {
-
-	private final PieceType PIECE_TYPE = PieceType.BISHOP;
-
 	public Bishop(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.BISHOP, tile);
-		pieceImage = getPieceImage(PIECE_TYPE, pieceColor);
+		pieceImage = getPieceImage(PieceType.BISHOP, pieceColor);
 	}
 
 	@Override

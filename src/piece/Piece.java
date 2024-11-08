@@ -11,24 +11,28 @@ import board.Board;
 import board.Tile;
 
 public class Piece {
-	private int file, rank, x, y;
-	private int tileSize = Tile.getTileSize();
-	private final int TILE_SIZE_HALF = Tile.getTileSize() / 2;
+	// VARIABLES - CONSTANTS
+	private final int TILE_SIZE = Tile.getTileSize();
+	private final int TILE_SIZE_HALF = TILE_SIZE / 2;
 	private final int INDICATOR_SIZE = 30;
 	private final int INDICATOR_OFFSET = TILE_SIZE_HALF - (INDICATOR_SIZE / 2);
-	private PieceColor pieceColor;
-	private PieceType pieceType;
-	private Tile tile;
+	private final float ALPHA = 0.15f;
+
+	// VARIABLES - PRIMITIVE
+	private int file, rank, x, y = 0;
+	private PieceColor pieceColor = null;
+	private PieceType pieceType = null;
+	private Tile tile = null;
 	private ArrayList<Tile> moveableTiles = new ArrayList<Tile>();
 	private ArrayList<Tile> indicatedTiles = new ArrayList<Tile>();
-	protected BufferedImage pieceImage;
-	private BufferedImage moveableTileImage;
+	protected BufferedImage pieceImage = null;
+	private BufferedImage moveableTileImage = null;
 
 	public Piece(PieceColor pieceColor, PieceType pieceType, Tile tile) {
 		this.file = tile.getFile();
 		this.rank = tile.getRank();
-		this.x = tile.getFile() * tileSize;
-		this.y = tile.getRank() * tileSize;
+		this.x = tile.getFile() * TILE_SIZE;
+		this.y = tile.getRank() * TILE_SIZE;
 		this.pieceColor = pieceColor;
 		this.pieceType = pieceType;
 		this.tile = tile;
@@ -144,12 +148,13 @@ public class Piece {
 
 	// VOID
 	public void drawPiece(Graphics2D g2) {
-		g2.drawImage(pieceImage, x, y, tileSize, tileSize, null);
+		g2.drawImage(pieceImage, x, y, TILE_SIZE, TILE_SIZE, null);
 	}
 
 	public void drawIndicators(Graphics2D g2, ArrayList<Tile> tiles) {
 		for (Tile tile : tiles) {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f));
+			// Sets the transparancy of indicator image to ALPHA (0.15f)
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA));
 			g2.drawImage(getMoveableTileImage(), tile.getX() + INDICATOR_OFFSET,
 					tile.getY() + INDICATOR_OFFSET, INDICATOR_SIZE, INDICATOR_SIZE, null);
 		}

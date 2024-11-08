@@ -8,7 +8,8 @@ import board.*;
 public class Mouse extends MouseAdapter {
 	private boolean mousePressed = false;
 	private int x, y;
-	private int tileSize = Tile.getTileSize();
+	private final int TILE_SIZE = Tile.getTileSize();
+	private final Tile[][] CHESS_BOARD = Board.chessBoard;
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -47,15 +48,15 @@ public class Mouse extends MouseAdapter {
 	}
 
 	public int getMouseFile() {
-		return (int) Math.floor(x / tileSize);
+		return (int) Math.floor(x / TILE_SIZE);
 	}
 
 	public int getMouseRank() {
-		return (int) Math.floor(y / tileSize);
+		return (int) Math.floor(y / TILE_SIZE);
 	}
 
 	public Tile getHoveringTile() {
-		return Board.chessBoard[getMouseFile()][getMouseRank()];
+		return CHESS_BOARD[getMouseFile()][getMouseRank()];
 	}
 
 	// SETTERS

@@ -19,21 +19,19 @@ public class Board {
 	private final int PAWN_RANK_BLACK = 1;
 	private final int PAWN_RANK_WHITE = 6;
 	private final int PIECE_RANK_WHITE = 7;
-	private static final int BOARD_SIZE = 8;
-	private static final int LABEL_MARGIN_X = 5;
-	private static final int LABEL_MARGIN_Y = 13;
+	private final int BOARD_SIZE = 8;
+	private final int LABEL_MARGIN_X = 5;
+	private final int LABEL_MARGIN_Y = 13;
+	private final int TILE_SIZE = Tile.getTileSize();
 	private final String[] RANK_LABELS = { "8", "7", "6", "5", "4", "3", "2", "1" };
 	private final String[] FILE_LABELS = { "a", "b", "c", "d", "e", "f", "g", "h" };
-	private static final ArrayList<Piece> INITIAL_PIECES = new ArrayList<>();
-
-	// VARIABLES - PRIMITIVE
-	private int tileSize = Tile.getTileSize();
+	private final ArrayList<Piece> INITIAL_PIECES = new ArrayList<>();
+	private final Color WHITE_TILE_COLOR = new Color(210, 165, 125);
+	private final Color BLACK_TILE_COLOR = new Color(175, 115, 70);
+	private final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
 
 	// VARIABLES - NON-PRIMITIVE
-	public static ArrayList<Piece> inGamePieces = new ArrayList<>();
-	private PlayerColor playerColor = GameWindow.playerColor;
-	protected static Color whiteTileColor = new Color(210, 165, 125);
-	protected static Color blackTileColor = new Color(175, 115, 70);
+	private ArrayList<Piece> inGamePieces = new ArrayList<>();
 	public static Tile[][] chessBoard = null;
 
 	// CONSTRUCTOR
@@ -43,11 +41,12 @@ public class Board {
 		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
 			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
 				chessBoard[i][j] = (i + j) % 2 == 0
-						? new Tile(i, j, whiteTileColor, FILE_LABELS[i], RANK_LABELS[j], null)
-						: new Tile(i, j, blackTileColor, FILE_LABELS[i], RANK_LABELS[j], null);
+						? new Tile(i, j, WHITE_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null)
+						: new Tile(i, j, BLACK_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j],
+								null);
 			}
 		}
-		if (playerColor == PlayerColor.WHITE) {
+		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
 				// Add pieces to the INITIAL_PIECES ArrayList when playerColor is white
 				INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_WHITE]));
@@ -124,6 +123,11 @@ public class Board {
 		inGamePieces = INITIAL_PIECES;
 	}
 
+	// GETTERS
+	public static Tile[][] getChessBoard() {
+		return chessBoard;
+	}
+
 	// VOID
 	public void drawChessBoard(Graphics2D g2) {
 		g2.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -132,40 +136,40 @@ public class Board {
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				g2.setColor(chessBoard[i][j].getTileColor());
-				g2.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
-				inverseColor = (i + j) % 2 == 0 ? blackTileColor : whiteTileColor;
+				g2.fillRect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+				inverseColor = (i + j) % 2 == 0 ? BLACK_TILE_COLOR : WHITE_TILE_COLOR;
 				g2.setColor(inverseColor);
 			}
 		}
-		if (playerColor == PlayerColor.WHITE) {
+		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			// Draws the file labels for white
 			for (int file = 0; file < BOARD_SIZE; file++) {
-				inverseColor = file % 2 == 0 ? blackTileColor : whiteTileColor;
+				inverseColor = file % 2 == 0 ? BLACK_TILE_COLOR : WHITE_TILE_COLOR;
 				g2.setColor(inverseColor);
 				g2.drawString(RANK_LABELS[file], LABEL_MARGIN_X,
-						(file * tileSize) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
+						(file * TILE_SIZE) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
 			}
 			// Draws the rank labels for white
 			for (int rank = 0; rank < BOARD_SIZE; rank++) {
-				inverseColor = rank % 2 == 1 ? blackTileColor : whiteTileColor;
+				inverseColor = rank % 2 == 1 ? BLACK_TILE_COLOR : WHITE_TILE_COLOR;
 				g2.setColor(inverseColor);
-				g2.drawString(FILE_LABELS[rank], (rank * tileSize) + (tileSize - LABEL_MARGIN_Y),
-						(BOARD_SIZE - 1) * tileSize + (tileSize - LABEL_MARGIN_X));
+				g2.drawString(FILE_LABELS[rank], (rank * TILE_SIZE) + (TILE_SIZE - LABEL_MARGIN_Y),
+						(BOARD_SIZE - 1) * TILE_SIZE + (TILE_SIZE - LABEL_MARGIN_X));
 			}
 		} else {
 			// Draws the rank labels for black
 			for (int file = 0; file < BOARD_SIZE; file++) {
-				inverseColor = file % 2 == 0 ? blackTileColor : whiteTileColor;
+				inverseColor = file % 2 == 0 ? BLACK_TILE_COLOR : WHITE_TILE_COLOR;
 				g2.setColor(inverseColor);
 				g2.drawString(RANK_LABELS[7 - file], LABEL_MARGIN_X,
-						(file * tileSize) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
+						(file * TILE_SIZE) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
 			}
 			// Draws the rank labels for black
 			for (int rank = 0; rank < BOARD_SIZE; rank++) {
-				inverseColor = rank % 2 == 1 ? blackTileColor : whiteTileColor;
+				inverseColor = rank % 2 == 1 ? BLACK_TILE_COLOR : WHITE_TILE_COLOR;
 				g2.setColor(inverseColor);
-				g2.drawString(FILE_LABELS[7 - rank], (rank * tileSize) + (100 - LABEL_MARGIN_Y),
-						(BOARD_SIZE - 1) * tileSize + (100 - LABEL_MARGIN_X));
+				g2.drawString(FILE_LABELS[7 - rank], (rank * TILE_SIZE) + (100 - LABEL_MARGIN_Y),
+						(BOARD_SIZE - 1) * TILE_SIZE + (100 - LABEL_MARGIN_X));
 			}
 		}
 	}

@@ -7,8 +7,8 @@ import piece.PieceColor;
 import piece.PieceType;
 
 public class Tile {
-	private int file, rank;
 	public static int tileSize = 100;
+	private int file, rank;
 	private Color tileColor;
 	private String fileLabel, rankLabel;
 	private Piece tilePiece;
@@ -32,6 +32,10 @@ public class Tile {
 	}
 
 	// GETTERS
+	public static int getTileSize() {
+		return tileSize;
+	}
+
 	public int getFile() {
 		return file;
 	}
@@ -46,10 +50,6 @@ public class Tile {
 
 	public int getY() {
 		return rank * tileSize;
-	}
-
-	public static int getTileSize() {
-		return tileSize;
 	}
 
 	public Color getTileColor() {
@@ -87,8 +87,6 @@ public class Tile {
 	public String getTilePieceTypeName() {
 		return tilePiece.getPieceType().getPieceTypeName();
 	}
-
-	
 
 	// SETTERS
 	public void setFile(int file) {

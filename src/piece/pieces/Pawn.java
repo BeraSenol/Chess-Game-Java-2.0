@@ -10,13 +10,11 @@ import piece.PieceType;
 import player.PlayerColor;
 
 public class Pawn extends Piece {
-
-	private final PieceType PIECE_TYPE = PieceType.PAWN;
-	private PlayerColor playerColor = GameWindow.playerColor;
+	private PlayerColor playerColor = GameWindow.getPlayerColor();
 
 	public Pawn(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.PAWN, tile);
-		pieceImage = getPieceImage(PIECE_TYPE, pieceColor);
+		pieceImage = getPieceImage(PieceType.PAWN, pieceColor);
 	}
 
 	@Override

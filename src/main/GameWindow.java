@@ -14,34 +14,33 @@ import piece.Piece;
 import player.PlayerColor;
 
 public class GameWindow extends JPanel implements Runnable {
-
 	// VARIABLES - CONSTANTS
 	private final int INTERVAL = 100000000;
-	protected final static int WINDOW_WIDTH = 800;
-	protected final static int WINDOW_HEIGHT = 800;
+	private final int WINDOW_WIDTH = 800;
+	private final int WINDOW_HEIGHT = 800;
 	private final int FPS = 60;
 	private final double DRAW_INTERVAL = INTERVAL / FPS;
+	private final Board CHESS_BOARD = new Board();
+	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
+	private final Mouse PLAYER_MOUSE = new Mouse();
 
 	// VARIABLES - CLASS INSTANCES
-	private Board chessBoard = new Board();
-	private final Mouse playerMouse = new Mouse();
+	public static PlayerColor playerColor = PlayerColor.WHITE;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
-	public static PlayerColor playerColor = PlayerColor.WHITE;
 
 	// VARIABLES - NON-PRIMITIVE
-	private Dimension windowDimension = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private Graphics2D graphics2d = null;
 	private Thread gameThread = null;
 
 	// CONSTRUCTOR
 	protected GameWindow() {
-		setPreferredSize(windowDimension);
-		addMouseListener(playerMouse);
-		addMouseMotionListener(playerMouse);
+		setPreferredSize(WINDOW_DIMENSION);
+		addMouseListener(PLAYER_MOUSE);
+		addMouseMotionListener(PLAYER_MOUSE);
 	}
 
-	public BufferedImage getMoveableTileImage() {
+	protected BufferedImage getMoveableTileImage() {
 		BufferedImage moveableTileImage = null;
 		try {
 			moveableTileImage = ImageIO.read(new FileInputStream("res/board/gray-circle.png"));
@@ -77,16 +76,16 @@ public class GameWindow extends JPanel implements Runnable {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		graphics2d = (Graphics2D) g;
-		chessBoard.drawChessBoard(graphics2d);
-		chessBoard.drawInitialChessPieces(graphics2d);
+		CHESS_BOARD.drawChessBoard(graphics2d);
+		CHESS_BOARD.drawInitialChessPieces(graphics2d);
 		if (getSelectedPiece() != null) {
 			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getIndicatedTiles());
 		}
 	}
 
 	private void update() {
-		if (playerMouse.isMousePressed()) {
-			setSelectedTile(playerMouse.getHoveringTile());
+		if (PLAYER_MOUSE.isMousePressed()) {
+			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
 			if (getSelectedTile().isPieceOnTile()) {
 				setSelectedPiece(getSelectedTile().getTilePiece());
 			}

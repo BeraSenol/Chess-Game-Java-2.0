@@ -8,12 +8,9 @@ import piece.PieceColor;
 import piece.PieceType;
 
 public class Knight extends Piece {
-
-	private final PieceType PIECE_TYPE = PieceType.KNIGHT;
-
 	public Knight(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.KNIGHT, tile);
-		pieceImage = getPieceImage(PIECE_TYPE, pieceColor);
+		pieceImage = getPieceImage(PieceType.KNIGHT, pieceColor);
 	}
 
 	@Override
@@ -22,29 +19,39 @@ public class Knight extends Piece {
 		Tile[][] chessBoard = getChessBoard();
 		int file = this.getFile();
 		int rank = this.getRank();
-		if (isWithinBounds(file - 2) && isWithinBounds(rank + 1)) {
-			moveableTiles.add(chessBoard[file - 2][rank + 1]);
+		if (isWithinBounds(file - 2)) {
+			if (isWithinBounds(rank + 1)) {
+				moveableTiles.add(chessBoard[file - 2][rank + 1]);
+			}
+			if (isWithinBounds(rank - 1)) {
+				moveableTiles.add(chessBoard[file - 2][rank - 1]);
+			}
 		}
-		if (isWithinBounds(file - 1) && isWithinBounds(rank + 2)) {
-			moveableTiles.add(chessBoard[file - 1][rank + 2]);
+		if (isWithinBounds(file - 1)) {
+			if (isWithinBounds(rank + 2)) {
+				moveableTiles.add(chessBoard[file - 1][rank + 2]);
+			}
+			if (isWithinBounds(rank - 2)) {
+				moveableTiles.add(chessBoard[file - 1][rank - 2]);
+			}
 		}
-		if (isWithinBounds(file - 2) && isWithinBounds(rank - 1)) {
-			moveableTiles.add(chessBoard[file - 2][rank - 1]);
+
+		if (isWithinBounds(file + 1)) {
+			if (isWithinBounds(rank + 2)) {
+				moveableTiles.add(chessBoard[file + 1][rank + 2]);
+			}
+			if (isWithinBounds(rank - 2)) {
+				moveableTiles.add(chessBoard[file + 1][rank - 2]);
+			}
 		}
-		if (isWithinBounds(file - 1) && isWithinBounds(rank - 2)) {
-			moveableTiles.add(chessBoard[file - 1][rank - 2]);
-		}
-		if (isWithinBounds(file + 2) && isWithinBounds(rank + 1)) {
-			moveableTiles.add(chessBoard[file + 2][rank + 1]);
-		}
-		if (isWithinBounds(file + 1) && isWithinBounds(rank + 2)) {
-			moveableTiles.add(chessBoard[file + 1][rank + 2]);
-		}
-		if (isWithinBounds(file + 2) && isWithinBounds(rank - 1)) {
-			moveableTiles.add(chessBoard[file + 2][rank - 1]);
-		}
-		if (isWithinBounds(file + 1) && isWithinBounds(rank - 2)) {
-			moveableTiles.add(chessBoard[file + 1][rank - 2]);
+		if (isWithinBounds(file + 2)) {
+			if (isWithinBounds(rank + 1)) {
+				moveableTiles.add(chessBoard[file + 2][rank + 1]);
+			}
+
+			if (isWithinBounds(rank - 1)) {
+				moveableTiles.add(chessBoard[file + 2][rank - 1]);
+			}
 		}
 		return moveableTiles;
 	}

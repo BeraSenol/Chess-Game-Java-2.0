@@ -8,12 +8,9 @@ import piece.PieceColor;
 import piece.PieceType;
 
 public class King extends Piece {
-
-	private final PieceType PIECE_TYPE = PieceType.KING;
-
 	public King(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.KING, tile);
-		pieceImage = getPieceImage(PIECE_TYPE, pieceColor);
+		pieceImage = getPieceImage(PieceType.KING, pieceColor);
 	}
 
 	@Override
