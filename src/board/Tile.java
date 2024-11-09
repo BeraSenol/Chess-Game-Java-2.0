@@ -3,29 +3,27 @@ package board;
 import java.awt.Color;
 
 import piece.Piece;
-import piece.PieceColor;
-import piece.PieceType;
 
 public class Tile {
 	public static int tileSize = 100;
 	private int file, rank;
 	private Color tileColor;
 	private String fileLabel, rankLabel;
-	private Piece tilePiece;
+	private Piece piece;
 
 	// CONSTRUCTOR
-	public Tile(int file, int rank, Color tileColor, String fileLabel, String rankLabel, Piece tilePiece) {
+	public Tile(int file, int rank, Color tileColor, String fileLabel, String rankLabel, Piece piece) {
 		this.file = file;
 		this.rank = rank;
 		this.tileColor = tileColor;
 		this.fileLabel = fileLabel;
 		this.rankLabel = rankLabel;
-		this.tilePiece = tilePiece;
+		this.piece = piece;
 	}
 
 	// BOOLEANS
 	public boolean isPieceOnTile() {
-		if (tilePiece == null) {
+		if (piece == null) {
 			return false;
 		}
 		return true;
@@ -68,41 +66,17 @@ public class Tile {
 		return fileLabel + rankLabel;
 	}
 
-	public Piece getTilePiece() {
-		return tilePiece;
-	}
-
-	public PieceColor getTilePieceColor() {
-		return tilePiece.getPieceColor();
-	}
-
-	public PieceType getTilePieceType() {
-		return tilePiece.getPieceType();
-	}
-
-	public String getTilePieceColorName() {
-		return tilePiece.getPieceColor().getName();
-	}
-
-	public String getTilePieceTypeName() {
-		return tilePiece.getPieceType().getName();
+	public Piece getPiece() {
+		return piece;
 	}
 
 	// SETTERS
-	public void setFile(int file) {
-		this.file = file;
-	}
-
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
-
 	public void setPiece(Piece piece) {
-		this.tilePiece = piece;
+		this.piece = piece;
 	}
 
 	// VOID
 	public void removePiece() {
-		this.tilePiece = null;
+		this.piece = null;
 	}
 }

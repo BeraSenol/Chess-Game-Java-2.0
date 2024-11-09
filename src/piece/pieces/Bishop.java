@@ -7,7 +7,7 @@ import piece.Piece;
 import piece.PieceColor;
 import piece.PieceType;
 
-public class Bishop extends Piece  {
+public class Bishop extends Piece {
 	public Bishop(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.BISHOP, tile);
 		pieceImage = getPieceImage(PieceType.BISHOP, pieceColor);
@@ -22,28 +22,28 @@ public class Bishop extends Piece  {
 		int i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
 				&& !chessBoard[file + i][rank - i].isPieceOnTile()) {
-			// Tiles right-above the bishop
+			// Adds empty Tiles right-above the Bishop
 			moveableTiles.add(chessBoard[file + i][rank - i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
 				&& !chessBoard[file + i][rank + i].isPieceOnTile()) {
-			// Tiles right-bellow the bishop
+			// Adds empty Tiles right-bellow the Bishop
 			moveableTiles.add(chessBoard[file + i][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
 				&& !chessBoard[file - i][rank + i].isPieceOnTile()) {
-			// Tiles left-above the bishop
+			// Adds empty Tiles left-above the Bishop
 			moveableTiles.add(chessBoard[file - i][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
 				&& !chessBoard[file - i][rank - i].isPieceOnTile()) {
-			// Tiles left-bellow the bishop
+			// Adds empty Tiles left-bellow the Bishop
 			moveableTiles.add(chessBoard[file - i][rank - i]);
 			i++;
 		}

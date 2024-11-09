@@ -22,7 +22,7 @@ public class Piece implements Moveable {
 	private PieceType pieceType = null;
 	private Tile tile = null;
 	protected BufferedImage pieceImage = null;
-	private BufferedImage moveableTileImage = null;
+	private BufferedImage indicatorImage = null;
 
 	public Piece(PieceColor pieceColor, PieceType pieceType, Tile tile) {
 		this.file = tile.getFile();
@@ -47,14 +47,14 @@ public class Piece implements Moveable {
 	}
 
 	private BufferedImage getMoveableTileImage() {
-		// Loads the image for the moveableTileIndicator
-		moveableTileImage = null;
+		// Loads the indicatorImage for moveableTiles
+		indicatorImage = null;
 		try {
-			moveableTileImage = ImageIO.read(new FileInputStream("res/board/circle.png"));
+			indicatorImage = ImageIO.read(new FileInputStream("res/board/circle.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return moveableTileImage;
+		return indicatorImage;
 	}
 
 	// BOOLEANS
@@ -101,7 +101,7 @@ public class Piece implements Moveable {
 		return Board.chessBoard;
 	}
 
-	// GETTERS - MOVEABLE
+	// GETTERS - MOVEABLE INTERFACE
 	public ArrayList<Tile> getMoveableTiles() {
 		return null;
 	}
@@ -142,7 +142,7 @@ public class Piece implements Moveable {
 
 	public void drawIndicators(Graphics2D g2, ArrayList<Tile> tiles) {
 		for (Tile tile : tiles) {
-			// Sets the transparancy of indicator image to ALPHA (0.15f)
+			// Sets the transparancy of indicatorImage to ALPHA (0.15f)
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA));
 			g2.drawImage(getMoveableTileImage(), tile.getX() + INDICATOR_OFFSET,
 					tile.getY() + INDICATOR_OFFSET, INDICATOR_SIZE, INDICATOR_SIZE, null);

@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class Board {
 	private final int PIECE_RANK_BLACK = 0;
-	private final int PAWN_RANK_BLACK = 1;
-	private final int PAWN_RANK_WHITE = 6;
+	private static final int PAWN_RANK_BLACK = 1;
+	private static final int PAWN_RANK_WHITE = 6;
 	private final int PIECE_RANK_WHITE = 7;
 	private final int BOARD_SIZE = 8;
 	private final int LABEL_MARGIN_X = 5;
@@ -34,7 +34,7 @@ public class Board {
 	// CONSTRUCTOR
 	public Board() {
 		chessBoard = new Tile[BOARD_SIZE][BOARD_SIZE];
-		// Initializes chessBoard object with corresponding tiles
+		// Creates Tiles object for the chessBoard
 		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
 			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
 				chessBoard[i][j] = (i + j) % 2 == 0
@@ -45,7 +45,7 @@ public class Board {
 		}
 		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-				// Add pieces to the INITIAL_PIECES ArrayList when playerColor is white
+				// Creates Pieces if playing with White
 				INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_WHITE]));
 				INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_BLACK]));
 				switch (i) {
@@ -79,7 +79,7 @@ public class Board {
 			}
 		} else {
 			for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-				// Add pieces to the INITIAL_PIECES ArrayList when playerColor is black
+				// Creates Pieces if playing with Black
 				INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_BLACK]));
 				INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_WHITE]));
 				switch (i) {
@@ -114,7 +114,7 @@ public class Board {
 		}
 
 		for (Piece piece : INITIAL_PIECES) {
-			// Add pieces of INITIAL_PIECES to chessBoard object
+			// Add creates Pieces to chessBoard
 			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
 		}
 		inGamePieces = INITIAL_PIECES;
@@ -125,11 +125,19 @@ public class Board {
 		return chessBoard;
 	}
 
+	public static int getPawnRankBlack() {
+		return PAWN_RANK_BLACK;
+	}
+
+	public static int getPawnRankWhite() {
+		return PAWN_RANK_WHITE;
+	}
+
 	// VOID
 	public void drawChessBoard(Graphics2D g2) {
 		g2.setFont(new Font("Arial", Font.PLAIN, 14));
 		Color inverseColor = null;
-		// Draws the tiles
+		// Draws the tiles (same for white and black)
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				g2.setColor(chessBoard[i][j].getTileColor());

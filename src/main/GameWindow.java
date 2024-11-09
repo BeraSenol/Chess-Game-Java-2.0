@@ -1,13 +1,10 @@
 package main;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 
 import board.*;
 import piece.Piece;
@@ -63,18 +60,22 @@ public class GameWindow extends JPanel implements Runnable {
 		CHESS_BOARD.drawChessBoard(graphics2d);
 		CHESS_BOARD.drawInitialChessPieces(graphics2d);
 		if (getSelectedPiece() != null) {
+			// Draws the indicatorImage if Piece is selected
 			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 		}
 	}
 
 	private void update() {
 		if (PLAYER_MOUSE.isMousePressed()) {
+			// Selects the Tile the PLAYER_MOUSE is on
 			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
 			if (getSelectedTile().isPieceOnTile()) {
-				setSelectedPiece(getSelectedTile().getTilePiece());
+				// Selects the Piece if the selectedTile is not empty
+				setSelectedPiece(getSelectedTile().getPiece());
 			}
 			if (getSelectedPiece() != null) {
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
+					// Moves the Piece if selectedTile is a moveableTile
 					movePiece(getSelectedTile(), getSelectedPiece());
 				}
 			}
@@ -83,16 +84,6 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	// GETTERS
-	protected BufferedImage getMoveableTileImage() {
-		BufferedImage moveableTileImage = null;
-		try {
-			moveableTileImage = ImageIO.read(new FileInputStream("res/board/gray-circle.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return moveableTileImage;
-	}
-
 	private Piece getSelectedPiece() {
 		return selectedPiece;
 	}

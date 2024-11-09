@@ -21,53 +21,53 @@ public class Queen extends Piece {
 		int rank = this.getRank();
 		int i = 1;
 		while (isWithinBounds(file + i) && !chessBoard[file + i][rank].isPieceOnTile()) {
-			// Tiles right from the queen
+			// Adds empty Tiles right of the Queen
 			moveableTiles.add(chessBoard[file + i][rank]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && !chessBoard[file - i][rank].isPieceOnTile()) {
-			// Tiles left from the queen
+			// Adds empty Tiles left of the Queen
 			moveableTiles.add(chessBoard[file - i][rank]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(rank + i) && !chessBoard[file][rank + i].isPieceOnTile()) {
-			// Tiles above the queen
+			// Adds empty Tiles above the Queen
 			moveableTiles.add(chessBoard[file][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(rank - i) && !chessBoard[file][rank - i].isPieceOnTile()) {
-			// Tiles bellow the queen
+			// Adds empty Tiles bellow the Queen
 			moveableTiles.add(chessBoard[file][rank - i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
 				&& !chessBoard[file + i][rank - i].isPieceOnTile()) {
-			// Tiles right-above the bishop
+			// Adds empty Tiles right-above the Queen
 			moveableTiles.add(chessBoard[file + i][rank - i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
 				&& !chessBoard[file + i][rank + i].isPieceOnTile()) {
-			// Tiles right-bellow the bishop
+			// Adds empty Tiles right-bellow the Queen
 			moveableTiles.add(chessBoard[file + i][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
 				&& !chessBoard[file - i][rank + i].isPieceOnTile()) {
-			// Tiles left-above the bishop
+			// Adds empty Tiles left-above the Queen
 			moveableTiles.add(chessBoard[file - i][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
 				&& !chessBoard[file - i][rank - i].isPieceOnTile()) {
-			// Tiles left-bellow the bishop
+			// Adds empty Tiles right-bellow the Queen
 			moveableTiles.add(chessBoard[file - i][rank - i]);
 			i++;
 		}

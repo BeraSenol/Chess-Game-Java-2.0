@@ -21,25 +21,25 @@ public class Rook extends Piece {
 		int rank = this.getRank();
 		int i = 1;
 		while (isWithinBounds(file + i) && !chessBoard[file + i][rank].isPieceOnTile()) {
-			// Tiles right from the rook
+			// Adds empty Tiles right of THE ROOK
 			moveableTiles.add(chessBoard[file + i][rank]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && !chessBoard[file - i][rank].isPieceOnTile()) {
-			// Tiles left from the rook
+			// Adds empty Tiles left of THE ROOK
 			moveableTiles.add(chessBoard[file - i][rank]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(rank + i) && !chessBoard[file][rank + i].isPieceOnTile()) {
-			// Tiles above the rook
+			// Adds empty Tiles above of THE ROOK
 			moveableTiles.add(chessBoard[file][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(rank - i) && !chessBoard[file][rank - i].isPieceOnTile()) {
-			// Tiles bellow the rook
+			// Adds empty Tiles bellow of THE ROOK
 			moveableTiles.add(chessBoard[file][rank - i]);
 			i++;
 		}

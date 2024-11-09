@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        // Create a window
+        // Creates a window
         JFrame jFrame = new JFrame("Chess Game");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
@@ -13,7 +13,7 @@ public class App {
         jFrame.add(gameWindow);
         jFrame.pack();
         gameWindow.launchGame();
-        // Center window inside screen
+        // Centers the window inside screen
         jFrame.setLocationRelativeTo(null);
     }
 }

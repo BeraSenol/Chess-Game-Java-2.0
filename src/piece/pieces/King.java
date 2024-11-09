@@ -22,10 +22,10 @@ public class King extends Piece {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (isWithinBounds(file + i) && isWithinBounds(rank + j)
-						&& !chessBoard[file + i][rank + j].isPieceOnTile()) {
-					if (i != 0 || j != 0) {
-						moveableTiles.add(chessBoard[file + i][rank + j]);
-					}
+						&& !chessBoard[file + i][rank + j].isPieceOnTile()
+						&& (i != 0 || j != 0)) {
+					// Adds empty Tiles around the King except King's Tile
+					moveableTiles.add(chessBoard[file + i][rank + j]);
 				}
 			}
 		}
