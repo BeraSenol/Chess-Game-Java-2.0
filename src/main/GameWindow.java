@@ -41,11 +41,9 @@ public class GameWindow extends JPanel implements Runnable {
 	public void run() {
 		double deltaTime = 0;
 		long previousTime = System.nanoTime();
-		long currentTime;
 		while (gameThread != null) {
-			currentTime = System.nanoTime();
-			deltaTime += (currentTime - previousTime) / DRAW_INTERVAL;
-			previousTime = currentTime;
+			deltaTime += (System.nanoTime() - previousTime) / DRAW_INTERVAL;
+			previousTime = System.nanoTime();
 			if (deltaTime >= 1) {
 				update();
 				repaint();

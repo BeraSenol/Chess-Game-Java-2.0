@@ -28,7 +28,7 @@ public class Knight extends Piece {
 			}
 		}
 		if (isWithinBounds(file - 1)) {
-			if (isWithinBounds(rank + 2) && !chessBoard[file - 1][rank - 2].isPieceOnTile()) {
+			if (isWithinBounds(rank + 2) && !chessBoard[file - 1][rank + 2].isPieceOnTile()) {
 				moveableTiles.add(chessBoard[file - 1][rank + 2]);
 			}
 			if (isWithinBounds(rank - 2) && !chessBoard[file - 1][rank - 2].isPieceOnTile()) {

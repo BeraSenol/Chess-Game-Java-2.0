@@ -34,13 +34,11 @@ public class Pawn extends Piece {
 					moveableTiles.add(chessBoard[file][5]);
 					if (!chessBoard[file][4].isPieceOnTile()) {
 						moveableTiles.add(chessBoard[file][4]);
-						return moveableTiles;
 					}
+				} else {
+					moveableTiles.add(chessBoard[file][rank - 1]);
 				}
-				moveableTiles.add(chessBoard[file][rank - 1]);
-				return moveableTiles;
-			}
-			if (pieceColorName == PieceColor.BLACK.name()) {
+			} else {
 				// Pawn movement when playerColor is white for the black pieces
 				if (chessBoard[file][rank + 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
@@ -49,11 +47,10 @@ public class Pawn extends Piece {
 					moveableTiles.add(chessBoard[file][2]);
 					if (!chessBoard[file][3].isPieceOnTile()) {
 						moveableTiles.add(chessBoard[file][3]);
-						return moveableTiles;
 					}
+				} else {
+					moveableTiles.add(chessBoard[file][rank + 1]);
 				}
-				moveableTiles.add(chessBoard[file][rank + 1]);
-				return moveableTiles;
 			}
 		} else {
 			if (pieceColorName == PieceColor.WHITE.name()) {
@@ -65,13 +62,11 @@ public class Pawn extends Piece {
 					moveableTiles.add(chessBoard[file][2]);
 					if (!chessBoard[file][3].isPieceOnTile()) {
 						moveableTiles.add(chessBoard[file][3]);
-						return moveableTiles;
 					}
+				} else {
+					moveableTiles.add(chessBoard[file][rank + 1]);
 				}
-				moveableTiles.add(chessBoard[file][rank + 1]);
-				return moveableTiles;
-			}
-			if (pieceColorName == PieceColor.BLACK.name()) {
+			} else {
 				// Pawn movement when playerColor is black for the black pieces
 				if (chessBoard[file][rank - 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
@@ -80,11 +75,10 @@ public class Pawn extends Piece {
 					moveableTiles.add(chessBoard[file][5]);
 					if (!chessBoard[file][4].isPieceOnTile()) {
 						moveableTiles.add(chessBoard[file][4]);
-						return moveableTiles;
 					}
+				} else {
+					moveableTiles.add(chessBoard[file][rank - 1]);
 				}
-				moveableTiles.add(chessBoard[file][rank - 1]);
-				return moveableTiles;
 			}
 		}
 		return moveableTiles;
