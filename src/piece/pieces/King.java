@@ -31,9 +31,4 @@ public class King extends Piece {
 		}
 		return moveableTiles;
 	}
-
-	@Override
-	public ArrayList<Tile> getIndicatedTiles() {
-		return getMoveableTiles();
-	}
 }

@@ -7,7 +7,7 @@ import piece.Piece;
 import piece.PieceColor;
 import piece.PieceType;
 
-public class Bishop extends Piece {
+public class Bishop extends Piece  {
 	public Bishop(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.BISHOP, tile);
 		pieceImage = getPieceImage(PieceType.BISHOP, pieceColor);
@@ -48,10 +48,5 @@ public class Bishop extends Piece {
 			i++;
 		}
 		return moveableTiles;
-	}
-
-	@Override
-	public ArrayList<Tile> getIndicatedTiles() {
-		return getMoveableTiles();
 	}
 }

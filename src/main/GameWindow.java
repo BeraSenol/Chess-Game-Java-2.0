@@ -36,7 +36,7 @@ public class GameWindow extends JPanel implements Runnable {
 		addMouseMotionListener(PLAYER_MOUSE);
 	}
 
-	// GAME LOOP
+	// GAME LOOP - RUNNABLE INTERFACE
 	@Override
 	public void run() {
 		double deltaTime = 0;
@@ -65,7 +65,7 @@ public class GameWindow extends JPanel implements Runnable {
 		CHESS_BOARD.drawChessBoard(graphics2d);
 		CHESS_BOARD.drawInitialChessPieces(graphics2d);
 		if (getSelectedPiece() != null) {
-			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getIndicatedTiles());
+			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 		}
 	}
 

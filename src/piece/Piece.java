@@ -10,7 +10,7 @@ import java.awt.Graphics2D;
 import board.Board;
 import board.Tile;
 
-public class Piece {
+public class Piece implements Moveable {
 	private final int TILE_SIZE = Tile.getTileSize();
 	private final int TILE_SIZE_HALF = TILE_SIZE / 2;
 	private final int INDICATOR_SIZE = 30;
@@ -21,8 +21,6 @@ public class Piece {
 	private PieceColor pieceColor = null;
 	private PieceType pieceType = null;
 	private Tile tile = null;
-	private ArrayList<Tile> moveableTiles = new ArrayList<Tile>();
-	private ArrayList<Tile> indicatedTiles = new ArrayList<Tile>();
 	protected BufferedImage pieceImage = null;
 	private BufferedImage moveableTileImage = null;
 
@@ -103,12 +101,9 @@ public class Piece {
 		return Board.chessBoard;
 	}
 
+	// GETTERS - MOVEABLE
 	public ArrayList<Tile> getMoveableTiles() {
-		return moveableTiles;
-	}
-
-	public ArrayList<Tile> getIndicatedTiles() {
-		return indicatedTiles;
+		return null;
 	}
 
 	// SETTERS
