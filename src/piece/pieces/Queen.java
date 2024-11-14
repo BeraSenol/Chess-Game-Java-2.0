@@ -15,62 +15,66 @@ public class Queen extends Piece {
 
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
-		ArrayList<Tile> moveableTiles = new ArrayList<Tile>();
-		Tile[][] chessBoard = getChessBoard();
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
 		int i = 1;
-		while (isWithinBounds(file + i) && !chessBoard[file + i][rank].isPieceOnTile()) {
+		while (isWithinBounds(file + i) && !CHESS_BOARD[file + i][rank].isPieceOnTile()) {
 			// Adds empty Tiles right of the Queen
-			moveableTiles.add(chessBoard[file + i][rank]);
+			tiles.add(CHESS_BOARD[file + i][rank]);
 			i++;
 		}
 		i = 1;
-		while (isWithinBounds(file - i) && !chessBoard[file - i][rank].isPieceOnTile()) {
+		while (isWithinBounds(file - i) && !CHESS_BOARD[file - i][rank].isPieceOnTile()) {
 			// Adds empty Tiles left of the Queen
-			moveableTiles.add(chessBoard[file - i][rank]);
+			tiles.add(CHESS_BOARD[file - i][rank]);
 			i++;
 		}
 		i = 1;
-		while (isWithinBounds(rank + i) && !chessBoard[file][rank + i].isPieceOnTile()) {
+		while (isWithinBounds(rank + i) && !CHESS_BOARD[file][rank + i].isPieceOnTile()) {
 			// Adds empty Tiles above the Queen
-			moveableTiles.add(chessBoard[file][rank + i]);
+			tiles.add(CHESS_BOARD[file][rank + i]);
 			i++;
 		}
 		i = 1;
-		while (isWithinBounds(rank - i) && !chessBoard[file][rank - i].isPieceOnTile()) {
+		while (isWithinBounds(rank - i) && !CHESS_BOARD[file][rank - i].isPieceOnTile()) {
 			// Adds empty Tiles bellow the Queen
-			moveableTiles.add(chessBoard[file][rank - i]);
+			tiles.add(CHESS_BOARD[file][rank - i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
-				&& !chessBoard[file + i][rank - i].isPieceOnTile()) {
+				&& !CHESS_BOARD[file + i][rank - i].isPieceOnTile()) {
 			// Adds empty Tiles right-above the Queen
-			moveableTiles.add(chessBoard[file + i][rank - i]);
+			tiles.add(CHESS_BOARD[file + i][rank - i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
-				&& !chessBoard[file + i][rank + i].isPieceOnTile()) {
+				&& !CHESS_BOARD[file + i][rank + i].isPieceOnTile()) {
 			// Adds empty Tiles right-bellow the Queen
-			moveableTiles.add(chessBoard[file + i][rank + i]);
+			tiles.add(CHESS_BOARD[file + i][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
-				&& !chessBoard[file - i][rank + i].isPieceOnTile()) {
+				&& !CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
 			// Adds empty Tiles left-above the Queen
-			moveableTiles.add(chessBoard[file - i][rank + i]);
+			tiles.add(CHESS_BOARD[file - i][rank + i]);
 			i++;
 		}
 		i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
-				&& !chessBoard[file - i][rank - i].isPieceOnTile()) {
+				&& !CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
 			// Adds empty Tiles right-bellow the Queen
-			moveableTiles.add(chessBoard[file - i][rank - i]);
+			tiles.add(CHESS_BOARD[file - i][rank - i]);
 			i++;
 		}
-		return moveableTiles;
+		return tiles;
+	}
+
+	@Override
+	public ArrayList<Tile> getCaptureableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
 	}
 }

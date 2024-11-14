@@ -7,12 +7,12 @@ import piece.Piece;
 public class Tile {
 	public static int tileSize = 100;
 	private int file, rank;
-	private Color tileColor;
+	private TileColor tileColor;
 	private String fileLabel, rankLabel;
 	private Piece piece;
 
 	// CONSTRUCTOR
-	public Tile(int file, int rank, Color tileColor, String fileLabel, String rankLabel, Piece piece) {
+	public Tile(int file, int rank, TileColor tileColor, String fileLabel, String rankLabel, Piece piece) {
 		this.file = file;
 		this.rank = rank;
 		this.tileColor = tileColor;
@@ -50,7 +50,7 @@ public class Tile {
 		return rank * tileSize;
 	}
 
-	public Color getTileColor() {
+	public TileColor getTileColor() {
 		return tileColor;
 	}
 

@@ -16,7 +16,9 @@ public class Piece implements Moveable {
 	private final int INDICATOR_SIZE = 30;
 	private final int INDICATOR_OFFSET = TILE_SIZE_HALF - (INDICATOR_SIZE / 2);
 	private final float ALPHA = 0.15f;
+	protected final static Tile[][] CHESS_BOARD = Board.getChessBoard();
 	
+
 	private int file, rank, x, y = 0;
 	private PieceColor pieceColor = null;
 	private PieceType pieceType = null;
@@ -97,13 +99,15 @@ public class Piece implements Moveable {
 		return tile;
 	}
 
-	public Tile[][] getChessBoard() {
-		return Board.chessBoard;
+	// GETTERS - MOVEABLE INTERFACE
+	@Override
+	public ArrayList<Tile> getMoveableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
 	}
 
-	// GETTERS - MOVEABLE INTERFACE
-	public ArrayList<Tile> getMoveableTiles() {
-		return null;
+	@Override
+	public ArrayList<Tile> getCaptureableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
 	}
 
 	// SETTERS
@@ -146,6 +150,13 @@ public class Piece implements Moveable {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA));
 			g2.drawImage(getMoveableTileImage(), tile.getX() + INDICATOR_OFFSET,
 					tile.getY() + INDICATOR_OFFSET, INDICATOR_SIZE, INDICATOR_SIZE, null);
+		}
+	}
+
+	public void drawCaptureableTiles(Graphics2D g2, ArrayList<Tile> tiles) {
+		for (Tile tile : tiles) {
+			// Sets the transparancy of indicatorImage to ALPHA (0.15f)
+			
 		}
 	}
 }

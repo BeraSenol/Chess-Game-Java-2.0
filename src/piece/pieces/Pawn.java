@@ -20,8 +20,7 @@ public class Pawn extends Piece {
 
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
-		ArrayList<Tile> moveableTiles = new ArrayList<Tile>();
-		Tile[][] chessBoard = getChessBoard();
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
 		final int PAWN_RANK_BLACK = Board.getPawnRankBlack();
@@ -30,55 +29,60 @@ public class Pawn extends Piece {
 		if (playerColor == PlayerColor.WHITE) {
 			if (pieceColorName == PieceColor.WHITE.name()) {
 				// Pawn movement when playerColor is White for the White Pieces
-				if (chessBoard[file][rank - 1].isPieceOnTile()) {
+				if (CHESS_BOARD[file][rank - 1].isPieceOnTile()) {
 					// if Piece is in front Pawn, it can't move
 					return new ArrayList<Tile>();
 				}
-				if (rank == PAWN_RANK_WHITE && !chessBoard[file][rank - 2].isPieceOnTile()) {
+				if (rank == PAWN_RANK_WHITE && !CHESS_BOARD[file][rank - 2].isPieceOnTile()) {
 					// if two Tiles in front of Pawn is empty, it can move one or two Tiles
-					moveableTiles.add(chessBoard[file][rank - 1]);
-					moveableTiles.add(chessBoard[file][rank - 2]);
+					tiles.add(CHESS_BOARD[file][rank - 1]);
+					tiles.add(CHESS_BOARD[file][rank - 2]);
 				} else {
 					// Otherwise it can only move one Tile
-					moveableTiles.add(chessBoard[file][rank - 1]);
+					tiles.add(CHESS_BOARD[file][rank - 1]);
 				}
 			} else {
 				// Pawn movement when playerColor is White for the Black Pieces
-				if (chessBoard[file][rank + 1].isPieceOnTile()) {
+				if (CHESS_BOARD[file][rank + 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
 				}
-				if (rank == PAWN_RANK_BLACK && !chessBoard[file][rank + 2].isPieceOnTile()) {
-					moveableTiles.add(chessBoard[file][rank + 1]);
-					moveableTiles.add(chessBoard[file][rank + 2]);
+				if (rank == PAWN_RANK_BLACK && !CHESS_BOARD[file][rank + 2].isPieceOnTile()) {
+					tiles.add(CHESS_BOARD[file][rank + 1]);
+					tiles.add(CHESS_BOARD[file][rank + 2]);
 				} else {
-					moveableTiles.add(chessBoard[file][rank + 1]);
+					tiles.add(CHESS_BOARD[file][rank + 1]);
 				}
 			}
 		} else {
 			if (pieceColorName == PieceColor.WHITE.name()) {
 				// Pawn movement when playerColor is Black for the White Pieces
-				if (chessBoard[file][rank + 1].isPieceOnTile()) {
+				if (CHESS_BOARD[file][rank + 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
 				}
-				if (rank == PAWN_RANK_BLACK && !chessBoard[file][rank + 2].isPieceOnTile()) {
-					moveableTiles.add(chessBoard[file][rank + 1]);
-					moveableTiles.add(chessBoard[file][rank + 2]);
+				if (rank == PAWN_RANK_BLACK && !CHESS_BOARD[file][rank + 2].isPieceOnTile()) {
+					tiles.add(CHESS_BOARD[file][rank + 1]);
+					tiles.add(CHESS_BOARD[file][rank + 2]);
 				} else {
-					moveableTiles.add(chessBoard[file][rank + 1]);
+					tiles.add(CHESS_BOARD[file][rank + 1]);
 				}
 			} else {
 				// Pawn movement when playerColor is Black for the Black Pieces
-				if (chessBoard[file][rank - 1].isPieceOnTile()) {
+				if (CHESS_BOARD[file][rank - 1].isPieceOnTile()) {
 					return new ArrayList<Tile>();
 				}
-				if (rank == PAWN_RANK_WHITE && !chessBoard[file][rank - 2].isPieceOnTile()) {
-					moveableTiles.add(chessBoard[file][rank - 1]);
-					moveableTiles.add(chessBoard[file][rank - 2]);
+				if (rank == PAWN_RANK_WHITE && !CHESS_BOARD[file][rank - 2].isPieceOnTile()) {
+					tiles.add(CHESS_BOARD[file][rank - 1]);
+					tiles.add(CHESS_BOARD[file][rank - 2]);
 				} else {
-					moveableTiles.add(chessBoard[file][rank - 1]);
+					tiles.add(CHESS_BOARD[file][rank - 1]);
 				}
 			}
 		}
-		return moveableTiles;
+		return tiles;
+	}
+
+	@Override
+	public ArrayList<Tile> getCaptureableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
 	}
 }

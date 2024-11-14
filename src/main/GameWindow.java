@@ -20,7 +20,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private final Mouse PLAYER_MOUSE = new Mouse();
 
-	public static PlayerColor playerColor = PlayerColor.BLACK;
+	public static PlayerColor playerColor = PlayerColor.WHITE;
 	private PlayerColor turnColor = PlayerColor.WHITE;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
