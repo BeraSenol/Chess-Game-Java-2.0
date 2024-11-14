@@ -20,7 +20,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private final Mouse PLAYER_MOUSE = new Mouse();
 
-	public static PlayerColor playerColor = PlayerColor.WHITE;
+	public static PlayerColor playerColor = PlayerColor.BLACK;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
 	private Graphics2D graphics2d = null;
@@ -75,7 +75,8 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			if (getSelectedPiece() != null) {
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
-					// Moves the Piece if selectedTile is a moveableTile
+					// Moves the Piece if selectedTile is a moveableTile and selectedPiece is not
+					// null
 					movePiece(getSelectedTile(), getSelectedPiece());
 				}
 			}

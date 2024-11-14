@@ -27,13 +27,23 @@ public class Board {
 	private final Color WHITE_TILE_COLOR = new Color(210, 165, 125);
 	private final Color BLACK_TILE_COLOR = new Color(175, 115, 70);
 	private final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
-
 	private ArrayList<Piece> inGamePieces = new ArrayList<>();
 	public static Tile[][] chessBoard = null;
 
 	// CONSTRUCTOR
 	public Board() {
 		chessBoard = new Tile[BOARD_SIZE][BOARD_SIZE];
+		int pawnRankBlack = PAWN_RANK_BLACK;
+		int pieceRankBlack = PIECE_RANK_BLACK;
+		int pieceRankWhite = PIECE_RANK_WHITE;
+		int pawnRankWhite = PAWN_RANK_WHITE;
+		if (PLAYER_COLOR == PlayerColor.BLACK) {
+			// Inverses ranks if playing as Black
+			pawnRankBlack = PAWN_RANK_WHITE;
+			pieceRankBlack = PIECE_RANK_WHITE;
+			pieceRankWhite = PIECE_RANK_BLACK;
+			pawnRankWhite = PAWN_RANK_BLACK;
+		}
 		// Creates Tiles object for the chessBoard
 		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
 			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
@@ -43,76 +53,33 @@ public class Board {
 								null);
 			}
 		}
-		if (PLAYER_COLOR == PlayerColor.WHITE) {
-			for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-				// Creates Pieces if playing with White
-				INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_WHITE]));
-				INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_BLACK]));
-				switch (i) {
-				case 0, 7 -> {
-					INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-					INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-				}
-				case 1, 6 -> {
-					INITIAL_PIECES.add(
-							new Knight(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-					INITIAL_PIECES.add(
-							new Knight(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-				}
-				case 2, 5 -> {
-					INITIAL_PIECES.add(
-							new Bishop(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-					INITIAL_PIECES.add(
-							new Bishop(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-				}
-				case 3 -> {
-					INITIAL_PIECES.add(
-							new Queen(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-					INITIAL_PIECES.add(
-							new Queen(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-				}
-				case 4 -> {
-					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][PIECE_RANK_WHITE]));
-					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][PIECE_RANK_BLACK]));
-				}
-				}
+		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+			// Creates Pieces if playing with White
+			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][pawnRankWhite]));
+			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][pawnRankBlack]));
+			switch (i) {
+			case 0, 7 -> {
+				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
 			}
-		} else {
-			for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-				// Creates Pieces if playing with Black
-				INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][PAWN_RANK_BLACK]));
-				INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][PAWN_RANK_WHITE]));
-				switch (i) {
-				case 0, 7 -> {
-					INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
-					INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
-				}
-				case 1, 6 -> {
-					INITIAL_PIECES.add(
-							new Knight(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
-					INITIAL_PIECES.add(
-							new Knight(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
-				}
-				case 2, 5 -> {
-					INITIAL_PIECES.add(
-							new Bishop(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
-					INITIAL_PIECES.add(
-							new Bishop(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
-				}
-				case 3 -> {
-					INITIAL_PIECES.add(
-							new Queen(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
-					INITIAL_PIECES.add(
-							new Queen(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
-				}
-				case 4 -> {
-					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][PIECE_RANK_BLACK]));
-					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][PIECE_RANK_WHITE]));
-				}
-				}
+			case 1, 6 -> {
+				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+			}
+			case 2, 5 -> {
+				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+			}
+			case 3 -> {
+				INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+			}
+			case 4 -> {
+				INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+			}
 			}
 		}
-
 		for (Piece piece : INITIAL_PIECES) {
 			// Add creates Pieces to chessBoard
 			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
