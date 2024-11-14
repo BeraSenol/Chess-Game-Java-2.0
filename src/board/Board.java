@@ -72,12 +72,24 @@ public class Board {
 				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
 			}
 			case 3 -> {
-				INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-				INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				// Queen-King if playing as White
+				if (PLAYER_COLOR == PlayerColor.WHITE) {
+					INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				} else {
+					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				}
 			}
 			case 4 -> {
-				INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-				INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				// King-Queen if playing as Black
+				if (PLAYER_COLOR == PlayerColor.WHITE) {
+					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				} else {
+					INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				}
 			}
 			}
 		}
