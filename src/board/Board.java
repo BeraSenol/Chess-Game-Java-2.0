@@ -27,6 +27,7 @@ public class Board {
 	private final Color WHITE_TILE_COLOR = new Color(210, 165, 125);
 	private final Color BLACK_TILE_COLOR = new Color(175, 115, 70);
 	private final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
+
 	private ArrayList<Piece> inGamePieces = new ArrayList<>();
 	public static Tile[][] chessBoard = null;
 
@@ -44,9 +45,9 @@ public class Board {
 			pieceRankWhite = PIECE_RANK_BLACK;
 			pawnRankWhite = PAWN_RANK_BLACK;
 		}
-		// Creates Tiles object for the chessBoard
 		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
 			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
+				// Creates Tiles object for the chessBoard
 				chessBoard[i][j] = (i + j) % 2 == 0
 						? new Tile(i, j, WHITE_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null)
 						: new Tile(i, j, BLACK_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j],
@@ -147,7 +148,7 @@ public class Board {
 	}
 
 	public void drawInitialChessPieces(Graphics2D g2) {
-		for (Piece p : inGamePieces) {
+		for (Piece p : INITIAL_PIECES) {
 			p.drawPiece(g2);
 		}
 	}

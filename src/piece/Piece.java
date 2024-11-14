@@ -16,7 +16,7 @@ public class Piece implements Moveable {
 	private final int INDICATOR_SIZE = 30;
 	private final int INDICATOR_OFFSET = TILE_SIZE_HALF - (INDICATOR_SIZE / 2);
 	private final float ALPHA = 0.15f;
-
+	
 	private int file, rank, x, y = 0;
 	private PieceColor pieceColor = null;
 	private PieceType pieceType = null;

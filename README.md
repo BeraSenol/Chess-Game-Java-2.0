@@ -15,5 +15,5 @@ The project's code includes:<br>
   ![Screenshot_3](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-position.png)
 - Possible Move Indicators
   ![Screenshot_4](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-indicators.png)
-- Playable as Black
+- Playable as Black & Turn Based Movement
   ![Screenshot_5](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-position-black.png)

@@ -20,7 +20,8 @@ public class GameWindow extends JPanel implements Runnable {
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private final Mouse PLAYER_MOUSE = new Mouse();
 
-	public static PlayerColor playerColor = PlayerColor.BLACK;
+	public static PlayerColor playerColor = PlayerColor.WHITE;
+	private PlayerColor turnColor = PlayerColor.WHITE;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
 	private Graphics2D graphics2d = null;
@@ -59,7 +60,7 @@ public class GameWindow extends JPanel implements Runnable {
 		graphics2d = (Graphics2D) g;
 		CHESS_BOARD.drawChessBoard(graphics2d);
 		CHESS_BOARD.drawInitialChessPieces(graphics2d);
-		if (getSelectedPiece() != null) {
+		if (getSelectedPiece() != null && isPieceColorPlayerColor(getSelectedPiece())) {
 			// Draws the indicatorImage if Piece is selected
 			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 		}
@@ -84,6 +85,15 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
+	// BOOLEANS
+	private boolean isPieceColorPlayerColor(Piece piece) {
+		if (piece.getPieceColor().name() == getTurnColor().name()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// GETTERS
 	private Piece getSelectedPiece() {
 		return selectedPiece;
@@ -97,6 +107,10 @@ public class GameWindow extends JPanel implements Runnable {
 		return playerColor;
 	}
 
+	private PlayerColor getTurnColor() {
+		return turnColor;
+	}
+
 	// SETTERS
 	private void setSelectedTile(Tile tile) {
 		this.selectedTile = tile;
@@ -106,11 +120,24 @@ public class GameWindow extends JPanel implements Runnable {
 		this.selectedPiece = piece;
 	}
 
+	private void setTurnColor(PlayerColor turnColor) {
+		this.turnColor = turnColor;
+	}
+
 	// VOID
 	private void movePiece(Tile tile, Piece piece) {
 		piece.getTile().removePiece();
 		piece.setTile(tile);
 		tile.setPiece(piece);
 		setSelectedPiece(null);
+		endTurn();
+	}
+
+	private void endTurn() {
+		if (getTurnColor() == PlayerColor.WHITE) {
+			setTurnColor(PlayerColor.BLACK);
+		} else {
+			setTurnColor(PlayerColor.WHITE);
+		}
 	}
 }
