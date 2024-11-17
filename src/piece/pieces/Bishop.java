@@ -54,7 +54,50 @@ public class Bishop extends Piece {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
-		
+		int i = 1;
+		while (isWithinBounds(file + i) && isWithinBounds(rank - i)) {
+			if (CHESS_BOARD[file + i][rank - i].isPieceOnTile()) {
+				if (!CHESS_BOARD[file + i][rank - i].getPiece().isPieceColorTurnColor()) {
+					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
+					tiles.add(CHESS_BOARD[file + i][rank - i]);
+				}
+				break;
+			}
+			i++;
+		}
+		i = 1;
+		while (isWithinBounds(file + i) && isWithinBounds(rank + i)) {
+			if (CHESS_BOARD[file + i][rank + i].isPieceOnTile()) {
+				if (!CHESS_BOARD[file + i][rank + i].getPiece().isPieceColorTurnColor()) {
+					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
+					tiles.add(CHESS_BOARD[file + i][rank + i]);
+				}
+				break;
+			}
+			i++;
+		}
+		i = 1;
+		while (isWithinBounds(file - i) && isWithinBounds(rank + i)) {
+			if (CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
+				if (!CHESS_BOARD[file - i][rank + i].getPiece().isPieceColorTurnColor()) {
+					// Adds unobstructed Tile left-above the Bishop PieceColor is not TurnColor
+					tiles.add(CHESS_BOARD[file - i][rank + i]);
+				}
+				break;
+			}
+			i++;
+		}
+		i = 1;
+		while (isWithinBounds(file - i) && isWithinBounds(rank - i)) {
+			if (CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
+				if (!CHESS_BOARD[file - i][rank - i].getPiece().isPieceColorTurnColor()) {
+					// Adds unobstructed Tile left-bellow the Bishop PieceColor is not TurnColor
+					tiles.add(CHESS_BOARD[file - i][rank - i]);
+				}
+				break;
+			}
+			i++;
+		}
 		return tiles;
 	}
 }

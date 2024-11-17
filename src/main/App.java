@@ -5,11 +5,11 @@ import javax.swing.JFrame;
 public class App {
     public static void main(String[] args) throws Exception {
         // Creates a window
-        JFrame jFrame = new JFrame("Chess Game");
+        JFrame jFrame = new JFrame("Chess Game - White to play!");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
         jFrame.setResizable(false);
-        GameWindow gameWindow = new GameWindow();
+        GameWindow gameWindow = new GameWindow(jFrame);
         jFrame.add(gameWindow);
         jFrame.pack();
         gameWindow.launchGame();

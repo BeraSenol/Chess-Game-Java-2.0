@@ -1,5 +1,6 @@
 package main;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import java.awt.Dimension;
@@ -20,15 +21,17 @@ public class GameWindow extends JPanel implements Runnable {
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private final Mouse PLAYER_MOUSE = new Mouse();
 
-	public static PlayerColor playerColor = PlayerColor.WHITE;
-	private PlayerColor turnColor = PlayerColor.WHITE;
+	private static PlayerColor playerColor = PlayerColor.WHITE;
+	private static PlayerColor turnColor = PlayerColor.WHITE;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
 	private Graphics2D graphics2d = null;
 	private Thread gameThread = null;
+	private JFrame jFrame = null;
 
 	// CONSTRUCTOR
-	protected GameWindow() {
+	protected GameWindow(JFrame parentFrame) {
+		this.jFrame = parentFrame;
 		setPreferredSize(WINDOW_DIMENSION);
 		addMouseListener(PLAYER_MOUSE);
 		addMouseMotionListener(PLAYER_MOUSE);
@@ -60,7 +63,7 @@ public class GameWindow extends JPanel implements Runnable {
 		graphics2d = (Graphics2D) g;
 		CHESS_BOARD.drawChessBoard(graphics2d);
 		CHESS_BOARD.drawInitialChessPieces(graphics2d);
-		if (getSelectedPiece() != null && isPieceColorPlayerColor(getSelectedPiece())) {
+		if (getSelectedPiece() != null && getSelectedPiece().isPieceColorTurnColor()) {
 			if (getSelectedPiece().getMoveableTiles() != null) {
 				// Draws the indicatorImage if Piece is selected
 				getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
@@ -78,12 +81,11 @@ public class GameWindow extends JPanel implements Runnable {
 			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
 			if (getSelectedPiece() == null) {
 				if (getSelectedTile().isPieceOnTile()
-						&& isPieceColorPlayerColor(getSelectedTile().getPiece())) {
+						&& getSelectedTile().getPiece().isPieceColorTurnColor()) {
 					// Selects the Piece if the selectedTile is not empty
 					setSelectedPiece(getSelectedTile().getPiece());
 				}
-			}
-			if (getSelectedPiece() != null) {
+			} else {
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
 					// Moves the Piece if selectedTile is a moveableTile and selectedPiece is not
 					// null
@@ -91,15 +93,6 @@ public class GameWindow extends JPanel implements Runnable {
 				}
 			}
 			setSelectedTile(null);
-		}
-	}
-
-	// BOOLEANS
-	public boolean isPieceColorPlayerColor(Piece piece) {
-		if (piece.getPieceColor().name() == getTurnColor().name()) {
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -116,7 +109,7 @@ public class GameWindow extends JPanel implements Runnable {
 		return playerColor;
 	}
 
-	private PlayerColor getTurnColor() {
+	public static PlayerColor getTurnColor() {
 		return turnColor;
 	}
 
@@ -130,7 +123,7 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	private void setTurnColor(PlayerColor turnColor) {
-		this.turnColor = turnColor;
+		GameWindow.turnColor = turnColor;
 	}
 
 	// VOID
@@ -145,8 +138,10 @@ public class GameWindow extends JPanel implements Runnable {
 	private void endTurn() {
 		if (getTurnColor() == PlayerColor.WHITE) {
 			setTurnColor(PlayerColor.BLACK);
+			this.jFrame.setTitle("Chess Game - Black to play!");
 		} else {
 			setTurnColor(PlayerColor.WHITE);
+			this.jFrame.setTitle("Chess Game - White to play!");
 		}
 	}
 }

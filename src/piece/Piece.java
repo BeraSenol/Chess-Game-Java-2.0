@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import board.Board;
 import board.Tile;
 import board.TileColor;
+import main.GameWindow;
 
 public class Piece implements Moveable {
 	private final int TILE_SIZE = Tile.getTileSize();
@@ -70,6 +71,14 @@ public class Piece implements Moveable {
 		return true;
 	}
 
+	public boolean isPieceColorTurnColor() {
+		if (this.getPieceColor().name() == GameWindow.getTurnColor().name()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// GETTERS
 	public int getFile() {
 		return file;
@@ -100,7 +109,6 @@ public class Piece implements Moveable {
 	}
 
 	// GETTERS - MOVEABLE INTERFACE
-	
 
 	// SETTERS
 	public void setFile(int file) {
