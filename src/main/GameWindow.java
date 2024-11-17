@@ -61,9 +61,14 @@ public class GameWindow extends JPanel implements Runnable {
 		CHESS_BOARD.drawChessBoard(graphics2d);
 		CHESS_BOARD.drawInitialChessPieces(graphics2d);
 		if (getSelectedPiece() != null && isPieceColorPlayerColor(getSelectedPiece())) {
-			// Draws the indicatorImage if Piece is selected
-			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
-			getSelectedPiece().drawCaptureableTiles(graphics2d, getSelectedPiece().getCaptureableTiles());
+			if (getSelectedPiece().getMoveableTiles() != null) {
+				// Draws the indicatorImage if Piece is selected
+				getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
+			}
+			if (getSelectedPiece().getCaptureableTiles() != null) {
+				getSelectedPiece().drawCaptureableTiles(graphics2d,
+						getSelectedPiece().getCaptureableTiles());
+			}
 		}
 	}
 
