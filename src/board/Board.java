@@ -13,10 +13,10 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 public class Board {
-	private final int PIECE_RANK_BLACK = 0;
+	private static final int PIECE_RANK_BLACK = 0;
 	private static final int PAWN_RANK_BLACK = 1;
 	private static final int PAWN_RANK_WHITE = 6;
-	private final int PIECE_RANK_WHITE = 7;
+	private static final int PIECE_RANK_WHITE = 7;
 	private final int BOARD_SIZE = 8;
 	private final int LABEL_MARGIN_X = 5;
 	private final int LABEL_MARGIN_Y = 13;
@@ -30,7 +30,7 @@ public class Board {
 	private final TileColor DARK_TILE_COLOR = TileColor.DARK;
 	private final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
 
-	private ArrayList<Piece> inGamePieces = new ArrayList<>();
+	private static ArrayList<Piece> onBoardPieces = new ArrayList<>();
 	public static Tile[][] chessBoard = null;
 
 	// CONSTRUCTOR
@@ -52,8 +52,7 @@ public class Board {
 				// Creates Tiles object for the chessBoard
 				chessBoard[i][j] = (i + j) % 2 == 0
 						? new Tile(i, j, LIGHT_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null)
-						: new Tile(i, j, DARK_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j],
-								null);
+						: new Tile(i, j, DARK_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null);
 			}
 		}
 		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
@@ -99,7 +98,7 @@ public class Board {
 			// Adds created Pieces to chessBoard
 			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
 		}
-		inGamePieces = INITIAL_PIECES;
+		onBoardPieces = INITIAL_PIECES;
 	}
 
 	// GETTERS
@@ -111,8 +110,20 @@ public class Board {
 		return PAWN_RANK_BLACK;
 	}
 
+	public static int getPieceRankBlack() {
+		return PIECE_RANK_BLACK;
+	}
+
+	public static int getPieceRankWhite() {
+		return PIECE_RANK_WHITE;
+	}
+
 	public static int getPawnRankWhite() {
 		return PAWN_RANK_WHITE;
+	}
+
+	public static ArrayList<Piece> getOnBoardPieces() {
+		return onBoardPieces;
 	}
 
 	// VOID
@@ -164,8 +175,12 @@ public class Board {
 	}
 
 	public void drawInitialChessPieces(Graphics2D g2) {
-		for (Piece p : inGamePieces) {
+		for (Piece p : onBoardPieces) {
 			p.drawPiece(g2);
 		}
+	}
+
+	public void removePieceFromBoard(Piece piece) {
+		onBoardPieces.remove(piece);
 	}
 }

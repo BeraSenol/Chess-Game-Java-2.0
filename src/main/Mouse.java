@@ -54,7 +54,7 @@ public class Mouse extends MouseAdapter {
 	}
 
 	// SETTERS
-	private void setMousePressed(boolean mousePressed) {
+	protected void setMousePressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}
 

@@ -15,7 +15,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private final int INTERVAL = 100000000;
 	private final int WINDOW_WIDTH = 800;
 	private final int WINDOW_HEIGHT = 800;
-	private final int FPS = 60;
+	private final double FPS = 10;
 	private final double DRAW_INTERVAL = INTERVAL / FPS;
 	private final Board CHESS_BOARD = new Board();
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
@@ -73,6 +73,9 @@ public class GameWindow extends JPanel implements Runnable {
 						getSelectedPiece().getCaptureableTiles());
 			}
 		}
+		if (getSelectedPiece() == null) {
+			restoreTileColors();
+		}
 	}
 
 	private void update() {
@@ -85,11 +88,17 @@ public class GameWindow extends JPanel implements Runnable {
 					// Selects the Piece if the selectedTile is not empty
 					setSelectedPiece(getSelectedTile().getPiece());
 				}
-			} else {
+			}
+			if (getSelectedPiece() != null && getSelectedPiece().getMoveableTiles() != null) {
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
-					// Moves the Piece if selectedTile is a moveableTile and selectedPiece is not
-					// null
+					// Moves the Piece if selectedTile is in getMoveableTiles()
 					movePiece(getSelectedTile(), getSelectedPiece());
+				}
+			}
+			if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
+				if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())) {
+					// Captures the Piece if selectedTile is in getCaptureableTiles()
+					capturePiece(getSelectedTile(), getSelectedPiece());
 				}
 			}
 			setSelectedTile(null);
@@ -135,6 +144,16 @@ public class GameWindow extends JPanel implements Runnable {
 		endTurn();
 	}
 
+	private void capturePiece(Tile tile, Piece piece) {
+		CHESS_BOARD.removePieceFromBoard(tile.getPiece());
+		tile.removePiece();
+		piece.getTile().removePiece();
+		piece.setTile(tile);
+		tile.setPiece(piece);
+		setSelectedPiece(null);
+		endTurn();
+	}
+
 	private void endTurn() {
 		if (getTurnColor() == PlayerColor.WHITE) {
 			setTurnColor(PlayerColor.BLACK);
@@ -142,6 +161,21 @@ public class GameWindow extends JPanel implements Runnable {
 		} else {
 			setTurnColor(PlayerColor.WHITE);
 			this.jFrame.setTitle("Chess Game - White to play!");
+		}
+	}
+
+	private void restoreTileColors() {
+		Tile targetTile = null;
+		for (int i = Board.getPieceRankBlack(); i < Board.getPieceRankWhite(); i++) {
+			for (int j = Board.getPieceRankBlack(); j < Board.getPieceRankWhite(); j++) {
+				targetTile = Board.getChessBoard()[i][j];
+				if (targetTile.getTileColor() == TileColor.LIGHT_RED) {
+					targetTile.setTileColor(TileColor.LIGHT);
+				}
+				if (targetTile.getTileColor() == TileColor.DARK_RED) {
+					targetTile.setTileColor(TileColor.DARK);
+				}
+			}
 		}
 	}
 }
