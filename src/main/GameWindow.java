@@ -69,6 +69,7 @@ public class GameWindow extends JPanel implements Runnable {
 				getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 			}
 			if (getSelectedPiece().getCaptureableTiles() != null) {
+				// Highlights captureableTile if Piece is selected
 				getSelectedPiece().drawCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
@@ -83,9 +84,16 @@ public class GameWindow extends JPanel implements Runnable {
 			// Selects the Tile the PLAYER_MOUSE is on
 			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
 			if (getSelectedPiece() == null) {
-				if (getSelectedTile().isPieceOnTile()
-						&& getSelectedTile().getPiece().isPieceColorTurnColor()) {
-					// Selects the Piece if the selectedTile is not empty
+				if (getSelectedTile().isPieceOnTile()) {
+					if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
+						// Selects the Piece if the selectedTile is not empty
+						setSelectedPiece(getSelectedTile().getPiece());
+					}
+				}
+			}
+			if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
+				if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
+					// Re-selects Piece if selectedTile contains Piece with same Color
 					setSelectedPiece(getSelectedTile().getPiece());
 				}
 			}
@@ -97,7 +105,8 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
 				if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())) {
-					// Captures the Piece if selectedTile is in getCaptureableTiles()
+					// Captures the Piece if selectedTile is in
+					// getCaptureableTiles()
 					capturePiece(getSelectedTile(), getSelectedPiece());
 				}
 			}
@@ -139,6 +148,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private void movePiece(Tile tile, Piece piece) {
 		piece.getTile().removePiece();
 		piece.setTile(tile);
+		piece.incrementMoveCount();
 		tile.setPiece(piece);
 		setSelectedPiece(null);
 		endTurn();
@@ -147,11 +157,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private void capturePiece(Tile tile, Piece piece) {
 		CHESS_BOARD.removePieceFromBoard(tile.getPiece());
 		tile.removePiece();
-		piece.getTile().removePiece();
-		piece.setTile(tile);
-		tile.setPiece(piece);
-		setSelectedPiece(null);
-		endTurn();
+		movePiece(tile, piece);
 	}
 
 	private void endTurn() {
@@ -166,8 +172,8 @@ public class GameWindow extends JPanel implements Runnable {
 
 	private void restoreTileColors() {
 		Tile targetTile = null;
-		for (int i = Board.getPieceRankBlack(); i < Board.getPieceRankWhite(); i++) {
-			for (int j = Board.getPieceRankBlack(); j < Board.getPieceRankWhite(); j++) {
+		for (int i = Board.getPieceRankBlack(); i <= Board.getPieceRankWhite(); i++) {
+			for (int j = Board.getPieceRankBlack(); j <= Board.getPieceRankWhite(); j++) {
 				targetTile = Board.getChessBoard()[i][j];
 				if (targetTile.getTileColor() == TileColor.LIGHT_RED) {
 					targetTile.setTileColor(TileColor.LIGHT);

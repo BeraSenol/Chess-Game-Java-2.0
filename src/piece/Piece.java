@@ -20,7 +20,7 @@ public class Piece implements Moveable {
 	private final float ALPHA = 0.15f;
 	protected final static Tile[][] CHESS_BOARD = Board.getChessBoard();
 
-	private int file, rank, x, y = 0;
+	private int file, rank, x, y, moveCount = 0;
 	private PieceColor pieceColor = null;
 	private PieceType pieceType = null;
 	private Tile tile = null;
@@ -35,6 +35,7 @@ public class Piece implements Moveable {
 		this.pieceColor = pieceColor;
 		this.pieceType = pieceType;
 		this.tile = tile;
+		this.moveCount = 0;
 	}
 
 	public BufferedImage getPieceImage(PieceType pieceType, PieceColor pieceColor) {
@@ -96,6 +97,10 @@ public class Piece implements Moveable {
 		return y;
 	}
 
+	public int getMoveCount() {
+		return moveCount;
+	}
+
 	public PieceColor getPieceColor() {
 		return pieceColor;
 	}
@@ -107,8 +112,6 @@ public class Piece implements Moveable {
 	public Tile getTile() {
 		return tile;
 	}
-
-	// GETTERS - MOVEABLE INTERFACE
 
 	// SETTERS
 	public void setFile(int file) {
@@ -161,6 +164,10 @@ public class Piece implements Moveable {
 				tile.setTileColor(TileColor.DARK_RED);
 			}
 		}
+	}
+
+	public void incrementMoveCount() {
+		this.moveCount++;
 	}
 
 	public ArrayList<Tile> getMoveableTiles() {
