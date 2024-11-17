@@ -1,7 +1,4 @@
 package board;
-
-import java.awt.Color;
-
 import piece.Piece;
 
 public class Tile {
@@ -73,6 +70,10 @@ public class Tile {
 	// SETTERS
 	public void setPiece(Piece piece) {
 		this.piece = piece;
+	}
+
+	public void setTileColor(TileColor tileColor) {
+		this.tileColor = tileColor;
 	}
 
 	// VOID

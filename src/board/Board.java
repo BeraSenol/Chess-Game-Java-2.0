@@ -21,6 +21,8 @@ public class Board {
 	private final int LABEL_MARGIN_X = 5;
 	private final int LABEL_MARGIN_Y = 13;
 	private final int TILE_SIZE = Tile.getTileSize();
+	private final int FONT_SIZE = 14;
+	private final String FONT_FAMILY = "Arial";
 	private final String[] RANK_LABELS = { "8", "7", "6", "5", "4", "3", "2", "1" };
 	private final String[] FILE_LABELS = { "a", "b", "c", "d", "e", "f", "g", "h" };
 	private final ArrayList<Piece> INITIAL_PIECES = new ArrayList<>();
@@ -94,7 +96,7 @@ public class Board {
 			}
 		}
 		for (Piece piece : INITIAL_PIECES) {
-			// Add creates Pieces to chessBoard
+			// Adds created Pieces to chessBoard
 			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
 		}
 		inGamePieces = INITIAL_PIECES;
@@ -115,10 +117,10 @@ public class Board {
 
 	// VOID
 	public void drawChessBoard(Graphics2D g2) {
-		g2.setFont(new Font("Arial", Font.PLAIN, 14));
-		Color inverseColor = null;
+		g2.setFont(new Font(FONT_FAMILY, Font.PLAIN, FONT_SIZE));
 		final Color DARK = DARK_TILE_COLOR.getColor();
 		final Color LIGHT = LIGHT_TILE_COLOR.getColor();
+		Color inverseColor = null;
 		// Draws the tiles (same for white and black)
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
@@ -162,7 +164,7 @@ public class Board {
 	}
 
 	public void drawInitialChessPieces(Graphics2D g2) {
-		for (Piece p : INITIAL_PIECES) {
+		for (Piece p : inGamePieces) {
 			p.drawPiece(g2);
 		}
 	}

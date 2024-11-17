@@ -44,4 +44,8 @@ public class Rook extends Piece {
 		}
 		return moveableTiles;
 	}
+	@Override
+	public ArrayList<Tile> getCaptureableTiles() {
+		return null;
+	}
 }

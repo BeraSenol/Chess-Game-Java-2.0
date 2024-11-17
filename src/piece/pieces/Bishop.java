@@ -54,48 +54,7 @@ public class Bishop extends Piece {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
-		int i = 1;
-		int j = 2;
-		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
-				&& !CHESS_BOARD[file + i][rank - i].isPieceOnTile()) {
-			if (isWithinBounds(file + j) && isWithinBounds(rank - j)
-					&& CHESS_BOARD[file + j][rank - j].isPieceOnTile()) {
-				// Adds right-above Tile if Tile behind last moveable Tile contains a Piece
-				tiles.add(CHESS_BOARD[file + j][rank - j]);
-			}
-			i++;
-		}
-		i = 1;
-		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
-				&& !CHESS_BOARD[file + i][rank + i].isPieceOnTile()) {
-			if (isWithinBounds(file + j) && isWithinBounds(rank + j)
-					&& CHESS_BOARD[file + j][rank + j].isPieceOnTile()) {
-				// Adds right-below Tile if Tile behind last moveable Tile contains a Piece
-				tiles.add(CHESS_BOARD[file + j][rank + j]);
-			}
-			i++;
-		}
-		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
-				&& !CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
-			if (isWithinBounds(file - j) && isWithinBounds(rank + j)
-					&& CHESS_BOARD[file - j][rank + j].isPieceOnTile()) {
-				// Adds left-above Tile if Tile behind last moveable Tile contains a Piece
-				tiles.add(CHESS_BOARD[file - j][rank + j]);
-			}
-			i++;
-		}
-		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
-				&& !CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
-			// Adds empty Tiles left-bellow the Bishop
-			if (isWithinBounds(file - j) && isWithinBounds(rank - j)
-					&& CHESS_BOARD[file - j][rank - j].isPieceOnTile()) {
-				// Adds left-above Tile if Tile behind last moveable Tile contains a Piece
-				tiles.add(CHESS_BOARD[file - j][rank - j]);
-			}
-			i++;
-		}
+		
 		return tiles;
 	}
 }

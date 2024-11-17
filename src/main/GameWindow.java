@@ -63,6 +63,7 @@ public class GameWindow extends JPanel implements Runnable {
 		if (getSelectedPiece() != null && isPieceColorPlayerColor(getSelectedPiece())) {
 			// Draws the indicatorImage if Piece is selected
 			getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
+			getSelectedPiece().drawCaptureableTiles(graphics2d, getSelectedPiece().getCaptureableTiles());
 		}
 	}
 
@@ -70,9 +71,12 @@ public class GameWindow extends JPanel implements Runnable {
 		if (PLAYER_MOUSE.isMousePressed()) {
 			// Selects the Tile the PLAYER_MOUSE is on
 			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
-			if (getSelectedTile().isPieceOnTile()) {
-				// Selects the Piece if the selectedTile is not empty
-				setSelectedPiece(getSelectedTile().getPiece());
+			if (getSelectedPiece() == null) {
+				if (getSelectedTile().isPieceOnTile()
+						&& isPieceColorPlayerColor(getSelectedTile().getPiece())) {
+					// Selects the Piece if the selectedTile is not empty
+					setSelectedPiece(getSelectedTile().getPiece());
+				}
 			}
 			if (getSelectedPiece() != null) {
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
@@ -86,7 +90,7 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	// BOOLEANS
-	private boolean isPieceColorPlayerColor(Piece piece) {
+	public boolean isPieceColorPlayerColor(Piece piece) {
 		if (piece.getPieceColor().name() == getTurnColor().name()) {
 			return true;
 		} else {

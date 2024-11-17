@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 
 import board.Board;
 import board.Tile;
+import board.TileColor;
 
 public class Piece implements Moveable {
 	private final int TILE_SIZE = Tile.getTileSize();
@@ -17,7 +18,6 @@ public class Piece implements Moveable {
 	private final int INDICATOR_OFFSET = TILE_SIZE_HALF - (INDICATOR_SIZE / 2);
 	private final float ALPHA = 0.15f;
 	protected final static Tile[][] CHESS_BOARD = Board.getChessBoard();
-	
 
 	private int file, rank, x, y = 0;
 	private PieceColor pieceColor = null;
@@ -100,15 +100,7 @@ public class Piece implements Moveable {
 	}
 
 	// GETTERS - MOVEABLE INTERFACE
-	@Override
-	public ArrayList<Tile> getMoveableTiles() {
-		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
-	}
-
-	@Override
-	public ArrayList<Tile> getCaptureableTiles() {
-		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
-	}
+	
 
 	// SETTERS
 	public void setFile(int file) {
@@ -155,8 +147,19 @@ public class Piece implements Moveable {
 
 	public void drawCaptureableTiles(Graphics2D g2, ArrayList<Tile> tiles) {
 		for (Tile tile : tiles) {
-			// Sets the transparancy of indicatorImage to ALPHA (0.15f)
-			
+			if (tile.getTileColor() == TileColor.LIGHT) {
+				tile.setTileColor(TileColor.LIGHT_RED);
+			} else if (tile.getTileColor() == TileColor.DARK) {
+				tile.setTileColor(TileColor.DARK_RED);
+			}
 		}
+	}
+
+	public ArrayList<Tile> getMoveableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getMoveableTiles'");
+	}
+
+	public ArrayList<Tile> getCaptureableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
 	}
 }

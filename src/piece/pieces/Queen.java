@@ -75,6 +75,6 @@ public class Queen extends Piece {
 
 	@Override
 	public ArrayList<Tile> getCaptureableTiles() {
-		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
+		return null;
 	}
 }
