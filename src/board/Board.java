@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import main.GameWindow;
 import piece.Piece;
 import piece.PieceColor;
+import piece.PieceType;
 import piece.pieces.*;
 import player.*;
 
@@ -122,6 +123,15 @@ public class Board {
 		return PAWN_RANK_WHITE;
 	}
 
+	public Piece getKing(PieceColor kingColor) {
+		for (Piece piece : onBoardPieces) {
+			if (piece.getPieceColor() == kingColor && piece.getPieceType() == PieceType.KING) {
+				return piece;
+			}
+		}
+		return null;
+	}
+
 	public static ArrayList<Piece> getOnBoardPieces() {
 		return onBoardPieces;
 	}
@@ -133,8 +143,8 @@ public class Board {
 		final Color LIGHT = LIGHT_TILE_COLOR.getColor();
 		Color inverseColor = null;
 		// Draws the tiles (same for white and black)
-		for (int i = 0; i < BOARD_SIZE; i++) {
-			for (int j = 0; j < BOARD_SIZE; j++) {
+		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
 				g2.setColor(chessBoard[i][j].getTileColor().getColor());
 				g2.fillRect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 				inverseColor = (i + j) % 2 == 0 ? DARK : LIGHT;
@@ -143,14 +153,14 @@ public class Board {
 		}
 		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			// Draws the file labels for white
-			for (int file = 0; file < BOARD_SIZE; file++) {
+			for (int file = PIECE_RANK_BLACK; file <= PIECE_RANK_WHITE; file++) {
 				inverseColor = file % 2 == 0 ? DARK : LIGHT;
 				g2.setColor(inverseColor);
 				g2.drawString(RANK_LABELS[file], LABEL_MARGIN_X,
 						(file * TILE_SIZE) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
 			}
 			// Draws the rank labels for white
-			for (int rank = 0; rank < BOARD_SIZE; rank++) {
+			for (int rank = PIECE_RANK_BLACK; rank <= PIECE_RANK_WHITE; rank++) {
 				inverseColor = rank % 2 == 1 ? DARK : LIGHT;
 				g2.setColor(inverseColor);
 				g2.drawString(FILE_LABELS[rank], (rank * TILE_SIZE) + (TILE_SIZE - LABEL_MARGIN_Y),
@@ -158,14 +168,14 @@ public class Board {
 			}
 		} else {
 			// Draws the rank labels for black
-			for (int file = 0; file < BOARD_SIZE; file++) {
+			for (int file = PIECE_RANK_BLACK; file <= PIECE_RANK_WHITE; file++) {
 				inverseColor = file % 2 == 0 ? DARK : LIGHT;
 				g2.setColor(inverseColor);
 				g2.drawString(RANK_LABELS[7 - file], LABEL_MARGIN_X,
 						(file * TILE_SIZE) + LABEL_MARGIN_X + LABEL_MARGIN_Y);
 			}
 			// Draws the rank labels for black
-			for (int rank = 0; rank < BOARD_SIZE; rank++) {
+			for (int rank = PIECE_RANK_BLACK; rank <= PIECE_RANK_WHITE; rank++) {
 				inverseColor = rank % 2 == 1 ? DARK : LIGHT;
 				g2.setColor(inverseColor);
 				g2.drawString(FILE_LABELS[7 - rank], (rank * TILE_SIZE) + (100 - LABEL_MARGIN_Y),

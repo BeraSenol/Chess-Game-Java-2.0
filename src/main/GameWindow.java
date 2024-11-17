@@ -21,7 +21,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private final Mouse PLAYER_MOUSE = new Mouse();
 
-	private static PlayerColor playerColor = PlayerColor.WHITE;
+	private static PlayerColor playerColor = PlayerColor.BLACK;
 	private static PlayerColor turnColor = PlayerColor.WHITE;
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
@@ -30,8 +30,8 @@ public class GameWindow extends JPanel implements Runnable {
 	private JFrame jFrame = null;
 
 	// CONSTRUCTOR
-	protected GameWindow(JFrame parentFrame) {
-		this.jFrame = parentFrame;
+	protected GameWindow(JFrame jFrame) {
+		this.jFrame = jFrame;
 		setPreferredSize(WINDOW_DIMENSION);
 		addMouseListener(PLAYER_MOUSE);
 		addMouseMotionListener(PLAYER_MOUSE);
@@ -65,11 +65,11 @@ public class GameWindow extends JPanel implements Runnable {
 		CHESS_BOARD.drawInitialChessPieces(graphics2d);
 		if (getSelectedPiece() != null && getSelectedPiece().isPieceColorTurnColor()) {
 			if (getSelectedPiece().getMoveableTiles() != null) {
-				// Draws the indicatorImage if Piece is selected
+				// Draws the indicatorImage while Piece is selected
 				getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 			}
 			if (getSelectedPiece().getCaptureableTiles() != null) {
-				// Highlights captureableTile if Piece is selected
+				// Highlights captureableTile while Piece is selected
 				getSelectedPiece().drawCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
@@ -84,35 +84,36 @@ public class GameWindow extends JPanel implements Runnable {
 			// Selects the Tile the PLAYER_MOUSE is on
 			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
 			if (getSelectedPiece() == null) {
+				// Selects Piece if selectedTile is not empty and contains Piece of same Color
 				if (getSelectedTile().isPieceOnTile()) {
 					if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
-						// Selects the Piece if the selectedTile is not empty
 						setSelectedPiece(getSelectedTile().getPiece());
 					}
 				}
 			}
 			if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
+				// Re-selects Piece if selectedTile contains Piece of same Color
 				if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
-					// Re-selects Piece if selectedTile contains Piece with same Color
 					setSelectedPiece(getSelectedTile().getPiece());
 				}
 			}
 			if (getSelectedPiece() != null && getSelectedPiece().getMoveableTiles() != null) {
+				// Moves the Piece if selectedTile is in getMoveableTiles()
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
-					// Moves the Piece if selectedTile is in getMoveableTiles()
 					movePiece(getSelectedTile(), getSelectedPiece());
 				}
 			}
 			if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
+				// Captures the Piece if selectedTile is in getCaptureableTiles()
 				if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())) {
-					// Captures the Piece if selectedTile is in
-					// getCaptureableTiles()
 					capturePiece(getSelectedTile(), getSelectedPiece());
 				}
 			}
 			setSelectedTile(null);
 		}
 	}
+
+	// BOOLEANS
 
 	// GETTERS
 	private Piece getSelectedPiece() {
@@ -175,11 +176,15 @@ public class GameWindow extends JPanel implements Runnable {
 		for (int i = Board.getPieceRankBlack(); i <= Board.getPieceRankWhite(); i++) {
 			for (int j = Board.getPieceRankBlack(); j <= Board.getPieceRankWhite(); j++) {
 				targetTile = Board.getChessBoard()[i][j];
-				if (targetTile.getTileColor() == TileColor.LIGHT_RED) {
+				switch (targetTile.getTileColor()) {
+				case TileColor.LIGHT_RED:
 					targetTile.setTileColor(TileColor.LIGHT);
-				}
-				if (targetTile.getTileColor() == TileColor.DARK_RED) {
+					break;
+				case TileColor.DARK_RED:
 					targetTile.setTileColor(TileColor.DARK);
+					break;
+				default:
+					break;
 				}
 			}
 		}
