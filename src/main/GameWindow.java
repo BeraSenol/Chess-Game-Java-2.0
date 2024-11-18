@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import board.*;
 import piece.Piece;
@@ -15,14 +16,15 @@ public class GameWindow extends JPanel implements Runnable {
 	private final int INTERVAL = 100000000;
 	private final int WINDOW_WIDTH = 800;
 	private final int WINDOW_HEIGHT = 800;
-	private final double FPS = 10;
+	private final int FPS = 5;
 	private final double DRAW_INTERVAL = INTERVAL / FPS;
 	private final Board CHESS_BOARD = new Board();
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
 	private final Mouse PLAYER_MOUSE = new Mouse();
 
-	private static PlayerColor playerColor = PlayerColor.BLACK;
+	private static PlayerColor playerColor = PlayerColor.WHITE;
 	private static PlayerColor turnColor = PlayerColor.WHITE;
+	private ArrayList<Tile> highlightedTiles = new ArrayList<Tile>();
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
 	private Graphics2D graphics2d = null;
@@ -63,18 +65,20 @@ public class GameWindow extends JPanel implements Runnable {
 		graphics2d = (Graphics2D) g;
 		CHESS_BOARD.drawChessBoard(graphics2d);
 		CHESS_BOARD.drawInitialChessPieces(graphics2d);
-		if (getSelectedPiece() != null && getSelectedPiece().isPieceColorTurnColor()) {
+		if (getSelectedPiece() != null) {
 			if (getSelectedPiece().getMoveableTiles() != null) {
 				// Draws the indicatorImage while Piece is selected
 				getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 			}
 			if (getSelectedPiece().getCaptureableTiles() != null) {
 				// Highlights captureableTile while Piece is selected
+				setHighlightedTiles(getSelectedPiece().getCaptureableTiles());
 				getSelectedPiece().drawCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
 		}
 		if (getSelectedPiece() == null) {
+			// Restores original TileColor after a capture/move
 			restoreTileColors();
 		}
 	}
@@ -95,6 +99,7 @@ public class GameWindow extends JPanel implements Runnable {
 				// Re-selects Piece if selectedTile contains Piece of same Color
 				if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
 					setSelectedPiece(getSelectedTile().getPiece());
+					restoreTileColors();
 				}
 			}
 			if (getSelectedPiece() != null && getSelectedPiece().getMoveableTiles() != null) {
@@ -132,6 +137,10 @@ public class GameWindow extends JPanel implements Runnable {
 		return turnColor;
 	}
 
+	private ArrayList<Tile> getHighlightedTiles() {
+		return highlightedTiles;
+	}
+
 	// SETTERS
 	private void setSelectedTile(Tile tile) {
 		this.selectedTile = tile;
@@ -143,6 +152,14 @@ public class GameWindow extends JPanel implements Runnable {
 
 	private void setTurnColor(PlayerColor turnColor) {
 		GameWindow.turnColor = turnColor;
+	}
+
+	private void setHighlightedTiles(ArrayList<Tile> tiles) {
+		if (tiles != null) {
+			for (Tile tile : tiles) {
+				highlightedTiles.add(tile);
+			}
+		}
 	}
 
 	// VOID
@@ -172,21 +189,20 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	private void restoreTileColors() {
-		Tile targetTile = null;
-		for (int i = Board.getPieceRankBlack(); i <= Board.getPieceRankWhite(); i++) {
-			for (int j = Board.getPieceRankBlack(); j <= Board.getPieceRankWhite(); j++) {
-				targetTile = Board.getChessBoard()[i][j];
-				switch (targetTile.getTileColor()) {
+		if (getHighlightedTiles() != null) {
+			for (Tile tile : getHighlightedTiles()) {
+				switch (tile.getTileColor()) {
 				case TileColor.LIGHT_RED:
-					targetTile.setTileColor(TileColor.LIGHT);
+					tile.setTileColor(TileColor.LIGHT);
 					break;
 				case TileColor.DARK_RED:
-					targetTile.setTileColor(TileColor.DARK);
+					tile.setTileColor(TileColor.DARK);
 					break;
 				default:
 					break;
 				}
 			}
 		}
+		setHighlightedTiles(new ArrayList<Tile>());
 	}
 }

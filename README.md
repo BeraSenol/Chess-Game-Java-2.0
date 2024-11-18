@@ -2,7 +2,7 @@
 
 I started from scratch after making [Chess 1.0](https://github.com/BeraSenol/Chess-Game-Java), the previous version was inspired from a youtuber to get started with the logic, Java libraries.<br>
 Previous version contained sloppy code, so decided to re-write it before implementing new features.<br>
-The goal of this version is to use a two dimension array of Tile objects instead, so re-write worthy in my opinion.<br>
+The goal of this version is to use a two-dimensional array of Tile objects instead, so re-write worthy in my opinion.<br>
 
 The project's code includes:<br>
 
