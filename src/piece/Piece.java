@@ -11,6 +11,7 @@ import board.Board;
 import board.Tile;
 import board.TileColor;
 import main.GameWindow;
+import player.PlayerColor;
 
 public class Piece implements Moveable {
 	private final int TILE_SIZE = Tile.getTileSize();
@@ -18,7 +19,8 @@ public class Piece implements Moveable {
 	private final int INDICATOR_SIZE = 30;
 	private final int INDICATOR_OFFSET = TILE_SIZE_HALF - (INDICATOR_SIZE / 2);
 	private final float ALPHA = 0.15f;
-	protected final static Tile[][] CHESS_BOARD = Board.getChessBoard();
+	protected final Tile[][] CHESS_BOARD = Board.getChessBoard();
+	protected final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
 
 	private int file, rank, x, y, moveCount = 0;
 	private PieceColor pieceColor = null;

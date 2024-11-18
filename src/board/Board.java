@@ -123,10 +123,12 @@ public class Board {
 		return PAWN_RANK_WHITE;
 	}
 
-	public Piece getKing(PieceColor kingColor) {
+	public static Piece getKing(PieceColor kingColor) {
 		for (Piece piece : onBoardPieces) {
-			if (piece.getPieceColor() == kingColor && piece.getPieceType() == PieceType.KING) {
-				return piece;
+			if (piece.getPieceType() == PieceType.KING) {
+				if (piece.getPieceColor() == kingColor) {
+					return piece;
+				}
 			}
 		}
 		return null;

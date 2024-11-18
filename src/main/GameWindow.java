@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import board.*;
 import piece.Piece;
+import piece.PieceColor;
+import piece.PieceType;
+import piece.pieces.King;
 import player.PlayerColor;
 
 public class GameWindow extends JPanel implements Runnable {
@@ -76,6 +79,21 @@ public class GameWindow extends JPanel implements Runnable {
 				getSelectedPiece().drawCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
+			if (getSelectedPiece().getPieceType() == PieceType.KING) {
+				// Draws indicatorImage if King can Castle 2 files left and/or right
+				King king = (King) getSelectedPiece();
+				ArrayList<Tile> castleTiles = new ArrayList<Tile>();
+				if (king.canCastleLeft(getSelectedPiece().getPieceColor())) {
+					castleTiles.add(king.getLeftCastleTile());
+				}
+				if (king.canCastleRight(getSelectedPiece().getPieceColor())) {
+					castleTiles.add(king.getRightCastleTile());
+
+				}
+				if (castleTiles != null) {
+					king.drawIndicators(graphics2d, castleTiles);
+				}
+			}
 		}
 		if (getSelectedPiece() == null) {
 			// Restores original TileColor after a capture/move
@@ -106,12 +124,29 @@ public class GameWindow extends JPanel implements Runnable {
 				// Moves the Piece if selectedTile is in getMoveableTiles()
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
 					movePiece(getSelectedTile(), getSelectedPiece());
+					endTurn();
 				}
 			}
 			if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
 				// Captures the Piece if selectedTile is in getCaptureableTiles()
 				if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())) {
 					capturePiece(getSelectedTile(), getSelectedPiece());
+					endTurn();
+				}
+			}
+			if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.KING) {
+				// Draws indicatorImage if King can Castle 2 files left and/or right
+				King king = (King) getSelectedPiece();
+				if (king.getLeftCastleTile() == getSelectedTile()) {
+					if (king.canCastleLeft(king.getPieceColor())) {
+						castleLeft(king.getPieceColor());
+						endTurn();
+					}
+				}
+				if (king.getRightCastleTile() == getSelectedTile()
+						&& king.canCastleRight(king.getPieceColor())) {
+					castleRight(king.getPieceColor());
+					endTurn();
 				}
 			}
 			setSelectedTile(null);
@@ -169,13 +204,32 @@ public class GameWindow extends JPanel implements Runnable {
 		piece.incrementMoveCount();
 		tile.setPiece(piece);
 		setSelectedPiece(null);
-		endTurn();
 	}
 
 	private void capturePiece(Tile tile, Piece piece) {
 		CHESS_BOARD.removePieceFromBoard(tile.getPiece());
 		tile.removePiece();
 		movePiece(tile, piece);
+	}
+
+	private void castleLeft(PieceColor kingColor) {
+		movePiece(Board.getChessBoard()[Board.getKing(kingColor).getFile() - 2][Board.getKing(kingColor)
+				.getRank()], Board.getKing(kingColor));
+		if (kingColor == PieceColor.WHITE) {
+			movePiece(Board.getChessBoard()[3][7], Board.getChessBoard()[0][7].getPiece());
+		} else {
+			movePiece(Board.getChessBoard()[3][0], Board.getChessBoard()[0][0].getPiece());
+		}
+	}
+
+	private void castleRight(PieceColor kingColor) {
+		movePiece(Board.getChessBoard()[Board.getKing(kingColor).getFile() + 2][Board.getKing(kingColor)
+				.getRank()], Board.getKing(kingColor));
+		if (kingColor == PieceColor.WHITE) {
+			movePiece(Board.getChessBoard()[5][7], Board.getChessBoard()[7][7].getPiece());
+		} else {
+			movePiece(Board.getChessBoard()[5][0], Board.getChessBoard()[7][0].getPiece());
+		}
 	}
 
 	private void endTurn() {
