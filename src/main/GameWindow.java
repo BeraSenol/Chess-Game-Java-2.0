@@ -46,7 +46,7 @@ public class GameWindow extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-		// GAME LOOP - Controls how many refreshed every nanosecond
+		// GAME LOOP - Controls how many refreshes every nanosecond
 		double deltaTime = 0;
 		long previousTime = System.nanoTime();
 		while (gameThread != null) {

@@ -25,15 +25,15 @@ public class Pawn extends Piece {
 	public ArrayList<Tile> getMoveableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		String pieceColorName = this.getPieceColor().getName();
-		int file = this.getFile();
-		int rank = this.getRank();
-		if ((playerColor == PlayerColor.WHITE && pieceColorName == PieceColor.WHITE.name())
-				|| (playerColor == PlayerColor.BLACK && pieceColorName == PieceColor.BLACK.name())) {
-			for (Tile tile : getMoveableTilesPlayer(file, rank)) {
+		if (playerColor == PlayerColor.WHITE && pieceColorName == PieceColor.WHITE.name()
+				|| playerColor == PlayerColor.BLACK && pieceColorName == PieceColor.BLACK.name()) {
+			// If PlayerColor == PieceColor, Pawn can only move upwards
+			for (Tile tile : getMoveableTilesPlayer(this.getFile(), this.getRank())) {
 				tiles.add(tile);
 			}
 		} else {
-			for (Tile tile : getMoveableTilesOpponent(file, rank)) {
+			// If PlayerColor != PieceColor, Pawn can only move downwards
+			for (Tile tile : getMoveableTilesOpponent(this.getFile(), this.getRank())) {
 				tiles.add(tile);
 			}
 		}
@@ -43,116 +43,98 @@ public class Pawn extends Piece {
 	@Override
 	public ArrayList<Tile> getCaptureableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		String pieceColorName = this.getPieceColor().getName();
 		int file = this.getFile();
 		int rank = this.getRank();
-		String pieceColorName = this.getPieceColor().getName();
 		if (playerColor == PlayerColor.WHITE) {
 			if (pieceColorName == PieceColor.WHITE.name()) {
-				if (isWithinBounds(file - 1) && isWithinBounds(rank - 1)) {
-					if (CHESS_BOARD[file - 1][rank - 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file - 1][rank - 1].getPiece()
-								.getPieceColor() == PieceColor.BLACK) {
-							// Adds Tile left above Pawn if a Black Piece is on it
-							tiles.add(CHESS_BOARD[file - 1][rank - 1]);
-						}
-					}
+				if (canCaptureLeftUp(file, rank, PieceColor.BLACK)) {
+					tiles.add(CHESS_BOARD[file - 1][rank - 1]);
 				}
-				if (isWithinBounds(file + 1) && isWithinBounds(rank - 1)) {
-					if (CHESS_BOARD[file + 1][rank - 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file + 1][rank - 1].getPiece()
-								.getPieceColor() == PieceColor.BLACK) {
-							// Adds Tile right above Pawn if a Black Piece is on it
-							tiles.add(CHESS_BOARD[file + 1][rank - 1]);
-						}
-					}
+				if (canCaptureRightUp(file, rank, PieceColor.BLACK)) {
+					tiles.add(CHESS_BOARD[file + 1][rank - 1]);
 				}
 			} else {
-				if (isWithinBounds(file - 1) && isWithinBounds(rank + 1)) {
-					if (CHESS_BOARD[file - 1][rank + 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file - 1][rank + 1].getPiece()
-								.getPieceColor() == PieceColor.WHITE) {
-							// Adds Tile left bellow Pawn if a White Piece is on it
-							tiles.add(CHESS_BOARD[file - 1][rank + 1]);
-						}
-					}
+				if (canCaptureLeftBellow(file, rank, PieceColor.WHITE)) {
+					tiles.add(CHESS_BOARD[file - 1][rank + 1]);
 				}
-				if (isWithinBounds(file + 1) && isWithinBounds(rank + 1)) {
-					if (CHESS_BOARD[file + 1][rank + 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file + 1][rank + 1].getPiece()
-								.getPieceColor() == PieceColor.WHITE) {
-							// Adds Tile left bellow Pawn if a White Piece is on it
-							tiles.add(CHESS_BOARD[file + 1][rank + 1]);
-						}
-					}
+				if (canCaptureRightBellow(file, rank, PieceColor.WHITE)) {
+					tiles.add(CHESS_BOARD[file + 1][rank + 1]);
 				}
 			}
 		} else {
 			if (pieceColorName == PieceColor.WHITE.name()) {
-				if (isWithinBounds(file - 1) && isWithinBounds(rank + 1)) {
-					if (CHESS_BOARD[file - 1][rank + 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file - 1][rank + 1].getPiece()
-								.getPieceColor() == PieceColor.BLACK) {
-							// Adds Tile left above Pawn if a Black Piece is on it
-							tiles.add(CHESS_BOARD[file - 1][rank + 1]);
-						}
-					}
+				if (canCaptureLeftBellow(file, rank, PieceColor.BLACK)) {
+					tiles.add(CHESS_BOARD[file - 1][rank + 1]);
 				}
-				if (isWithinBounds(file + 1) && isWithinBounds(rank + 1)) {
-					if (CHESS_BOARD[file + 1][rank + 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file + 1][rank + 1].getPiece()
-								.getPieceColor() == PieceColor.BLACK) {
-							// Adds Tile right above Pawn if a Black Piece is on it
-							tiles.add(CHESS_BOARD[file + 1][rank + 1]);
-						}
-					}
+				if (canCaptureRightBellow(file, rank, PieceColor.BLACK)) {
+					tiles.add(CHESS_BOARD[file + 1][rank + 1]);
 				}
 			} else {
-				if (isWithinBounds(file - 1) && isWithinBounds(rank - 1)) {
-					if (CHESS_BOARD[file - 1][rank - 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file - 1][rank - 1].getPiece()
-								.getPieceColor() == PieceColor.WHITE) {
-							// Adds Tile left bellow Pawn if a White Piece is on it
-							tiles.add(CHESS_BOARD[file - 1][rank - 1]);
-						}
-					}
+				if (canCaptureLeftUp(file, rank, PieceColor.WHITE)) {
+					tiles.add(CHESS_BOARD[file - 1][rank - 1]);
 				}
-				if (isWithinBounds(file + 1) && isWithinBounds(rank - 1)) {
-					if (CHESS_BOARD[file + 1][rank - 1].isPieceOnTile()) {
-						if (CHESS_BOARD[file + 1][rank - 1].getPiece()
-								.getPieceColor() == PieceColor.WHITE) {
-							// Adds Tile left bellow Pawn if a White Piece is on it
-							tiles.add(CHESS_BOARD[file + 1][rank - 1]);
-						}
-					}
+				if (canCaptureRightUp(file, rank, PieceColor.WHITE)) {
+					tiles.add(CHESS_BOARD[file + 1][rank - 1]);
 				}
-			}
-		}
-		return tiles;
-	}
-
-	public ArrayList<Tile> getEnPassantTiles() {
-		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		PieceColor pawnColor = this.getPieceColor();
-		int file = this.getFile();
-		int rank = this.getRank();
-		if (canEnPassantLeft()) {
-			if (pawnColor.name() == PLAYER_COLOR.name()) {
-				tiles.add(CHESS_BOARD[file - 1][rank - 1]);
-			} else {
-				tiles.add(CHESS_BOARD[file - 1][rank + 1]);
-			}
-		}
-		if (canEnPassantRight()) {
-			if (pawnColor.name() == PLAYER_COLOR.name()) {
-				tiles.add(CHESS_BOARD[file + 1][rank - 1]);
-			} else {
-				tiles.add(CHESS_BOARD[file + 1][rank + 1]);
 			}
 		}
 		return tiles;
 	}
 
 	// BOOLEAN
+	private boolean canCaptureLeftUp(int file, int rank, PieceColor opponentColor) {
+		if (!isWithinBounds(file - 1) || !isWithinBounds(rank - 1)) {
+			return false;
+		}
+		if (!CHESS_BOARD[file - 1][rank - 1].isPieceOnTile()) {
+			return false;
+		}
+		if (CHESS_BOARD[file - 1][rank - 1].getPiece().getPieceColor() != opponentColor) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean canCaptureRightUp(int file, int rank, PieceColor opponentColor) {
+		if (!isWithinBounds(file + 1) || !isWithinBounds(rank - 1)) {
+			return false;
+		}
+		if (!CHESS_BOARD[file + 1][rank - 1].isPieceOnTile()) {
+			return false;
+		}
+		if (CHESS_BOARD[file + 1][rank - 1].getPiece().getPieceColor() != opponentColor) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean canCaptureLeftBellow(int file, int rank, PieceColor opponentColor) {
+		if (!isWithinBounds(file - 1) || !isWithinBounds(rank + 1)) {
+			return false;
+		}
+		if (!CHESS_BOARD[file - 1][rank + 1].isPieceOnTile()) {
+			return false;
+		}
+		if (CHESS_BOARD[file - 1][rank + 1].getPiece().getPieceColor() != opponentColor) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean canCaptureRightBellow(int file, int rank, PieceColor opponentColor) {
+		if (!isWithinBounds(file + 1) || !isWithinBounds(rank + 1)) {
+			return false;
+		}
+		if (!CHESS_BOARD[file + 1][rank + 1].isPieceOnTile()) {
+			return false;
+		}
+		if (CHESS_BOARD[file + 1][rank + 1].getPiece().getPieceColor() != opponentColor) {
+			return false;
+		}
+		return true;
+	}
+
 	private boolean canEnPassantLeft() {
 		PieceColor pawnColor = this.getPieceColor();
 		int file = this.getFile();
@@ -248,6 +230,28 @@ public class Pawn extends Piece {
 		} else {
 			// Otherwise it can only move one Tile
 			tiles.add(CHESS_BOARD[file][rank + 1]);
+		}
+		return tiles;
+	}
+
+	public ArrayList<Tile> getEnPassantTiles() {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		PieceColor pawnColor = this.getPieceColor();
+		int file = this.getFile();
+		int rank = this.getRank();
+		if (canEnPassantLeft()) {
+			if (pawnColor.name() == PLAYER_COLOR.name()) {
+				tiles.add(CHESS_BOARD[file - 1][rank - 1]);
+			} else {
+				tiles.add(CHESS_BOARD[file - 1][rank + 1]);
+			}
+		}
+		if (canEnPassantRight()) {
+			if (pawnColor.name() == PLAYER_COLOR.name()) {
+				tiles.add(CHESS_BOARD[file + 1][rank - 1]);
+			} else {
+				tiles.add(CHESS_BOARD[file + 1][rank + 1]);
+			}
 		}
 		return tiles;
 	}
