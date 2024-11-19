@@ -13,6 +13,8 @@ import player.PlayerColor;
 public class Pawn extends Piece {
 	private PlayerColor playerColor = GameWindow.getPlayerColor();
 	private boolean hasTwoStepped = false;
+	final int PAWN_RANK_BLACK = Board.getPawnRankBlack();
+	final int PAWN_RANK_WHITE = Board.getPawnRankWhite();
 
 	public Pawn(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.PAWN, tile);
@@ -22,61 +24,17 @@ public class Pawn extends Piece {
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		String pieceColorName = this.getPieceColor().getName();
 		int file = this.getFile();
 		int rank = this.getRank();
-		final int PAWN_RANK_BLACK = Board.getPawnRankBlack();
-		final int PAWN_RANK_WHITE = Board.getPawnRankWhite();
-		String pieceColorName = this.getPieceColor().getName();
-		if (playerColor == PlayerColor.WHITE) {
-			if (pieceColorName == PieceColor.WHITE.name()) {
-				// Pawn movement when playerColor is White for the White Pieces
-				if (CHESS_BOARD[file][rank - 1].isPieceOnTile()) {
-					// if Piece is in front Pawn, it can't move
-					return new ArrayList<Tile>();
-				}
-				if (rank == PAWN_RANK_WHITE && !CHESS_BOARD[file][rank - 2].isPieceOnTile()) {
-					// if two Tiles in front of Pawn is empty, it can move one or two Tiles
-					tiles.add(CHESS_BOARD[file][rank - 1]);
-					tiles.add(CHESS_BOARD[file][rank - 2]);
-				} else {
-					// Otherwise it can only move one Tile
-					tiles.add(CHESS_BOARD[file][rank - 1]);
-				}
-			} else {
-				// Pawn movement when playerColor is White for the Black Pieces
-				if (CHESS_BOARD[file][rank + 1].isPieceOnTile()) {
-					return new ArrayList<Tile>();
-				}
-				if (rank == PAWN_RANK_BLACK && !CHESS_BOARD[file][rank + 2].isPieceOnTile()) {
-					tiles.add(CHESS_BOARD[file][rank + 1]);
-					tiles.add(CHESS_BOARD[file][rank + 2]);
-				} else {
-					tiles.add(CHESS_BOARD[file][rank + 1]);
-				}
+		if ((playerColor == PlayerColor.WHITE && pieceColorName == PieceColor.WHITE.name())
+				|| (playerColor == PlayerColor.BLACK && pieceColorName == PieceColor.BLACK.name())) {
+			for (Tile tile : getMoveableTilesPlayer(file, rank)) {
+				tiles.add(tile);
 			}
 		} else {
-			if (pieceColorName == PieceColor.WHITE.name()) {
-				// Pawn movement when playerColor is Black for the White Pieces
-				if (CHESS_BOARD[file][rank + 1].isPieceOnTile()) {
-					return new ArrayList<Tile>();
-				}
-				if (rank == PAWN_RANK_BLACK && !CHESS_BOARD[file][rank + 2].isPieceOnTile()) {
-					tiles.add(CHESS_BOARD[file][rank + 1]);
-					tiles.add(CHESS_BOARD[file][rank + 2]);
-				} else {
-					tiles.add(CHESS_BOARD[file][rank + 1]);
-				}
-			} else {
-				// Pawn movement when playerColor is Black for the Black Pieces
-				if (CHESS_BOARD[file][rank - 1].isPieceOnTile()) {
-					return new ArrayList<Tile>();
-				}
-				if (rank == PAWN_RANK_WHITE && !CHESS_BOARD[file][rank - 2].isPieceOnTile()) {
-					tiles.add(CHESS_BOARD[file][rank - 1]);
-					tiles.add(CHESS_BOARD[file][rank - 2]);
-				} else {
-					tiles.add(CHESS_BOARD[file][rank - 1]);
-				}
+			for (Tile tile : getMoveableTilesOpponent(file, rank)) {
+				tiles.add(tile);
 			}
 		}
 		return tiles;
@@ -258,6 +216,40 @@ public class Pawn extends Piece {
 	// GETTERS
 	public boolean hasTwoStepped() {
 		return hasTwoStepped;
+	}
+
+	private ArrayList<Tile> getMoveableTilesPlayer(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (CHESS_BOARD[file][rank - 1].isPieceOnTile()) {
+			// if Piece is in front Pawn, it can't move
+			return new ArrayList<Tile>();
+		}
+		if (rank == PAWN_RANK_WHITE && !CHESS_BOARD[file][rank - 2].isPieceOnTile()) {
+			// if two Tiles in front of Pawn is empty, it can move one or two Tiles
+			tiles.add(CHESS_BOARD[file][rank - 1]);
+			tiles.add(CHESS_BOARD[file][rank - 2]);
+		} else {
+			// Otherwise it can only move one Tile
+			tiles.add(CHESS_BOARD[file][rank - 1]);
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getMoveableTilesOpponent(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (CHESS_BOARD[file][rank + 1].isPieceOnTile()) {
+			// if Piece is in front Pawn, it can't move
+			return new ArrayList<Tile>();
+		}
+		if (rank == PAWN_RANK_BLACK && !CHESS_BOARD[file][rank + 2].isPieceOnTile()) {
+			// if two Tiles in front of Pawn is empty, it can move one or two Tiles
+			tiles.add(CHESS_BOARD[file][rank + 1]);
+			tiles.add(CHESS_BOARD[file][rank + 2]);
+		} else {
+			// Otherwise it can only move one Tile
+			tiles.add(CHESS_BOARD[file][rank + 1]);
+		}
+		return tiles;
 	}
 
 	// SETTERS
