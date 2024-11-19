@@ -17,7 +17,9 @@ The project's code includes:<br>
   ![Screenshot_4](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-indicators.png)
 - Playable as Black & Turn Based Movement
   ![Screenshot_5](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-position-black.png)
-- Piece Capture & Detection
+- Piece Capture & Highlight
   ![Screenshot_5](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-capture-highlights.png)
 - Castling
   ![Screenshot_6](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-castling.png)
+- En Passant
+  ![Screenshot_7](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-en-passant.png)

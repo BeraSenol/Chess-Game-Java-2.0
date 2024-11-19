@@ -12,6 +12,7 @@ import player.PlayerColor;
 
 public class Pawn extends Piece {
 	private PlayerColor playerColor = GameWindow.getPlayerColor();
+	private boolean hasTwoStepped = false;
 
 	public Pawn(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.PAWN, tile);
@@ -169,5 +170,98 @@ public class Pawn extends Piece {
 			}
 		}
 		return tiles;
+	}
+
+	public ArrayList<Tile> getEnPassantTiles() {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		PieceColor pawnColor = this.getPieceColor();
+		int file = this.getFile();
+		int rank = this.getRank();
+		if (canEnPassantLeft()) {
+			if (pawnColor.name() == PLAYER_COLOR.name()) {
+				tiles.add(CHESS_BOARD[file - 1][rank - 1]);
+			} else {
+				tiles.add(CHESS_BOARD[file - 1][rank + 1]);
+			}
+		}
+		if (canEnPassantRight()) {
+			if (pawnColor.name() == PLAYER_COLOR.name()) {
+				tiles.add(CHESS_BOARD[file + 1][rank - 1]);
+			} else {
+				tiles.add(CHESS_BOARD[file + 1][rank + 1]);
+			}
+		}
+		return tiles;
+	}
+
+	// BOOLEAN
+	private boolean canEnPassantLeft() {
+		PieceColor pawnColor = this.getPieceColor();
+		int file = this.getFile();
+		int rank = this.getRank();
+		if (!isWithinBounds(file - 1)) {
+			return false;
+		}
+		if (!CHESS_BOARD[file - 1][rank].isPieceOnTile()) {
+			return false;
+		}
+		if (CHESS_BOARD[file - 1][rank].getPiece().getPieceType() != PieceType.PAWN
+				&& isPieceColorTurnColor()) {
+			return false;
+		}
+		if (pawnColor.name() == PLAYER_COLOR.name()) {
+			if (rank != 3) {
+				return false;
+			}
+		} else {
+			if (rank != 4) {
+				return false;
+			}
+		}
+		Pawn pawn = (Pawn) CHESS_BOARD[file - 1][rank].getPiece();
+		if (pawn.hasTwoStepped()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean canEnPassantRight() {
+		PieceColor pawnColor = this.getPieceColor();
+		int file = this.getFile();
+		int rank = this.getRank();
+		if (!isWithinBounds(file + 1)) {
+			return false;
+		}
+		if (!CHESS_BOARD[file + 1][rank].isPieceOnTile()) {
+			return false;
+		}
+		if (CHESS_BOARD[file + 1][rank].getPiece().getPieceType() != PieceType.PAWN
+				&& isPieceColorTurnColor()) {
+			return false;
+		}
+		if (pawnColor.name() == PLAYER_COLOR.name()) {
+			if (rank != 3) {
+				return false;
+			}
+		} else {
+			if (rank != 4) {
+				return false;
+			}
+		}
+		Pawn pawn = (Pawn) CHESS_BOARD[file + 1][rank].getPiece();
+		if (pawn.hasTwoStepped()) {
+			return true;
+		}
+		return false;
+	}
+
+	// GETTERS
+	public boolean hasTwoStepped() {
+		return hasTwoStepped;
+	}
+
+	// SETTERS
+	public void setHasTwoStepped(boolean hasTwoStepped) {
+		this.hasTwoStepped = hasTwoStepped;
 	}
 }

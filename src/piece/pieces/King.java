@@ -86,7 +86,7 @@ public class King extends Piece {
 					return false;
 				}
 				if (Board.getChessBoard()[0][7].getPiece().getMoveCount() != 0) {
-					// Cannot castle THE ROOK!!! has moved
+					// Cannot castle if THE ROOK!!! has moved
 					return false;
 				}
 				if (Board.getChessBoard()[1][7].isPieceOnTile()

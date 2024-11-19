@@ -194,5 +194,6 @@ public class Board {
 
 	public void removePieceFromBoard(Piece piece) {
 		onBoardPieces.remove(piece);
+		piece.getTile().removePiece();
 	}
 }
