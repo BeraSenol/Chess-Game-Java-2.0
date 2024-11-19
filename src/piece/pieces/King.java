@@ -17,20 +17,17 @@ public class King extends Piece {
 
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
-		ArrayList<Tile> tile = new ArrayList<Tile>();
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				if (isWithinBounds(file + i) && isWithinBounds(rank + j)
-						&& !CHESS_BOARD[file + i][rank + j].isPieceOnTile()
-						&& (i != 0 || j != 0)) {
-					// Adds empty Tiles around the King
-					tile.add(CHESS_BOARD[file + i][rank + j]);
+				if (isMoveable(file, rank, i, j)) {
+					tiles.add(CHESS_BOARD[file + i][rank + j]);
 				}
 			}
 		}
-		return tile;
+		return tiles;
 	}
 
 	@Override
@@ -203,5 +200,14 @@ public class King extends Piece {
 				return true;
 			}
 		}
+	}
+
+	private boolean isMoveable(int file, int rank, int i, int j) {
+		if (isWithinBounds(file + i) && isWithinBounds(rank + j)
+				&& !CHESS_BOARD[file + i][rank + j].isPieceOnTile() && (i != 0 || j != 0)) {
+			// Adds empty Tiles around the King
+			return true;
+		}
+		return false;
 	}
 }

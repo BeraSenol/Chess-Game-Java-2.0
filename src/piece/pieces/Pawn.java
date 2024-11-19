@@ -21,6 +21,7 @@ public class Pawn extends Piece {
 		pieceImage = getPieceImage(PieceType.PAWN, pieceColor);
 	}
 
+	// MOVEABLE INTERFACE
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
