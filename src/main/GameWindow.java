@@ -233,20 +233,37 @@ public class GameWindow extends JPanel implements Runnable {
 	private void castleLeft(PieceColor kingColor) {
 		movePiece(Board.getChessBoard()[Board.getKing(kingColor).getFile() - 2][Board.getKing(kingColor)
 				.getRank()], Board.getKing(kingColor));
-		if (kingColor == PieceColor.WHITE) {
-			movePiece(Board.getChessBoard()[3][7], Board.getChessBoard()[0][7].getPiece());
+		if (playerColor == PlayerColor.WHITE) {
+			if (kingColor == PieceColor.WHITE) {
+				movePiece(Board.getChessBoard()[3][7], Board.getChessBoard()[0][7].getPiece());
+			} else {
+				movePiece(Board.getChessBoard()[3][0], Board.getChessBoard()[0][0].getPiece());
+			}
 		} else {
-			movePiece(Board.getChessBoard()[3][0], Board.getChessBoard()[0][0].getPiece());
+			if (kingColor == PieceColor.WHITE) {
+				movePiece(Board.getChessBoard()[2][0], Board.getChessBoard()[0][0].getPiece());
+			} else {
+				movePiece(Board.getChessBoard()[2][7], Board.getChessBoard()[0][7].getPiece());
+			}
 		}
+
 	}
 
 	private void castleRight(PieceColor kingColor) {
 		movePiece(Board.getChessBoard()[Board.getKing(kingColor).getFile() + 2][Board.getKing(kingColor)
 				.getRank()], Board.getKing(kingColor));
-		if (kingColor == PieceColor.WHITE) {
-			movePiece(Board.getChessBoard()[5][7], Board.getChessBoard()[7][7].getPiece());
+		if (playerColor == PlayerColor.WHITE) {
+			if (kingColor == PieceColor.WHITE) {
+				movePiece(Board.getChessBoard()[5][7], Board.getChessBoard()[7][7].getPiece());
+			} else {
+				movePiece(Board.getChessBoard()[5][0], Board.getChessBoard()[7][0].getPiece());
+			}
 		} else {
-			movePiece(Board.getChessBoard()[5][0], Board.getChessBoard()[7][0].getPiece());
+			if (kingColor == PieceColor.WHITE) {
+				movePiece(Board.getChessBoard()[4][0], Board.getChessBoard()[7][0].getPiece());
+			} else {
+				movePiece(Board.getChessBoard()[4][7], Board.getChessBoard()[7][7].getPiece());
+			}
 		}
 	}
 

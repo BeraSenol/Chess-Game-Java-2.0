@@ -46,23 +46,17 @@ public class King extends Piece {
 	}
 
 	public Tile getLeftCastleTile() {
-		Tile tile = null;
-		int file = this.getFile();
-		int rank = this.getRank();
 		if (canCastleLeft(getPieceColor())) {
-			tile = CHESS_BOARD[file - 2][rank];
+			return CHESS_BOARD[this.getFile() - 2][this.getRank()];
 		}
-		return tile;
+		return null;
 	}
 
 	public Tile getRightCastleTile() {
-		Tile tile = null;
-		int file = this.getFile();
-		int rank = this.getRank();
 		if (canCastleRight(getPieceColor())) {
-			tile = CHESS_BOARD[file + 2][rank];
+			return CHESS_BOARD[this.getFile() + 2][this.getRank()];
 		}
-		return tile;
+		return null;
 	}
 
 	public boolean canCastleLeft(PieceColor kingColor) {
@@ -73,7 +67,7 @@ public class King extends Piece {
 		}
 		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			if (kingColor == PieceColor.WHITE) {
-				if (Board.getChessBoard()[0][7].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[0][7])) {
 					// Cannot castle if Piece in the corner is not A ROOK!!!
 					return false;
 				}
@@ -89,7 +83,7 @@ public class King extends Piece {
 				}
 				return true;
 			} else {
-				if (Board.getChessBoard()[0][0].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[0][0])) {
 					return false;
 				}
 				if (Board.getChessBoard()[0][0].getPiece().getMoveCount() != 0) {
@@ -104,7 +98,7 @@ public class King extends Piece {
 			}
 		} else {
 			if (kingColor == PieceColor.WHITE) {
-				if (Board.getChessBoard()[0][0].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[0][0])) {
 					return false;
 				}
 				if (Board.getChessBoard()[0][0].getPiece().getMoveCount() != 0) {
@@ -116,7 +110,7 @@ public class King extends Piece {
 				}
 				return true;
 			} else {
-				if (Board.getChessBoard()[0][7].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[0][7])) {
 					return false;
 				}
 				if (Board.getChessBoard()[0][7].getPiece().getMoveCount() != 0) {
@@ -139,7 +133,7 @@ public class King extends Piece {
 		}
 		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			if (kingColor == PieceColor.WHITE) {
-				if (Board.getChessBoard()[7][7].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[7][7])) {
 					// Cannot castle if Piece in the corner is not A ROOK!!!
 					return false;
 				}
@@ -154,7 +148,7 @@ public class King extends Piece {
 				}
 				return true;
 			} else {
-				if (Board.getChessBoard()[7][0].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[7][0])) {
 					return false;
 				}
 				if (Board.getChessBoard()[7][0].getPiece().getMoveCount() != 0) {
@@ -168,7 +162,7 @@ public class King extends Piece {
 			}
 		} else {
 			if (kingColor == PieceColor.WHITE) {
-				if (Board.getChessBoard()[7][0].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[7][0])) {
 					return false;
 				}
 				if (Board.getChessBoard()[7][0].getPiece().getMoveCount() != 0) {
@@ -181,7 +175,7 @@ public class King extends Piece {
 				}
 				return true;
 			} else {
-				if (Board.getChessBoard()[7][7].getPiece().getPieceType() != PieceType.ROOK) {
+				if (!doesTileContainRook(Board.getChessBoard()[7][7])) {
 					return false;
 				}
 				if (Board.getChessBoard()[7][7].getPiece().getMoveCount() != 0) {
@@ -222,5 +216,12 @@ public class King extends Piece {
 			return false;
 		}
 		return true;
+	}
+
+	private boolean doesTileContainRook(Tile tile) {
+		if (tile.getPiece().getPieceType() == PieceType.ROOK) {
+			return true;
+		}
+		return false;
 	}
 }
