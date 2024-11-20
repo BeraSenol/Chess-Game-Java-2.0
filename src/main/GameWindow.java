@@ -300,16 +300,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private void restoreTileColors() {
 		if (getHighlightedTiles() != null) {
 			for (Tile tile : getHighlightedTiles()) {
-				switch (tile.getTileColor()) {
-				case TileColor.LIGHT_RED:
-					tile.setTileColor(TileColor.LIGHT);
-					break;
-				case TileColor.DARK_RED:
-					tile.setTileColor(TileColor.DARK);
-					break;
-				default:
-					break;
-				}
+				tile.setTileColor(tile.getInitialTileColor());
 			}
 		}
 		setHighlightedTiles(new ArrayList<Tile>());

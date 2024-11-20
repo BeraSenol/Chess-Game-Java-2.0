@@ -4,7 +4,7 @@ import piece.Piece;
 public class Tile {
 	public static int tileSize = 100;
 	private int file, rank;
-	private TileColor tileColor;
+	private TileColor tileColor, initialTileColor;
 	private String fileLabel, rankLabel;
 	private Piece piece;
 
@@ -13,6 +13,7 @@ public class Tile {
 		this.file = file;
 		this.rank = rank;
 		this.tileColor = tileColor;
+		this.initialTileColor = tileColor;
 		this.fileLabel = fileLabel;
 		this.rankLabel = rankLabel;
 		this.piece = piece;
@@ -49,6 +50,10 @@ public class Tile {
 
 	public TileColor getTileColor() {
 		return tileColor;
+	}
+
+	public TileColor getInitialTileColor() {
+		return initialTileColor;
 	}
 
 	public String getFileLabel() {

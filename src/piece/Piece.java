@@ -160,11 +160,7 @@ public class Piece implements Moveable {
 
 	public void drawCaptureableTiles(Graphics2D g2, ArrayList<Tile> tiles) {
 		for (Tile tile : tiles) {
-			if (tile.getTileColor() == TileColor.LIGHT) {
-				tile.setTileColor(TileColor.LIGHT_RED);
-			} else if (tile.getTileColor() == TileColor.DARK) {
-				tile.setTileColor(TileColor.DARK_RED);
-			}
+			tile.setTileColor(TileColor.RED);
 		}
 	}
 
