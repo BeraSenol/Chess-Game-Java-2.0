@@ -123,10 +123,10 @@ public class King extends Piece {
 		if (!isWithinBounds(file + i) || !isWithinBounds(rank + j)) {
 			return false;
 		}
-		if (CHESS_BOARD[file + i][rank + j].isPieceOnTile()) {
+		if (i == 0 && j == 0) {
 			return false;
 		}
-		if (!(i != 0 || j != 0)) {
+		if (CHESS_BOARD[file + i][rank + j].isPieceOnTile()) {
 			return false;
 		}
 		return true;
@@ -136,7 +136,7 @@ public class King extends Piece {
 		if (!isWithinBounds(file + i) || !isWithinBounds(rank + j)) {
 			return false;
 		}
-		if (!(i != 0 || j != 0)) {
+		if (i == 0 && j == 0) {
 			return false;
 		}
 		if (!CHESS_BOARD[file + i][rank + j].isPieceOnTile()

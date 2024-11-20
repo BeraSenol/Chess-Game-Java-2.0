@@ -18,33 +18,17 @@ public class Bishop extends Piece {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
-		int i = 1;
-		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
-				&& !CHESS_BOARD[file + i][rank - i].isPieceOnTile()) {
-			// Adds empty Tiles right-above the Bishop
-			tiles.add(CHESS_BOARD[file + i][rank - i]);
-			i++;
+		for (Tile tile : getTilesLeftAbove(file, rank)) {
+			tiles.add(tile);
 		}
-		i = 1;
-		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
-				&& !CHESS_BOARD[file + i][rank + i].isPieceOnTile()) {
-			// Adds empty Tiles right-bellow the Bishop
-			tiles.add(CHESS_BOARD[file + i][rank + i]);
-			i++;
+		for (Tile tile : getTilesRightAbove(file, rank)) {
+			tiles.add(tile);
 		}
-		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
-				&& !CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
-			// Adds empty Tiles left-above the Bishop
-			tiles.add(CHESS_BOARD[file - i][rank + i]);
-			i++;
+		for (Tile tile : getTilesLeftBellow(file, rank)) {
+			tiles.add(tile);
 		}
-		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
-				&& !CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
-			// Adds empty Tiles left-bellow the Bishop
-			tiles.add(CHESS_BOARD[file - i][rank - i]);
-			i++;
+		for (Tile tile : getTilesRightBellow(file, rank)) {
+			tiles.add(tile);
 		}
 		return tiles;
 	}
@@ -96,6 +80,54 @@ public class Bishop extends Piece {
 				}
 				break;
 			}
+			i++;
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesRightAbove(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		int i = 1;
+		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
+				&& !CHESS_BOARD[file + i][rank - i].isPieceOnTile()) {
+			// Adds empty Tiles right-above the Bishop
+			tiles.add(CHESS_BOARD[file + i][rank - i]);
+			i++;
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesLeftAbove(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		int i = 1;
+		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
+				&& !CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
+			// Adds empty Tiles right-above the Bishop
+			tiles.add(CHESS_BOARD[file - i][rank - i]);
+			i++;
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesLeftBellow(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		int i = 1;
+		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
+				&& !CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
+			// Adds empty Tiles right-above the Bishop
+			tiles.add(CHESS_BOARD[file - i][rank + i]);
+			i++;
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesRightBellow(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		int i = 1;
+		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
+				&& !CHESS_BOARD[file + i][rank + i].isPieceOnTile()) {
+			// Adds empty Tiles right-above the Bishop
+			tiles.add(CHESS_BOARD[file + i][rank + i]);
 			i++;
 		}
 		return tiles;
