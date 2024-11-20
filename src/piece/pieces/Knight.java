@@ -16,51 +16,9 @@ public class Knight extends Piece {
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		int file = this.getFile();
-		int rank = this.getRank();
-		if (isWithinBounds(file - 2)) {
-			// Two Tiles left
-			if (isWithinBounds(rank + 1) && !CHESS_BOARD[file - 2][rank + 1].isPieceOnTile()) {
-				// One Tiles down if empty
-				tiles.add(CHESS_BOARD[file - 2][rank + 1]);
-			}
-			if (isWithinBounds(rank - 1) && !CHESS_BOARD[file - 2][rank - 1].isPieceOnTile()) {
-				// One Tiles up if empty
-				tiles.add(CHESS_BOARD[file - 2][rank - 1]);
-			}
-		}
-		if (isWithinBounds(file - 1)) {
-			// One Tile left
-			if (isWithinBounds(rank + 2) && !CHESS_BOARD[file - 1][rank + 2].isPieceOnTile()) {
-				// Two Tiles down if empty
-				tiles.add(CHESS_BOARD[file - 1][rank + 2]);
-			}
-			if (isWithinBounds(rank - 2) && !CHESS_BOARD[file - 1][rank - 2].isPieceOnTile()) {
-				// Two Tiles up if empty
-				tiles.add(CHESS_BOARD[file - 1][rank - 2]);
-			}
-		}
-
-		if (isWithinBounds(file + 1)) {
-			// One Tile right
-			if (isWithinBounds(rank + 2) && !CHESS_BOARD[file + 1][rank + 2].isPieceOnTile()) {
-				// Two Tiles down if empty
-				tiles.add(CHESS_BOARD[file + 1][rank + 2]);
-			}
-			if (isWithinBounds(rank - 2) && !CHESS_BOARD[file + 1][rank - 2].isPieceOnTile()) {
-				// Two Tiles up if empty
-				tiles.add(CHESS_BOARD[file + 1][rank - 2]);
-			}
-		}
-		if (isWithinBounds(file + 2)) {
-			// Two Tiles right
-			if (isWithinBounds(rank + 1) && !CHESS_BOARD[file + 2][rank + 1].isPieceOnTile()) {
-				// One Tiles down if empty
-				tiles.add(CHESS_BOARD[file + 2][rank + 1]);
-			}
-			if (isWithinBounds(rank - 1) && !CHESS_BOARD[file + 2][rank - 1].isPieceOnTile()) {
-				// One Tiles up if empty
-				tiles.add(CHESS_BOARD[file + 2][rank - 1]);
+		for (Tile tile : getTilesInSight(getFile(), getRank())) {
+			if (!tile.isPieceOnTile()) {
+				tiles.add(tile);
 			}
 		}
 		return tiles;
@@ -69,11 +27,92 @@ public class Knight extends Piece {
 	@Override
 	public ArrayList<Tile> getCaptureableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		for (Tile tile : getMoveableTiles()) {
-			if (tile.getPiece() != null) {
+		for (Tile tile : getTilesInSight(getFile(), getRank())) {
+			if (tile.isPieceOnTile()) {
 				if (!tile.getPiece().isPieceColorTurnColor()) {
 					tiles.add(tile);
 				}
+			}
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesInSight(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		for (Tile tile : getTilesInSightLongLeft(file, rank)) {
+			tiles.add(tile);
+		}
+		for (Tile tile : getTilesInSightShortLeft(file, rank)) {
+			tiles.add(tile);
+		}
+		for (Tile tile : getTilesInSightShortRight(file, rank)) {
+			tiles.add(tile);
+		}
+		for (Tile tile : getTilesInSightLongRight(file, rank)) {
+			tiles.add(tile);
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesInSightLongLeft(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (isWithinBounds(file - 2)) {
+			// Two Tiles left
+			if (isWithinBounds(rank + 1)) {
+				// One Tiles down if empty
+				tiles.add(CHESS_BOARD[file - 2][rank + 1]);
+			}
+			if (isWithinBounds(rank - 1)) {
+				// One Tiles up if empty
+				tiles.add(CHESS_BOARD[file - 2][rank - 1]);
+			}
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesInSightShortLeft(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (isWithinBounds(file - 1)) {
+			// One Tile left
+			if (isWithinBounds(rank + 2)) {
+				// Two Tiles down if empty
+				tiles.add(CHESS_BOARD[file - 1][rank + 2]);
+			}
+			if (isWithinBounds(rank - 2)) {
+				// Two Tiles up if empty
+				tiles.add(CHESS_BOARD[file - 1][rank - 2]);
+			}
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesInSightShortRight(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (isWithinBounds(file + 1)) {
+			// One Tile right
+			if (isWithinBounds(rank + 2)) {
+				// Two Tiles down if empty
+				tiles.add(CHESS_BOARD[file + 1][rank + 2]);
+			}
+			if (isWithinBounds(rank - 2)) {
+				// Two Tiles up if empty
+				tiles.add(CHESS_BOARD[file + 1][rank - 2]);
+			}
+		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> getTilesInSightLongRight(int file, int rank) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (isWithinBounds(file + 2)) {
+			// Two Tiles right
+			if (isWithinBounds(rank + 1)) {
+				// One Tiles down if empty
+				tiles.add(CHESS_BOARD[file + 2][rank + 1]);
+			}
+			if (isWithinBounds(rank - 1)) {
+				// One Tiles up if empty
+				tiles.add(CHESS_BOARD[file + 2][rank - 1]);
 			}
 		}
 		return tiles;
