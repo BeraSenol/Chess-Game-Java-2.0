@@ -18,16 +18,16 @@ public class Bishop extends Piece {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
-		for (Tile tile : getTilesLeftAbove(file, rank)) {
+		for (Tile tile : getMoveableTilesLeftAbove(file, rank)) {
 			tiles.add(tile);
 		}
-		for (Tile tile : getTilesRightAbove(file, rank)) {
+		for (Tile tile : getMoveableTilesRightAbove(file, rank)) {
 			tiles.add(tile);
 		}
-		for (Tile tile : getTilesLeftBellow(file, rank)) {
+		for (Tile tile : getMoveableTilesLeftBellow(file, rank)) {
 			tiles.add(tile);
 		}
-		for (Tile tile : getTilesRightBellow(file, rank)) {
+		for (Tile tile : getMoveableTilesRightBellow(file, rank)) {
 			tiles.add(tile);
 		}
 		return tiles;
@@ -38,54 +38,82 @@ public class Bishop extends Piece {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
+		if (getCapturableTileRightAbove(file, rank) != null) {
+			tiles.add(getCapturableTileRightAbove(file, rank));
+		}
+		if (getCapturableTileLeftAbove(file, rank) != null) {
+			tiles.add(getCapturableTileLeftAbove(file, rank));
+		}
+		if (getCapturableTileLeftBellow(file, rank) != null) {
+			tiles.add(getCapturableTileLeftBellow(file, rank));
+		}
+		if (getCapturableTileRightBellow(file, rank) != null) {
+			tiles.add(getCapturableTileRightBellow(file, rank));
+		}
+		return tiles;
+	}
+
+	private Tile getCapturableTileRightAbove(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank - i)) {
 			if (CHESS_BOARD[file + i][rank - i].isPieceOnTile()) {
 				if (!CHESS_BOARD[file + i][rank - i].getPiece().isPieceColorTurnColor()) {
 					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file + i][rank - i]);
+					return CHESS_BOARD[file + i][rank - i];
 				}
 				break;
 			}
 			i++;
 		}
-		i = 1;
+		return null;
+	}
+
+	private Tile getCapturableTileLeftAbove(int file, int rank) {
+		int i = 1;
+		while (isWithinBounds(file - i) && isWithinBounds(rank - i)) {
+			if (CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
+				if (!CHESS_BOARD[file - i][rank - i].getPiece().isPieceColorTurnColor()) {
+					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
+					return CHESS_BOARD[file - i][rank - i];
+				}
+				break;
+			}
+			i++;
+		}
+		return null;
+	}
+
+	private Tile getCapturableTileLeftBellow(int file, int rank) {
+		int i = 1;
+		while (isWithinBounds(file - i) && isWithinBounds(rank + i)) {
+			if (CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
+				if (!CHESS_BOARD[file - i][rank + i].getPiece().isPieceColorTurnColor()) {
+					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
+					return CHESS_BOARD[file - i][rank + i];
+				}
+				break;
+			}
+			i++;
+		}
+		return null;
+	}
+
+	private Tile getCapturableTileRightBellow(int file, int rank) {
+		int i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank + i)) {
 			if (CHESS_BOARD[file + i][rank + i].isPieceOnTile()) {
 				if (!CHESS_BOARD[file + i][rank + i].getPiece().isPieceColorTurnColor()) {
 					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file + i][rank + i]);
+					return CHESS_BOARD[file + i][rank + i];
 				}
 				break;
 			}
 			i++;
 		}
-		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank + i)) {
-			if (CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - i][rank + i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile left-above the Bishop PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file - i][rank + i]);
-				}
-				break;
-			}
-			i++;
-		}
-		i = 1;
-		while (isWithinBounds(file - i) && isWithinBounds(rank - i)) {
-			if (CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - i][rank - i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile left-bellow the Bishop PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file - i][rank - i]);
-				}
-				break;
-			}
-			i++;
-		}
-		return tiles;
+		return null;
 	}
 
-	private ArrayList<Tile> getTilesRightAbove(int file, int rank) {
+	private ArrayList<Tile> getMoveableTilesRightAbove(int file, int rank) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank - i)
@@ -97,7 +125,7 @@ public class Bishop extends Piece {
 		return tiles;
 	}
 
-	private ArrayList<Tile> getTilesLeftAbove(int file, int rank) {
+	private ArrayList<Tile> getMoveableTilesLeftAbove(int file, int rank) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank - i)
@@ -109,7 +137,7 @@ public class Bishop extends Piece {
 		return tiles;
 	}
 
-	private ArrayList<Tile> getTilesLeftBellow(int file, int rank) {
+	private ArrayList<Tile> getMoveableTilesLeftBellow(int file, int rank) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank + i)
@@ -121,7 +149,7 @@ public class Bishop extends Piece {
 		return tiles;
 	}
 
-	private ArrayList<Tile> getTilesRightBellow(int file, int rank) {
+	private ArrayList<Tile> getMoveableTilesRightBellow(int file, int rank) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank + i)
