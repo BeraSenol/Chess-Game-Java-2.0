@@ -32,6 +32,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private ArrayList<Tile> highlightedTiles = new ArrayList<Tile>();
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
+	private Pawn enPassantPawn = null;
 	private Graphics2D graphics2d = null;
 	private Thread gameThread = null;
 	private JFrame jFrame = null;
@@ -44,6 +45,7 @@ public class GameWindow extends JPanel implements Runnable {
 		addMouseMotionListener(PLAYER_MOUSE);
 	}
 
+	// RUNNABLE INTERFACE
 	@Override
 	public void run() {
 		// GAME LOOP - Controls how many refreshes every nanosecond
@@ -70,29 +72,24 @@ public class GameWindow extends JPanel implements Runnable {
 		super.paintComponent(g);
 		graphics2d = (Graphics2D) g;
 		BOARD.drawChessBoard(graphics2d);
-		BOARD.drawInitialChessPieces(graphics2d);
 		if (getSelectedPiece() != null) {
+			// Draws the indicatorImage while Piece is selected
 			if (getSelectedPiece().getMoveableTiles() != null) {
-				// Draws the indicatorImage while Piece is selected
 				getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
 			}
+			// Highlights captureableTile while Piece is selected
 			if (getSelectedPiece().getCaptureableTiles() != null) {
-				// Highlights captureableTile while Piece is selected
 				setHighlightedTiles(getSelectedPiece().getCaptureableTiles());
 				getSelectedPiece().drawCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
+			// Draws indicatorImage if King can castle
 			if (getSelectedPiece().getPieceType() == PieceType.KING) {
-				// Draws indicatorImage if King can castle
 				drawCastleIndicators(getSelectedPiece());
 			}
+			// Highlight enPassantTiles if Pawn can En Passant
 			if (getSelectedPiece().getPieceType() == PieceType.PAWN) {
-				Pawn pawn = (Pawn) getSelectedPiece();
-				if (pawn.getEnPassantTiles() != null) {
-					// Highlights enPassantTiles if Pawn can EnPassant
-					setHighlightedTiles(pawn.getEnPassantTiles());
-					pawn.drawCaptureableTiles(graphics2d, pawn.getEnPassantTiles());
-				}
+				drawEnPassantTiles(getSelectedPiece());
 			}
 		}
 		if (getSelectedPiece() == null) {
@@ -106,67 +103,43 @@ public class GameWindow extends JPanel implements Runnable {
 		if (PLAYER_MOUSE.isMousePressed()) {
 			// Selects the Tile the PLAYER_MOUSE is on
 			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
+			// Selects Piece if selectedTile is not empty and contains Piece of same Color
 			if (getSelectedPiece() == null) {
-				// Selects Piece if selectedTile is not empty and contains Piece of same Color
 				if (getSelectedTile().isPieceOnTile()) {
 					if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
 						setSelectedPiece(getSelectedTile().getPiece());
 					}
 				}
 			}
+			// Re-selects Piece if selectedTile contains Piece of same Color
 			if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
-				// Re-selects Piece if selectedTile contains Piece of same Color
 				if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
 					setSelectedPiece(getSelectedTile().getPiece());
 					restoreTileColors();
 				}
 			}
+			// Moves the Piece if selectedTile is in getMoveableTiles()
 			if (getSelectedPiece() != null && getSelectedPiece().getMoveableTiles() != null) {
-				// Moves the Piece if selectedTile is in getMoveableTiles()
 				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
-					if (getSelectedPiece().getPieceType() == PieceType.PAWN) {
-						if (Math.abs(getSelectedPiece().getRank()
-								- getSelectedTile().getRank()) == 2) {
-							// Sets hasTwoStepped to true if selectedPiece is a Pawn
-							Pawn pawn = (Pawn) getSelectedPiece();
-							pawn.setHasTwoStepped(true);
-						}
-					}
+					detectPawnTwoStep(getSelectedPiece(), getSelectedTile());
 					movePiece(getSelectedTile(), getSelectedPiece());
 					endTurn();
 				}
 			}
+			// Captures the Piece if selectedTile is in getCaptureableTiles()
 			if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
-				// Captures the Piece if selectedTile is in getCaptureableTiles()
 				if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())) {
 					capturePiece(getSelectedTile(), getSelectedPiece());
 					endTurn();
 				}
 			}
+			// Checks if Castling is possible
 			if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.KING) {
-				// Enables Castling
-				King king = (King) getSelectedPiece();
-				if (king.getLeftCastleTile() == getSelectedTile()) {
-					if (king.canCastleLeft(king.getPieceColor())) {
-						castleLeft(king.getPieceColor());
-						endTurn();
-					}
-				}
-				if (king.getRightCastleTile() == getSelectedTile()
-						&& king.canCastleRight(king.getPieceColor())) {
-					castleRight(king.getPieceColor());
-					endTurn();
-				}
+				tryCastling();
 			}
+			// Checks if EnPassant is possible
 			if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.PAWN) {
-				Pawn pawn = (Pawn) getSelectedPiece();
-				if (pawn.getEnPassantTiles() != null) {
-					if (pawn.getEnPassantTiles().contains(getSelectedTile())) {
-						enPassant(getSelectedTile(), pawn);
-						endTurn();
-						System.out.println(getSelectedPiece());
-					}
-				}
+				tryEnPassant();
 			}
 			setSelectedTile(null);
 		}
@@ -177,6 +150,10 @@ public class GameWindow extends JPanel implements Runnable {
 	// GETTERS
 	private Piece getSelectedPiece() {
 		return selectedPiece;
+	}
+
+	private Pawn getEnPassantPawn() {
+		return enPassantPawn;
 	}
 
 	private Tile getSelectedTile() {
@@ -204,6 +181,10 @@ public class GameWindow extends JPanel implements Runnable {
 		this.selectedPiece = piece;
 	}
 
+	private void setEnPassantPawn(Pawn pawn) {
+		this.enPassantPawn = pawn;
+	}
+
 	private void setTurnColor(PlayerColor turnColor) {
 		GameWindow.turnColor = turnColor;
 	}
@@ -228,6 +209,79 @@ public class GameWindow extends JPanel implements Runnable {
 	private void capturePiece(Tile tile, Piece piece) {
 		BOARD.removePieceFromBoard(tile.getPiece());
 		movePiece(tile, piece);
+	}
+
+	private void endTurn() {
+		if (getTurnColor() == PlayerColor.WHITE) {
+			setTurnColor(PlayerColor.BLACK);
+			this.jFrame.setTitle("Chess Game - Black to play!");
+		} else {
+			setTurnColor(PlayerColor.WHITE);
+			this.jFrame.setTitle("Chess Game - White to play!");
+		}
+		if (getEnPassantPawn() != null) {
+			if (getEnPassantPawn().isPieceColorTurnColor()) {
+				getEnPassantPawn().setHasTwoStepped(false);
+			}
+		}
+	}
+
+	private void restoreTileColors() {
+		if (getHighlightedTiles() != null) {
+			for (Tile tile : getHighlightedTiles()) {
+				tile.setTileColor(tile.getInitialTileColor());
+			}
+		}
+		setHighlightedTiles(new ArrayList<Tile>());
+	}
+
+	// VOID - EN PASSANT
+	private void tryEnPassant() {
+		Pawn pawn = (Pawn) getSelectedPiece();
+		if (pawn.getEnPassantTiles() != null) {
+			if (pawn.getEnPassantTiles().contains(getSelectedTile())) {
+				enPassant(getSelectedTile(), pawn);
+				endTurn();
+			}
+		}
+	}
+
+	private void enPassant(Tile tile, Piece piece) {
+		BOARD.removePieceFromBoard(CHESS_BOARD[tile.getFile()][piece.getRank()].getPiece());
+		movePiece(tile, piece);
+	}
+
+	private void drawEnPassantTiles(Piece piece) {
+		Pawn pawn = (Pawn) piece;
+		if (pawn.getEnPassantTiles() != null) {
+			// Highlights enPassantTiles if Pawn can EnPassant
+			setHighlightedTiles(pawn.getEnPassantTiles());
+			pawn.drawCaptureableTiles(graphics2d, pawn.getEnPassantTiles());
+		}
+	}
+
+	private void detectPawnTwoStep(Piece piece, Tile tile) {
+		if (piece.getPieceType() == PieceType.PAWN) {
+			if (Math.abs(piece.getRank() - tile.getRank()) == 2) {
+				// Sets hasTwoStepped to true if selectedPiece is a Pawn
+				Pawn pawn = (Pawn) getSelectedPiece();
+				pawn.setHasTwoStepped(true);
+				setEnPassantPawn(pawn);
+			}
+		}
+	}
+
+	// VOID - CASTLING
+	private void tryCastling() {
+		King king = (King) getSelectedPiece();
+		if (king.getLeftCastleTile() == getSelectedTile() && king.canCastleLeft(king.getPieceColor())) {
+			castleLeft(king.getPieceColor());
+			endTurn();
+		}
+		if (king.getRightCastleTile() == getSelectedTile() && king.canCastleRight(king.getPieceColor())) {
+			castleRight(king.getPieceColor());
+			endTurn();
+		}
 	}
 
 	private void castleLeft(PieceColor kingColor) {
@@ -267,11 +321,6 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	private void enPassant(Tile tile, Piece piece) {
-		BOARD.removePieceFromBoard(CHESS_BOARD[tile.getFile()][piece.getRank()].getPiece());
-		movePiece(tile, piece);
-	}
-
 	private void drawCastleIndicators(Piece piece) {
 		King king = (King) piece;
 		ArrayList<Tile> castleTiles = new ArrayList<Tile>();
@@ -285,24 +334,5 @@ public class GameWindow extends JPanel implements Runnable {
 		if (castleTiles != null) {
 			king.drawIndicators(graphics2d, castleTiles);
 		}
-	}
-
-	private void endTurn() {
-		if (getTurnColor() == PlayerColor.WHITE) {
-			setTurnColor(PlayerColor.BLACK);
-			this.jFrame.setTitle("Chess Game - Black to play!");
-		} else {
-			setTurnColor(PlayerColor.WHITE);
-			this.jFrame.setTitle("Chess Game - White to play!");
-		}
-	}
-
-	private void restoreTileColors() {
-		if (getHighlightedTiles() != null) {
-			for (Tile tile : getHighlightedTiles()) {
-				tile.setTileColor(tile.getInitialTileColor());
-			}
-		}
-		setHighlightedTiles(new ArrayList<Tile>());
 	}
 }
