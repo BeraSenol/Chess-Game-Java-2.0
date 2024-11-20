@@ -69,68 +69,10 @@ public class Knight extends Piece {
 	@Override
 	public ArrayList<Tile> getCaptureableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		int file = this.getFile();
-		int rank = this.getRank();
-		if (isWithinBounds(file - 2)) {
-			// Two Tiles left
-			if (isWithinBounds(rank + 1) && CHESS_BOARD[file - 2][rank + 1].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - 2][rank + 1].getPiece().isPieceColorTurnColor()) {
-					// One Tiles down if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file - 2][rank + 1]);
-				}
-
-			}
-			if (isWithinBounds(rank - 1) && CHESS_BOARD[file - 2][rank - 1].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - 2][rank - 1].getPiece().isPieceColorTurnColor()) {
-					// One Tiles up if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file - 2][rank - 1]);
-				}
-
-			}
-		}
-		if (isWithinBounds(file - 1)) {
-			// One Tile left
-			if (isWithinBounds(rank + 2) && CHESS_BOARD[file - 1][rank + 2].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - 1][rank + 2].getPiece().isPieceColorTurnColor()) {
-					// Two Tiles down if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file - 1][rank + 2]);
-				}
-			}
-			if (isWithinBounds(rank - 2) && CHESS_BOARD[file - 1][rank - 2].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - 1][rank - 2].getPiece().isPieceColorTurnColor()) {
-					// Two Tiles up if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file - 1][rank - 2]);
-				}
-			}
-		}
-
-		if (isWithinBounds(file + 1)) {
-			// One Tile right
-			if (isWithinBounds(rank + 2) && CHESS_BOARD[file + 1][rank + 2].isPieceOnTile()) {
-				if (!CHESS_BOARD[file + 1][rank + 2].getPiece().isPieceColorTurnColor()) {
-					// Two Tiles down if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file + 1][rank + 2]);
-				}
-			}
-			if (isWithinBounds(rank - 2) && CHESS_BOARD[file + 1][rank - 2].isPieceOnTile()) {
-				if (!CHESS_BOARD[file + 1][rank - 2].getPiece().isPieceColorTurnColor()) {
-					// Two Tiles up if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file + 1][rank - 2]);
-				}
-			}
-		}
-		if (isWithinBounds(file + 2)) {
-			// Two Tiles right
-			if (isWithinBounds(rank + 1) && CHESS_BOARD[file + 2][rank + 1].isPieceOnTile()) {
-				if (!CHESS_BOARD[file + 2][rank + 1].getPiece().isPieceColorTurnColor()) {
-					// One Tiles down if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file + 2][rank + 1]);
-				}
-			}
-			if (isWithinBounds(rank - 1) && CHESS_BOARD[file + 2][rank - 1].isPieceOnTile()) {
-				if (!CHESS_BOARD[file + 2][rank - 1].getPiece().isPieceColorTurnColor()) {
-					// One Tiles up if PieceColor is not TurnColor
-					tiles.add(CHESS_BOARD[file + 2][rank - 1]);
+		for (Tile tile : getMoveableTiles()) {
+			if (tile.getPiece() != null) {
+				if (!tile.getPiece().isPieceColorTurnColor()) {
+					tiles.add(tile);
 				}
 			}
 		}
