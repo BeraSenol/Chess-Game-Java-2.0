@@ -3,11 +3,8 @@ package board;
 import java.awt.Graphics2D;
 
 import main.GameWindow;
-import piece.Piece;
-import piece.PieceColor;
-import piece.PieceType;
+import piece.*;
 import piece.pieces.*;
-import player.*;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -39,7 +36,7 @@ public class Board {
 	// CONSTRUCTOR
 	public Board() {
 		initializeTiles();
-		createPieces();
+		createInitialPieces();
 		addPiecesToChessBoard();
 	}
 
@@ -85,15 +82,16 @@ public class Board {
 	}
 
 	// VOID
+	public void removePieceFromBoard(Piece piece) {
+		onBoardPieces.remove(piece);
+		piece.getTile().removePiece();
+	}
+
+	// VOID - DRAW
 	public void drawChessBoard(Graphics2D g2) {
 		drawTiles(g2);
 		drawFileRankLabels(g2);
 		drawChessPieces(g2);
-	}
-
-	public void removePieceFromBoard(Piece piece) {
-		onBoardPieces.remove(piece);
-		piece.getTile().removePiece();
 	}
 
 	private void drawTiles(Graphics2D g2) {
@@ -163,7 +161,7 @@ public class Board {
 		}
 	}
 
-	private void createPieces() {
+	private void createInitialPieces() {
 		int pawnRankBlack = PAWN_RANK_BLACK;
 		int pieceRankBlack = PIECE_RANK_BLACK;
 		int pieceRankWhite = PIECE_RANK_WHITE;

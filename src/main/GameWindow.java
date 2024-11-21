@@ -12,9 +12,9 @@ import board.*;
 import piece.Piece;
 import piece.PieceColor;
 import piece.PieceType;
+import piece.PlayerColor;
 import piece.pieces.King;
 import piece.pieces.Pawn;
-import player.PlayerColor;
 
 public class GameWindow extends JPanel implements Runnable {
 	private final int INTERVAL = 100000000;
@@ -80,7 +80,7 @@ public class GameWindow extends JPanel implements Runnable {
 			// Highlights captureableTile while Piece is selected
 			if (getSelectedPiece().getCaptureableTiles() != null) {
 				setHighlightedTiles(getSelectedPiece().getCaptureableTiles());
-				getSelectedPiece().drawCaptureableTiles(graphics2d,
+				getSelectedPiece().highlightCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
 			// Draws indicatorImage if King can castle
@@ -89,7 +89,7 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			// Highlight enPassantTiles if Pawn can En Passant
 			if (getSelectedPiece().getPieceType() == PieceType.PAWN) {
-				drawEnPassantTiles(getSelectedPiece());
+				highlightEnPassantTiles(getSelectedPiece());
 			}
 		}
 		if (getSelectedPiece() == null) {
@@ -135,17 +135,15 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			// Checks if Castling is possible
 			if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.KING) {
-				tryCastling();
+				tryCastling(getSelectedPiece(), getSelectedTile());
 			}
 			// Checks if EnPassant is possible
 			if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.PAWN) {
-				tryEnPassant();
+				tryEnPassant(getSelectedPiece(), getSelectedTile());
 			}
 			setSelectedTile(null);
 		}
 	}
-
-	// BOOLEANS
 
 	// GETTERS
 	private Piece getSelectedPiece() {
@@ -219,6 +217,7 @@ public class GameWindow extends JPanel implements Runnable {
 			setTurnColor(PlayerColor.WHITE);
 			this.jFrame.setTitle("Chess Game - White to play!");
 		}
+		// Disables En Passant when a turn is ended
 		if (getEnPassantPawn() != null) {
 			if (getEnPassantPawn().isPieceColorTurnColor()) {
 				getEnPassantPawn().setHasTwoStepped(false);
@@ -236,27 +235,14 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	// VOID - EN PASSANT
-	private void tryEnPassant() {
-		Pawn pawn = (Pawn) getSelectedPiece();
-		if (pawn.getEnPassantTiles() != null) {
-			if (pawn.getEnPassantTiles().contains(getSelectedTile())) {
-				enPassant(getSelectedTile(), pawn);
-				endTurn();
-			}
-		}
-	}
-
-	private void enPassant(Tile tile, Piece piece) {
-		BOARD.removePieceFromBoard(CHESS_BOARD[tile.getFile()][piece.getRank()].getPiece());
-		movePiece(tile, piece);
-	}
-
-	private void drawEnPassantTiles(Piece piece) {
+	private void tryEnPassant(Piece piece, Tile tile) {
 		Pawn pawn = (Pawn) piece;
 		if (pawn.getEnPassantTiles() != null) {
-			// Highlights enPassantTiles if Pawn can EnPassant
-			setHighlightedTiles(pawn.getEnPassantTiles());
-			pawn.drawCaptureableTiles(graphics2d, pawn.getEnPassantTiles());
+			if (pawn.getEnPassantTiles().contains(tile)) {
+				BOARD.removePieceFromBoard(CHESS_BOARD[tile.getFile()][piece.getRank()].getPiece());
+				movePiece(tile, piece);
+				endTurn();
+			}
 		}
 	}
 
@@ -271,14 +257,23 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
+	private void highlightEnPassantTiles(Piece piece) {
+		Pawn pawn = (Pawn) piece;
+		if (pawn.getEnPassantTiles() != null) {
+			// Highlights enPassantTiles if Pawn can EnPassant
+			setHighlightedTiles(pawn.getEnPassantTiles());
+			pawn.highlightCaptureableTiles(graphics2d, pawn.getEnPassantTiles());
+		}
+	}
+
 	// VOID - CASTLING
-	private void tryCastling() {
-		King king = (King) getSelectedPiece();
-		if (king.getLeftCastleTile() == getSelectedTile() && king.canCastleLeft(king.getPieceColor())) {
+	private void tryCastling(Piece piece, Tile tile) {
+		King king = (King) piece;
+		if (king.getLeftCastleTile() == tile && king.canCastleLeft(king.getPieceColor())) {
 			castleLeft(king.getPieceColor());
 			endTurn();
 		}
-		if (king.getRightCastleTile() == getSelectedTile() && king.canCastleRight(king.getPieceColor())) {
+		if (king.getRightCastleTile() == tile && king.canCastleRight(king.getPieceColor())) {
 			castleRight(king.getPieceColor());
 			endTurn();
 		}

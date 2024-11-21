@@ -1,4 +1,4 @@
-package player;
+package piece;
 
 public enum PlayerColor {
 	    WHITE("WHITE"),

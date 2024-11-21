@@ -33,14 +33,6 @@ public class Mouse extends MouseAdapter {
 	}
 
 	// GETTERS
-	public int getMouseX() {
-		return x;
-	}
-
-	public int getMouseY() {
-		return y;
-	}
-
 	public int getMouseFile() {
 		return (int) Math.floor(x / TILE_SIZE);
 	}

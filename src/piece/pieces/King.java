@@ -7,7 +7,7 @@ import board.Tile;
 import piece.Piece;
 import piece.PieceColor;
 import piece.PieceType;
-import player.PlayerColor;
+import piece.PlayerColor;
 
 public class King extends Piece {
 	public King(PieceColor pieceColor, Tile tile) {
@@ -61,6 +61,34 @@ public class King extends Piece {
 	}
 
 	// BOOLEANS
+	private boolean isMoveable(int file, int rank, int i, int j) {
+		if (!isWithinBounds(file + i) || !isWithinBounds(rank + j)) {
+			return false;
+		}
+		if (i == 0 && j == 0) {
+			return false;
+		}
+		if (CHESS_BOARD[file + i][rank + j].isPieceOnTile()) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isCaptureable(int file, int rank, int i, int j) {
+		if (!isWithinBounds(file + i) || !isWithinBounds(rank + j)) {
+			return false;
+		}
+		if (i == 0 && j == 0) {
+			return false;
+		}
+		if (!CHESS_BOARD[file + i][rank + j].isPieceOnTile()
+				|| CHESS_BOARD[file + i][rank + j].getPiece().isPieceColorTurnColor()) {
+			return false;
+		}
+		return true;
+	}
+
+	// BOOLEANS - CASTLING
 	public boolean canCastleLeft(PieceColor kingColor) {
 		King king = Board.getKing(kingColor);
 		if (hasMoved(king)) {
@@ -117,33 +145,6 @@ public class King extends Piece {
 			}
 		}
 		return false;
-	}
-
-	private boolean isMoveable(int file, int rank, int i, int j) {
-		if (!isWithinBounds(file + i) || !isWithinBounds(rank + j)) {
-			return false;
-		}
-		if (i == 0 && j == 0) {
-			return false;
-		}
-		if (CHESS_BOARD[file + i][rank + j].isPieceOnTile()) {
-			return false;
-		}
-		return true;
-	}
-
-	private boolean isCaptureable(int file, int rank, int i, int j) {
-		if (!isWithinBounds(file + i) || !isWithinBounds(rank + j)) {
-			return false;
-		}
-		if (i == 0 && j == 0) {
-			return false;
-		}
-		if (!CHESS_BOARD[file + i][rank + j].isPieceOnTile()
-				|| CHESS_BOARD[file + i][rank + j].getPiece().isPieceColorTurnColor()) {
-			return false;
-		}
-		return true;
 	}
 
 	private boolean canRookCastleLeft(Tile tile, int count) {

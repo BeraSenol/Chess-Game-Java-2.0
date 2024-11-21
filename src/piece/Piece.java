@@ -11,7 +11,6 @@ import board.Board;
 import board.Tile;
 import board.TileColor;
 import main.GameWindow;
-import player.PlayerColor;
 
 public class Piece implements Moveable {
 	private final int TILE_SIZE = Tile.getTileSize();
@@ -115,6 +114,14 @@ public class Piece implements Moveable {
 		return tile;
 	}
 
+	public ArrayList<Tile> getMoveableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getMoveableTiles'");
+	}
+
+	public ArrayList<Tile> getCaptureableTiles() {
+		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
+	}
+
 	// SETTERS
 	public void setFile(int file) {
 		this.file = file;
@@ -145,6 +152,17 @@ public class Piece implements Moveable {
 	}
 
 	// VOID
+	public void incrementMoveCount() {
+		this.moveCount++;
+	}
+
+	public void highlightCaptureableTiles(Graphics2D g2, ArrayList<Tile> tiles) {
+		for (Tile tile : tiles) {
+			tile.setTileColor(TileColor.RED);
+		}
+	}
+
+	// VOID - DRAW
 	public void drawPiece(Graphics2D g2) {
 		g2.drawImage(pieceImage, x, y, TILE_SIZE, TILE_SIZE, null);
 	}
@@ -156,23 +174,5 @@ public class Piece implements Moveable {
 			g2.drawImage(getMoveableTileImage(), tile.getX() + INDICATOR_OFFSET,
 					tile.getY() + INDICATOR_OFFSET, INDICATOR_SIZE, INDICATOR_SIZE, null);
 		}
-	}
-
-	public void drawCaptureableTiles(Graphics2D g2, ArrayList<Tile> tiles) {
-		for (Tile tile : tiles) {
-			tile.setTileColor(TileColor.RED);
-		}
-	}
-
-	public void incrementMoveCount() {
-		this.moveCount++;
-	}
-
-	public ArrayList<Tile> getMoveableTiles() {
-		throw new UnsupportedOperationException("Unimplemented method 'getMoveableTiles'");
-	}
-
-	public ArrayList<Tile> getCaptureableTiles() {
-		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
 	}
 }

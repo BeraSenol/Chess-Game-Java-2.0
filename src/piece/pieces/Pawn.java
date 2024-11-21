@@ -8,7 +8,7 @@ import main.GameWindow;
 import piece.Piece;
 import piece.PieceColor;
 import piece.PieceType;
-import player.PlayerColor;
+import piece.PlayerColor;
 
 public class Pawn extends Piece {
 	private PlayerColor playerColor = GameWindow.getPlayerColor();
@@ -136,6 +136,7 @@ public class Pawn extends Piece {
 		return true;
 	}
 
+	// BOOLEAN - EN PASSANT
 	private boolean canEnPassantLeft() {
 		PieceColor pawnColor = this.getPieceColor();
 		int file = this.getFile();
