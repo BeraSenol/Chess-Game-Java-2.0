@@ -2,6 +2,7 @@ package piece.pieces;
 
 import java.util.ArrayList;
 
+
 import board.Board;
 import board.Tile;
 import main.GameWindow;
@@ -11,10 +12,11 @@ import piece.PieceType;
 import piece.PlayerColor;
 
 public class Pawn extends Piece {
-	private PlayerColor playerColor = GameWindow.getPlayerColor();
-	private boolean hasTwoStepped = false;
 	final int PAWN_RANK_BLACK = Board.getPawnRankBlack();
 	final int PAWN_RANK_WHITE = Board.getPawnRankWhite();
+	private boolean hasTwoStepped = false;
+	private PlayerColor playerColor = GameWindow.getPlayerColor();
+	
 
 	public Pawn(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.PAWN, tile);
@@ -25,9 +27,9 @@ public class Pawn extends Piece {
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		String pieceColorName = this.getPieceColor().getName();
-		if (playerColor == PlayerColor.WHITE && pieceColorName == PieceColor.WHITE.name()
-				|| playerColor == PlayerColor.BLACK && pieceColorName == PieceColor.BLACK.name()) {
+		PieceColor pieceColor = this.getPieceColor();
+		if (playerColor == PlayerColor.WHITE && pieceColor == PieceColor.WHITE
+				|| playerColor == PlayerColor.BLACK && pieceColor == PieceColor.BLACK) {
 			// If PlayerColor == PieceColor, Pawn can only move upwards
 			for (Tile tile : getMoveableTilesPlayer(this.getFile(), this.getRank())) {
 				tiles.add(tile);
@@ -197,6 +199,23 @@ public class Pawn extends Piece {
 		return false;
 	}
 
+	// BOOLEAN - PROMOTION
+	public boolean canPromote() {
+		int rank = this.getRank();
+		PieceColor pieceColor = this.getPieceColor();
+		if (playerColor == PlayerColor.WHITE && pieceColor == PieceColor.WHITE
+				|| playerColor == PlayerColor.BLACK && pieceColor == PieceColor.BLACK) {
+			if (rank == 0) {
+				return true;
+			}
+		} else {
+			if (rank == 7) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// GETTERS
 	public boolean hasTwoStepped() {
 		return hasTwoStepped;
@@ -236,6 +255,7 @@ public class Pawn extends Piece {
 		return tiles;
 	}
 
+	// GETTERS - EN PASSANT
 	public ArrayList<Tile> getEnPassantTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		PieceColor pawnColor = this.getPieceColor();
@@ -262,4 +282,5 @@ public class Pawn extends Piece {
 	public void setHasTwoStepped(boolean hasTwoStepped) {
 		this.hasTwoStepped = hasTwoStepped;
 	}
+
 }

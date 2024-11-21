@@ -18,14 +18,13 @@ import piece.pieces.Pawn;
 
 public class GameWindow extends JPanel implements Runnable {
 	private final int INTERVAL = 100000000;
-	private final int WINDOW_WIDTH = 800;
-	private final int WINDOW_HEIGHT = 800;
+	private final int WINDOW_SIZE = 800;
 	private final int FPS = 5;
 	private final double DRAW_INTERVAL = INTERVAL / FPS;
 	private final Board BOARD = new Board();
 	private final Tile[][] CHESS_BOARD = Board.getChessBoard();
-	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_HEIGHT, WINDOW_WIDTH);
-	private final Mouse PLAYER_MOUSE = new Mouse();
+	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_SIZE, WINDOW_SIZE);
+	public final static Mouse PLAYER_MOUSE = new Mouse();
 
 	private static PlayerColor playerColor = PlayerColor.WHITE;
 	private static PlayerColor turnColor = PlayerColor.WHITE;
@@ -35,14 +34,15 @@ public class GameWindow extends JPanel implements Runnable {
 	private Pawn enPassantPawn = null;
 	private Graphics2D graphics2d = null;
 	private Thread gameThread = null;
-	private JFrame jFrame = null;
+	private JFrame gameWindow = null;
 
 	// CONSTRUCTOR
 	protected GameWindow(JFrame jFrame) {
-		this.jFrame = jFrame;
+		this.gameWindow = jFrame;
 		setPreferredSize(WINDOW_DIMENSION);
 		addMouseListener(PLAYER_MOUSE);
 		addMouseMotionListener(PLAYER_MOUSE);
+		promotion(PieceColor.WHITE);
 	}
 
 	// RUNNABLE INTERFACE
@@ -212,10 +212,10 @@ public class GameWindow extends JPanel implements Runnable {
 	private void endTurn() {
 		if (getTurnColor() == PlayerColor.WHITE) {
 			setTurnColor(PlayerColor.BLACK);
-			this.jFrame.setTitle("Chess Game - Black to play!");
+			this.gameWindow.setTitle("Chess Game - Black to play!");
 		} else {
 			setTurnColor(PlayerColor.WHITE);
-			this.jFrame.setTitle("Chess Game - White to play!");
+			this.gameWindow.setTitle("Chess Game - White to play!");
 		}
 		// Disables En Passant when a turn is ended
 		if (getEnPassantPawn() != null) {
@@ -324,10 +324,20 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 		if (king.canCastleRight(piece.getPieceColor())) {
 			castleTiles.add(king.getRightCastleTile());
-
 		}
 		if (castleTiles != null) {
 			king.drawIndicators(graphics2d, castleTiles);
 		}
+	}
+
+	private void promotion(PieceColor pawnColor) {
+		JFrame promotionWindow = new JFrame("Choose Piece");
+		promotionWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		promotionWindow.setVisible(true);
+		promotionWindow.setResizable(false);
+		promotionWindow.setLocationRelativeTo(null);
+		PromotionBoard promotionBoard = new PromotionBoard(pawnColor);
+		promotionWindow.add(promotionBoard);
+		promotionWindow.pack();
 	}
 }

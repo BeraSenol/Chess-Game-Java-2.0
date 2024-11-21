@@ -23,3 +23,5 @@ The project's code includes:<br>
   ![Screenshot_6](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-castling.png)
 - En Passant
   ![Screenshot_7](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-pieces-en-passant.png)
+- Promotion
+  ![Screenshot_8](https://github.com/BeraSenol/Chess-Game-Java-2.0/blob/main/res/readme/chess-board-promotion.png)
