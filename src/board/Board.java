@@ -37,11 +37,11 @@ public class Board {
 	public Board() {
 		initializeTiles();
 		createInitialPieces();
-		addPiecesToChessBoard();
+		initializePieces();
 	}
 
 	// GETTERS
-	public static Tile[][] getChessBoard() {
+	public static Tile[][] getBoardTiles() {
 		return chessBoard;
 	}
 
@@ -82,6 +82,10 @@ public class Board {
 	}
 
 	// VOID
+	public static void addPieceToBoard(Piece piece) {
+		onBoardPieces.add(piece);
+	}
+
 	public void removePieceFromBoard(Piece piece) {
 		onBoardPieces.remove(piece);
 		piece.getTile().removePiece();
@@ -168,10 +172,10 @@ public class Board {
 		int pawnRankWhite = PAWN_RANK_WHITE;
 		if (PLAYER_COLOR == PlayerColor.BLACK) {
 			// Inverses ranks if playing as Black
-			pawnRankBlack = PAWN_RANK_WHITE;
 			pieceRankBlack = PIECE_RANK_WHITE;
-			pieceRankWhite = PIECE_RANK_BLACK;
+			pawnRankBlack = PAWN_RANK_WHITE;
 			pawnRankWhite = PAWN_RANK_BLACK;
+			pieceRankWhite = PIECE_RANK_BLACK;
 		}
 		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
 			// Creates Pieces
@@ -215,7 +219,7 @@ public class Board {
 		setOnBoardPieces(INITIAL_PIECES);
 	}
 
-	private void addPiecesToChessBoard() {
+	private void initializePieces() {
 		for (Piece piece : INITIAL_PIECES) {
 			// Adds created Pieces to chessBoard
 			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);

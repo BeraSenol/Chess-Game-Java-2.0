@@ -9,7 +9,7 @@ public class Mouse extends MouseAdapter {
 	private boolean mousePressed = false;
 	private int x, y;
 	private final int TILE_SIZE = Tile.getTileSize();
-	private final Tile[][] CHESS_BOARD = Board.chessBoard;
+	private final Tile[][] CHESS_TILES = Board.getBoardTiles();
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -41,8 +41,8 @@ public class Mouse extends MouseAdapter {
 		return (int) Math.floor(y / TILE_SIZE);
 	}
 
-	public Tile getHoveringTile() {
-		return CHESS_BOARD[getMouseFile()][getMouseRank()];
+	public Tile getHoveringTileChessBoard() {
+		return CHESS_TILES[getMouseFile()][getMouseRank()];
 	}
 
 	// SETTERS

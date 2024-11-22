@@ -15,16 +15,17 @@ import piece.PieceType;
 import piece.PlayerColor;
 import piece.pieces.King;
 import piece.pieces.Pawn;
+import piece.promotion.PromotionPanel;
 
 public class GameWindow extends JPanel implements Runnable {
+	private final static Mouse PLAYER_MOUSE = new Mouse();
 	private final int INTERVAL = 100000000;
-	private final int WINDOW_SIZE = 800;
 	private final int FPS = 5;
+	private final int WINDOW_SIZE = Tile.getTileSize() * 8;
 	private final double DRAW_INTERVAL = INTERVAL / FPS;
-	private final Board BOARD = new Board();
-	private final Tile[][] CHESS_BOARD = Board.getChessBoard();
+	private final Board CHESS_BOARD = new Board();
+	private final Tile[][] BOARD_TILES = Board.getBoardTiles();
 	private final Dimension WINDOW_DIMENSION = new Dimension(WINDOW_SIZE, WINDOW_SIZE);
-	public final static Mouse PLAYER_MOUSE = new Mouse();
 
 	private static PlayerColor playerColor = PlayerColor.WHITE;
 	private static PlayerColor turnColor = PlayerColor.WHITE;
@@ -42,7 +43,7 @@ public class GameWindow extends JPanel implements Runnable {
 		setPreferredSize(WINDOW_DIMENSION);
 		addMouseListener(PLAYER_MOUSE);
 		addMouseMotionListener(PLAYER_MOUSE);
-		promotion(PieceColor.WHITE);
+		promotion(PieceColor.WHITE, 5, 5);
 	}
 
 	// RUNNABLE INTERFACE
@@ -71,7 +72,7 @@ public class GameWindow extends JPanel implements Runnable {
 		// GAME LOOP - Controls what gets drawn
 		super.paintComponent(g);
 		graphics2d = (Graphics2D) g;
-		BOARD.drawChessBoard(graphics2d);
+		CHESS_BOARD.drawChessBoard(graphics2d);
 		if (getSelectedPiece() != null) {
 			// Draws the indicatorImage while Piece is selected
 			if (getSelectedPiece().getMoveableTiles() != null) {
@@ -102,7 +103,7 @@ public class GameWindow extends JPanel implements Runnable {
 		// GAME LOOP - Manipulates the PLAYER_MOUSE / Board / Pieces
 		if (PLAYER_MOUSE.isMousePressed()) {
 			// Selects the Tile the PLAYER_MOUSE is on
-			setSelectedTile(PLAYER_MOUSE.getHoveringTile());
+			setSelectedTile(PLAYER_MOUSE.getHoveringTileChessBoard());
 			// Selects Piece if selectedTile is not empty and contains Piece of same Color
 			if (getSelectedPiece() == null) {
 				if (getSelectedTile().isPieceOnTile()) {
@@ -146,6 +147,18 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	// GETTERS
+	public static PlayerColor getPlayerColor() {
+		return playerColor;
+	}
+
+	public static PlayerColor getTurnColor() {
+		return turnColor;
+	}
+
+	public static Mouse getPlayerMouse() {
+		return PLAYER_MOUSE;
+	}
+
 	private Piece getSelectedPiece() {
 		return selectedPiece;
 	}
@@ -156,14 +169,6 @@ public class GameWindow extends JPanel implements Runnable {
 
 	private Tile getSelectedTile() {
 		return selectedTile;
-	}
-
-	public static PlayerColor getPlayerColor() {
-		return playerColor;
-	}
-
-	public static PlayerColor getTurnColor() {
-		return turnColor;
 	}
 
 	private ArrayList<Tile> getHighlightedTiles() {
@@ -205,7 +210,7 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	private void capturePiece(Tile tile, Piece piece) {
-		BOARD.removePieceFromBoard(tile.getPiece());
+		CHESS_BOARD.removePieceFromBoard(tile.getPiece());
 		movePiece(tile, piece);
 	}
 
@@ -239,7 +244,8 @@ public class GameWindow extends JPanel implements Runnable {
 		Pawn pawn = (Pawn) piece;
 		if (pawn.getEnPassantTiles() != null) {
 			if (pawn.getEnPassantTiles().contains(tile)) {
-				BOARD.removePieceFromBoard(CHESS_BOARD[tile.getFile()][piece.getRank()].getPiece());
+				CHESS_BOARD.removePieceFromBoard(
+						BOARD_TILES[tile.getFile()][piece.getRank()].getPiece());
 				movePiece(tile, piece);
 				endTurn();
 			}
@@ -280,38 +286,38 @@ public class GameWindow extends JPanel implements Runnable {
 	}
 
 	private void castleLeft(PieceColor kingColor) {
-		movePiece(Board.getChessBoard()[Board.getKing(kingColor).getFile() - 2][Board.getKing(kingColor)
+		movePiece(Board.getBoardTiles()[Board.getKing(kingColor).getFile() - 2][Board.getKing(kingColor)
 				.getRank()], Board.getKing(kingColor));
 		if (playerColor == PlayerColor.WHITE) {
 			if (kingColor == PieceColor.WHITE) {
-				movePiece(Board.getChessBoard()[3][7], Board.getChessBoard()[0][7].getPiece());
+				movePiece(Board.getBoardTiles()[3][7], Board.getBoardTiles()[0][7].getPiece());
 			} else {
-				movePiece(Board.getChessBoard()[3][0], Board.getChessBoard()[0][0].getPiece());
+				movePiece(Board.getBoardTiles()[3][0], Board.getBoardTiles()[0][0].getPiece());
 			}
 		} else {
 			if (kingColor == PieceColor.WHITE) {
-				movePiece(Board.getChessBoard()[2][0], Board.getChessBoard()[0][0].getPiece());
+				movePiece(Board.getBoardTiles()[2][0], Board.getBoardTiles()[0][0].getPiece());
 			} else {
-				movePiece(Board.getChessBoard()[2][7], Board.getChessBoard()[0][7].getPiece());
+				movePiece(Board.getBoardTiles()[2][7], Board.getBoardTiles()[0][7].getPiece());
 			}
 		}
 
 	}
 
 	private void castleRight(PieceColor kingColor) {
-		movePiece(Board.getChessBoard()[Board.getKing(kingColor).getFile() + 2][Board.getKing(kingColor)
+		movePiece(Board.getBoardTiles()[Board.getKing(kingColor).getFile() + 2][Board.getKing(kingColor)
 				.getRank()], Board.getKing(kingColor));
 		if (playerColor == PlayerColor.WHITE) {
 			if (kingColor == PieceColor.WHITE) {
-				movePiece(Board.getChessBoard()[5][7], Board.getChessBoard()[7][7].getPiece());
+				movePiece(Board.getBoardTiles()[5][7], Board.getBoardTiles()[7][7].getPiece());
 			} else {
-				movePiece(Board.getChessBoard()[5][0], Board.getChessBoard()[7][0].getPiece());
+				movePiece(Board.getBoardTiles()[5][0], Board.getBoardTiles()[7][0].getPiece());
 			}
 		} else {
 			if (kingColor == PieceColor.WHITE) {
-				movePiece(Board.getChessBoard()[4][0], Board.getChessBoard()[7][0].getPiece());
+				movePiece(Board.getBoardTiles()[4][0], Board.getBoardTiles()[7][0].getPiece());
 			} else {
-				movePiece(Board.getChessBoard()[4][7], Board.getChessBoard()[7][7].getPiece());
+				movePiece(Board.getBoardTiles()[4][7], Board.getBoardTiles()[7][7].getPiece());
 			}
 		}
 	}
@@ -330,14 +336,14 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	private void promotion(PieceColor pawnColor) {
+	private void promotion(PieceColor pawnColor, int file, int rank) {
 		JFrame promotionWindow = new JFrame("Choose Piece");
 		promotionWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		promotionWindow.setVisible(true);
 		promotionWindow.setResizable(false);
 		promotionWindow.setLocationRelativeTo(null);
-		PromotionBoard promotionBoard = new PromotionBoard(pawnColor);
-		promotionWindow.add(promotionBoard);
+		PromotionPanel promotionPanel = new PromotionPanel(pawnColor, file, rank);
+		promotionWindow.add(promotionPanel);
 		promotionWindow.pack();
 	}
 }

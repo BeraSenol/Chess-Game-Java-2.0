@@ -96,21 +96,21 @@ public class King extends Piece {
 		}
 		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			if (kingColor == PieceColor.WHITE) {
-				if (canRookCastleRight(Board.getChessBoard()[0][7], 3)) {
+				if (canRookCastleRight(Board.getBoardTiles()[0][7], 3)) {
 					return true;
 				}
 			} else {
-				if (canRookCastleRight(Board.getChessBoard()[0][0], 3)) {
+				if (canRookCastleRight(Board.getBoardTiles()[0][0], 3)) {
 					return true;
 				}
 			}
 		} else {
 			if (kingColor == PieceColor.WHITE) {
-				if (canRookCastleRight(Board.getChessBoard()[0][0], 2)) {
+				if (canRookCastleRight(Board.getBoardTiles()[0][0], 2)) {
 					return true;
 				}
 			} else {
-				if (canRookCastleRight(Board.getChessBoard()[0][7], 2)) {
+				if (canRookCastleRight(Board.getBoardTiles()[0][7], 2)) {
 					return true;
 				}
 			}
@@ -125,21 +125,21 @@ public class King extends Piece {
 		}
 		if (PLAYER_COLOR == PlayerColor.WHITE) {
 			if (kingColor == PieceColor.WHITE) {
-				if (canRookCastleLeft(Board.getChessBoard()[7][7], 2)) {
+				if (canRookCastleLeft(Board.getBoardTiles()[7][7], 2)) {
 					return true;
 				}
 			} else {
-				if (canRookCastleLeft(Board.getChessBoard()[7][0], 2)) {
+				if (canRookCastleLeft(Board.getBoardTiles()[7][0], 2)) {
 					return true;
 				}
 			}
 		} else {
 			if (kingColor == PieceColor.WHITE) {
-				if (canRookCastleLeft(Board.getChessBoard()[7][0], 3)) {
+				if (canRookCastleLeft(Board.getBoardTiles()[7][0], 3)) {
 					return true;
 				}
 			} else {
-				if (canRookCastleLeft(Board.getChessBoard()[7][7], 3)) {
+				if (canRookCastleLeft(Board.getBoardTiles()[7][7], 3)) {
 					return true;
 				}
 			}
