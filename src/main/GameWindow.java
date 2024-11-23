@@ -206,6 +206,7 @@ public class GameWindow extends JPanel implements Runnable {
 		piece.incrementMoveCount();
 		tile.setPiece(piece);
 		setSelectedPiece(null);
+		// Detects if a Pawn can to Promote before a turn ends.
 		if (piece.getPieceType() == PieceType.PAWN) {
 			Pawn pawn = (Pawn) piece;
 			if (pawn.canPromote()) {
@@ -231,6 +232,7 @@ public class GameWindow extends JPanel implements Runnable {
 		if (getEnPassantPawn() != null) {
 			if (getEnPassantPawn().isPieceColorTurnColor()) {
 				getEnPassantPawn().setHasTwoStepped(false);
+				setEnPassantPawn(null);
 			}
 		}
 	}
@@ -242,6 +244,13 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 		}
 		setHighlightedTiles(new ArrayList<Tile>());
+	}
+
+	private void promotePawn(Pawn promotionPawn) {
+		JFrame promotionWindow = new JFrame("Choose Promotion Piece");
+		PromotionPanel promotionPanel = new PromotionPanel(promotionWindow, promotionPawn);
+		promotionWindow.add(promotionPanel);
+		promotionWindow.pack();
 	}
 
 	// VOID - EN PASSANT
@@ -340,14 +349,4 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	private void promotePawn(Pawn promotionPawn) {
-		JFrame promotionWindow = new JFrame("Choose Piece");
-		promotionWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		promotionWindow.setVisible(true);
-		promotionWindow.setResizable(false);
-		promotionWindow.setLocationRelativeTo(null);
-		PromotionPanel promotionPanel = new PromotionPanel(promotionPawn);
-		promotionWindow.add(promotionPanel);
-		promotionWindow.pack();
-	}
 }

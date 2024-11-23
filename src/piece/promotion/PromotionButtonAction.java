@@ -3,6 +3,8 @@ package piece.promotion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
+
 import board.Board;
 import board.Tile;
 import piece.Piece;
@@ -20,35 +22,65 @@ public class PromotionButtonAction implements ActionListener {
 	private Piece promotionPiece = null;
 	private PieceType selectedPieceType = null;
 	private Pawn promotionPawn = null;
+	private JFrame promotionWindow = null;
 
-	public PromotionButtonAction(PieceType selectedPieceType, Pawn promotionPawn) {
+	public PromotionButtonAction(JFrame promotionWindow, PieceType selectedPieceType, Pawn promotionPawn) {
+		this.promotionWindow = promotionWindow;
 		this.selectedPieceType = selectedPieceType;
 		this.promotionPawn = promotionPawn;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final int FILE = promotionPawn.getFile();
-		final int RANK = promotionPawn.getRank();
-		PieceColor selectedPieceColor = promotionPawn.getPieceColor();
-		switch (selectedPieceType) {
+		final int FILE = getPromotionPawn().getFile();
+		final int RANK = getPromotionPawn().getRank();
+		createPromotionPiece(FILE, RANK);
+		Board.removePieceFromBoard(getPromotionPawn());
+		Board.addPieceToBoard(BOARD_TILES[FILE][RANK], getPromotionPiece());
+		BOARD_TILES[FILE][RANK].setPiece(getPromotionPiece());
+		getPromotionWindow().dispose();
+	}
+
+	// GETTERS
+	private JFrame getPromotionWindow() {
+		return promotionWindow;
+	}
+
+	private Pawn getPromotionPawn() {
+		return promotionPawn;
+	}
+
+	private Piece getPromotionPiece() {
+		return promotionPiece;
+	}
+
+	private PieceType getSelectedPieceType() {
+		return selectedPieceType;
+	}
+
+	// SETTERS
+	private void setPromotionPiece(Piece piece) {
+		this.promotionPiece = piece;
+	}
+
+	// VOID
+	private void createPromotionPiece(final int FILE, final int RANK) {
+		final PieceColor PROMOTION_PAWN_COLOR = getPromotionPawn().getPieceColor();
+		switch (getSelectedPieceType()) {
 		case QUEEN:
-			promotionPiece = new Queen(selectedPieceColor, BOARD_TILES[FILE][RANK]);
+			setPromotionPiece(new Queen(PROMOTION_PAWN_COLOR, BOARD_TILES[FILE][RANK]));
 			break;
 		case BISHOP:
-			promotionPiece = new Bishop(selectedPieceColor, BOARD_TILES[FILE][RANK]);
+			setPromotionPiece(new Bishop(PROMOTION_PAWN_COLOR, BOARD_TILES[FILE][RANK]));
 			break;
 		case KNIGHT:
-			promotionPiece = new Knight(selectedPieceColor, BOARD_TILES[FILE][RANK]);
+			setPromotionPiece(new Knight(PROMOTION_PAWN_COLOR, BOARD_TILES[FILE][RANK]));
 			break;
 		case ROOK:
-			promotionPiece = new Rook(selectedPieceColor, BOARD_TILES[FILE][RANK]);
+			setPromotionPiece(new Rook(PROMOTION_PAWN_COLOR, BOARD_TILES[FILE][RANK]));
 			break;
 		default:
 			break;
 		}
-		Board.removePieceFromBoard(promotionPawn);
-		Board.addPieceToBoard(BOARD_TILES[FILE][RANK], promotionPiece);
-		BOARD_TILES[FILE][RANK].setPiece(promotionPiece);
 	}
 }
