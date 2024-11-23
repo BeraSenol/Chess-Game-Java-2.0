@@ -6,9 +6,8 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 <br/>
 <br/>
 
-# Features
 
-[Screenshots](https://github.com/BeraSenol/Chess-Game-Java-2.0b/wiki/Screenshots#features)
+# Features [(Screenshots)](https://github.com/BeraSenol/Chess-Game-Java-2.0b/wiki/Screenshots#features)
 
 - [x] Game Panel
 - [x] Game Loop
@@ -88,12 +87,12 @@ Options in a menu bar will be implemented to easily select player color etc (For
 `/piece`
 
 - `/pieces`
-- - `Bishop.java` Class with Movement & Capture Logic
-- - `King.java` Class with Movement,Capture & Castling Logic
-- - `Knight.java` Class with Movement & Capture Logic
-- - `Pawn.java:` Class with Movement, Capture & En Passant Logic
-- - `Queen.java` Class with Movement & Capture Logic
-- - `Rook.java` Class with Movement & Capture Logic
+- - `Bishop.java` Class with Movement & Capture logic
+- - `King.java` Class with Movement,Capture & Castling logic
+- - `Knight.java` Class with Movement & Capture logic
+- - `Pawn.java:` Class with Movement, Capture & En Passant logic
+- - `Queen.java` Class with Movement & Capture logic
+- - `Rook.java` Class with Movement & Capture logic
 - `/promotion`
 - - `PromotionButtonAction.java` Class with JButton ActionListener
 - - `PromotionPannel.java` Class with JPanel holding JButtons
