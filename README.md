@@ -26,8 +26,8 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 - [x] Promotion Panel
 - [ ] Pinned Piece Detection
 - [ ] Check Detection
-- [ ] Stalemate Detection
 - [ ] Checkmate Detection
+- [ ] Stalemate Detection
 - [ ] User Settings
 - [ ] Undo/Redo
 - [ ] PGN Notation
@@ -64,9 +64,10 @@ java -cp src/ Main
 
 Clicking on piece will reveal it's legal moves, click tile to move or re-select another piece to reveal it's legal moves, white always begins.
 
-Options in a menu bar will be implemented to easily select player color etc (For now change playerColor in GameWindow.java ln30 to PlayerColor.Black to play as black).
+Options in a menu bar will be implemented to easily select player color etc (For now change `playerColor` in `ln30:GameWindow.java` to `PlayerColor.Black` to play as black).
 
-`private static PlayerColor playerColor = PlayerColor.BLACK;`
+Default:
+`private static PlayerColor playerColor = PlayerColor.WHITE;`
 <br/>
 <br/>
 
@@ -74,33 +75,33 @@ Options in a menu bar will be implemented to easily select player color etc (For
 
 `/board`
 
-- `Board.Java` Class that creates Tile objects, draws chess board, creates and places Pieces.
-- `Tile.Java` Class that define Tile objects and hold a Piece.
-- `TileColor.Java` Enum holding possible TileColor values.
+- `Board.Java` Class that creates tile objects, draws chess board, creates and places pieces.
+- `Tile.Java` Class that define tile objects and hold a piece.
+- `TileColor.Java` Enum holding possible tile color values.
 
 `/main`
 
-- `App.java` JFrame that serves GameWindow's JPanel
+- `App.java` Main Class that serves `GameWindow.java` 
 - `GameWindow.java` Main file that runs the game, update() and repaint() are the main methods which loop the game.
-- `Mouse.java` Class that detects MouseEvents()
+- `Mouse.java` Class that detects mouse events.
 
 `/piece`
 
 - `/pieces`
-- - `Bishop.java` Class with Movement & Capture logic
-- - `King.java` Class with Movement,Capture & Castling logic
-- - `Knight.java` Class with Movement & Capture logic
-- - `Pawn.java:` Class with Movement, Capture & En Passant logic
-- - `Queen.java` Class with Movement & Capture logic
-- - `Rook.java` Class with Movement & Capture logic
+- - `Bishop.java` Class with movement & capture logic.
+- - `King.java` Class with movement, capture & castling logic.
+- - `Knight.java` Class with movement & capture logic.
+- - `Pawn.java:` Class with movement, capture & en passant logic.
+- - `Queen.java` Class with movement & capture logic.
+- - `Rook.java` Class with movement & capture logic.
 - `/promotion`
-- - `PromotionButtonAction.java` Class with JButton ActionListener
-- - `PromotionPannel.java` Class with JPanel holding JButtons
-- `Moveable.java` Interface holding move and capture method
-- `Piece.java` Class holding piece general and common variables/values
-- `PieceColor.java` Enum holding possible piece colors
-- `PieceType.java` Enum holding possible piece types
-- `PlayerColor.java` Enum holding possible player colors
+- - `PromotionButtonAction.java` Class with JButton ActionListener.
+- - `PromotionPannel.java` Class with JPanel holding JButtons.
+- `Moveable.java` Interface holding move and capture method.
+- `Piece.java` Class holding piece general and common variables/values.
+- `PieceColor.java` Enum holding possible piece colors.
+- `PieceType.java` Enum holding possible piece types.
+- `PlayerColor.java` Enum holding possible player colors.
   <br/>
   <br/>
 
