@@ -43,7 +43,6 @@ public class GameWindow extends JPanel implements Runnable {
 		setPreferredSize(WINDOW_DIMENSION);
 		addMouseListener(PLAYER_MOUSE);
 		addMouseMotionListener(PLAYER_MOUSE);
-		promotion(PieceColor.WHITE, 5, 5);
 	}
 
 	// RUNNABLE INTERFACE
@@ -207,10 +206,16 @@ public class GameWindow extends JPanel implements Runnable {
 		piece.incrementMoveCount();
 		tile.setPiece(piece);
 		setSelectedPiece(null);
+		if (piece.getPieceType() == PieceType.PAWN) {
+			Pawn pawn = (Pawn) piece;
+			if (pawn.canPromote()) {
+				promotePawn(pawn);
+			}
+		}
 	}
 
 	private void capturePiece(Tile tile, Piece piece) {
-		CHESS_BOARD.removePieceFromBoard(tile.getPiece());
+		Board.removePieceFromBoard(tile.getPiece());
 		movePiece(tile, piece);
 	}
 
@@ -244,8 +249,7 @@ public class GameWindow extends JPanel implements Runnable {
 		Pawn pawn = (Pawn) piece;
 		if (pawn.getEnPassantTiles() != null) {
 			if (pawn.getEnPassantTiles().contains(tile)) {
-				CHESS_BOARD.removePieceFromBoard(
-						BOARD_TILES[tile.getFile()][piece.getRank()].getPiece());
+				Board.removePieceFromBoard(BOARD_TILES[tile.getFile()][piece.getRank()].getPiece());
 				movePiece(tile, piece);
 				endTurn();
 			}
@@ -336,13 +340,13 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	private void promotion(PieceColor pawnColor, int file, int rank) {
+	private void promotePawn(Pawn promotionPawn) {
 		JFrame promotionWindow = new JFrame("Choose Piece");
 		promotionWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		promotionWindow.setVisible(true);
 		promotionWindow.setResizable(false);
 		promotionWindow.setLocationRelativeTo(null);
-		PromotionPanel promotionPanel = new PromotionPanel(pawnColor, file, rank);
+		PromotionPanel promotionPanel = new PromotionPanel(promotionPawn);
 		promotionWindow.add(promotionPanel);
 		promotionWindow.pack();
 	}

@@ -82,11 +82,12 @@ public class Board {
 	}
 
 	// VOID
-	public static void addPieceToBoard(Piece piece) {
+	public static void addPieceToBoard(Tile tile, Piece piece) {
 		onBoardPieces.add(piece);
+		tile.setPiece(piece);
 	}
 
-	public void removePieceFromBoard(Piece piece) {
+	public static void removePieceFromBoard(Piece piece) {
 		onBoardPieces.remove(piece);
 		piece.getTile().removePiece();
 	}

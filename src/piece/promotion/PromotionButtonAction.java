@@ -10,43 +10,45 @@ import piece.PieceColor;
 import piece.PieceType;
 import piece.pieces.Bishop;
 import piece.pieces.Knight;
+import piece.pieces.Pawn;
 import piece.pieces.Queen;
 import piece.pieces.Rook;
 
 public class PromotionButtonAction implements ActionListener {
 
 	private final Tile[][] BOARD_TILES = Board.getBoardTiles();
-	private PieceColor pieceColor = null;
-	private PieceType pieceType = null;
 	private Piece promotionPiece = null;
-	private int file, rank;
+	private PieceType selectedPieceType = null;
+	private Pawn promotionPawn = null;
 
-	public PromotionButtonAction(PieceType pieceType, PieceColor pieceColor, int file, int rank) {
-		this.pieceColor = pieceColor;
-		this.pieceType = pieceType;
-		this.file = file;
-		this.rank = rank;
+	public PromotionButtonAction(PieceType selectedPieceType, Pawn promotionPawn) {
+		this.selectedPieceType = selectedPieceType;
+		this.promotionPawn = promotionPawn;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (pieceType) {
+		final int FILE = promotionPawn.getFile();
+		final int RANK = promotionPawn.getRank();
+		PieceColor selectedPieceColor = promotionPawn.getPieceColor();
+		switch (selectedPieceType) {
 		case QUEEN:
-			promotionPiece = new Queen(pieceColor, BOARD_TILES[file][rank]);
+			promotionPiece = new Queen(selectedPieceColor, BOARD_TILES[FILE][RANK]);
 			break;
 		case BISHOP:
-			promotionPiece = new Bishop(pieceColor, BOARD_TILES[file][rank]);
+			promotionPiece = new Bishop(selectedPieceColor, BOARD_TILES[FILE][RANK]);
 			break;
 		case KNIGHT:
-			promotionPiece = new Knight(pieceColor, BOARD_TILES[file][rank]);
+			promotionPiece = new Knight(selectedPieceColor, BOARD_TILES[FILE][RANK]);
 			break;
 		case ROOK:
-			promotionPiece = new Rook(pieceColor, BOARD_TILES[file][rank]);
+			promotionPiece = new Rook(selectedPieceColor, BOARD_TILES[FILE][RANK]);
 			break;
 		default:
 			break;
 		}
-		Board.addPieceToBoard(promotionPiece);
-		BOARD_TILES[file][rank].setPiece(promotionPiece);
+		Board.removePieceFromBoard(promotionPawn);
+		Board.addPieceToBoard(BOARD_TILES[FILE][RANK], promotionPiece);
+		BOARD_TILES[FILE][RANK].setPiece(promotionPiece);
 	}
 }

@@ -6,35 +6,54 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import board.Tile;
 import piece.PieceColor;
 import piece.PieceType;
+import piece.pieces.Pawn;
 
 public class PromotionPanel extends JPanel {
+	private final JButton QUEEN_BUTTON = new JButton();
+	private final JButton BISHOP_BUTTON = new JButton();
+	private final JButton KNIGHT_BUTTON = new JButton();
+	private final JButton ROOK_BUTTON = new JButton();
+	private Pawn promotionPawn = null;
 
-	public PromotionPanel(PieceColor pieceColor, int file, int rank) {
-		JButton queenButton = new JButton();
-		JButton bishopButton = new JButton();
-		JButton knightButton = new JButton();
-		JButton rookButton = new JButton();
-		this.add(queenButton);
-		this.add(bishopButton);
-		this.add(knightButton);
-		this.add(rookButton);
-		queenButton.setIcon(new ImageIcon(
-				new ImageIcon("res/pieces/queen_" + pieceColor.getName().toLowerCase() + ".png")
-						.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
-		bishopButton.setIcon(new ImageIcon(
-				new ImageIcon("res/pieces/bishop_" + pieceColor.getName().toLowerCase() + ".png")
-						.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
-		knightButton.setIcon(new ImageIcon(
-				new ImageIcon("res/pieces/knight_" + pieceColor.getName().toLowerCase() + ".png")
-						.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
-		rookButton.setIcon(new ImageIcon(
-				new ImageIcon("res/pieces/rook_" + pieceColor.getName().toLowerCase() + ".png")
-						.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
-		queenButton.addActionListener(new PromotionButtonAction(PieceType.QUEEN, pieceColor, file, rank));
-		bishopButton.addActionListener(new PromotionButtonAction(PieceType.BISHOP, pieceColor, file, rank));
-		knightButton.addActionListener(new PromotionButtonAction(PieceType.KNIGHT, pieceColor, file, rank));
-		rookButton.addActionListener(new PromotionButtonAction(PieceType.ROOK, pieceColor, file, rank));
+	public PromotionPanel(Pawn promotionPawn) {
+		this.promotionPawn = promotionPawn;
+		addButtons();
+		setIcons(promotionPawn.getPieceColor());
+		addActionListeners(promotionPawn.getPieceColor(), promotionPawn.getFile(), promotionPawn.getRank());
+	}
+
+	private void addButtons() {
+		this.add(QUEEN_BUTTON);
+		this.add(BISHOP_BUTTON);
+		this.add(KNIGHT_BUTTON);
+		this.add(ROOK_BUTTON);
+	}
+
+	private void setIcons(PieceColor pawnColor) {
+		final int TILE_SIZE = Tile.getTileSize();
+		final int IMAGE_SCALE = Image.SCALE_SMOOTH;
+		final String PIECE_COLOR_NAME = pawnColor.getName().toLowerCase();
+		QUEEN_BUTTON.setIcon(
+				new ImageIcon(new ImageIcon(String.format("res/pieces/queen_%s.png", PIECE_COLOR_NAME))
+						.getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, IMAGE_SCALE)));
+		BISHOP_BUTTON.setIcon(
+				new ImageIcon(new ImageIcon(String.format("res/pieces/bishop_%s.png", PIECE_COLOR_NAME))
+						.getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, IMAGE_SCALE)));
+		KNIGHT_BUTTON.setIcon(
+				new ImageIcon(new ImageIcon(String.format("res/pieces/knight_%s.png", PIECE_COLOR_NAME))
+						.getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, IMAGE_SCALE)));
+		ROOK_BUTTON.setIcon(
+				new ImageIcon(new ImageIcon(String.format("res/pieces/rook_%s.png", PIECE_COLOR_NAME))
+						.getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, IMAGE_SCALE)));
+	}
+
+	private void addActionListeners(PieceColor pawnColor, int file, int rank) {
+		QUEEN_BUTTON.addActionListener(new PromotionButtonAction(PieceType.QUEEN, promotionPawn));
+		BISHOP_BUTTON.addActionListener(new PromotionButtonAction(PieceType.BISHOP, promotionPawn));
+		KNIGHT_BUTTON.addActionListener(new PromotionButtonAction(PieceType.KNIGHT, promotionPawn));
+		ROOK_BUTTON.addActionListener(new PromotionButtonAction(PieceType.ROOK, promotionPawn));
 	}
 }
