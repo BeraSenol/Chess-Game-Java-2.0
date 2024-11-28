@@ -6,7 +6,6 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 <br/>
 <br/>
 
-
 # Features [(Screenshots)](https://github.com/BeraSenol/Chess-Game-Java-2.0b/wiki/Screenshots#features)
 
 - [x] Game Panel
@@ -27,24 +26,21 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 - [ ] Pinned Piece Detection
 - [ ] Check Detection
 - [ ] Checkmate Detection
-- [ ] Stalemate Detection
-- [ ] User Settings
+- [ ] Draw by Stalemate
+- [ ] Draw by Repetition
+- [ ] Draw by Insufficient Material
+- [ ] Draw by 50 Move Rule
+- [ ] Time Control
+- [ ] Options/Settings
 - [ ] Undo/Redo
 - [ ] PGN Notation
 - [ ] Database Logging
-<br/>
-<br/>
-
-# Requirements
-
-- Latest Java version.
-- Swing & AWT Library
-  <br/>
-  <br/>
+      <br/>
+      <br/>
 
 # Installation
 
-Clone and run:
+Clone:
 
 ```
 git clone https://github.com/BeraSenol/Chess-Game-Java-2.0.git
@@ -64,7 +60,7 @@ java -cp src/ Main
 
 Clicking on piece will reveal it's legal moves, click tile to move or re-select another piece to reveal it's legal moves, white always begins.
 
-Options in a menu bar will be implemented to easily select player color etc (For now change `playerColor` in `ln30:GameWindow.java` to `PlayerColor.Black` to play as black).
+To play as black change `playerColor` in `ln30:GameWindow.java` to `PlayerColor.Black`.
 
 Default:
 `private static PlayerColor playerColor = PlayerColor.WHITE;`
@@ -81,8 +77,8 @@ Default:
 
 `/main`
 
-- `App.java` Main Class that serves `GameWindow.java` 
-- `GameWindow.java` Main file that runs the game, update() and repaint() are the main methods which loop the game.
+- `App.java` Main Class that serves `GameWindow.java`
+- `GameWindow.java` Main file that runs the game, `update()` and `repaint()` are the main methods which loop the game.
 - `Mouse.java` Class that detects mouse events.
 
 `/piece`
@@ -107,4 +103,7 @@ Default:
 
 # Acknowledgments
 
-This project was originally inspired by a Youtube Channel's video [How to Code Chess in Java](https://www.youtube.com/watch?v=jzCxywhTAUI&t=6148s) and a sequel to [Chess-Game-Java](https://github.com/BeraSenol/Chess-Game-Java).
+This project was originally inspired by YouTuber [RyiSnow](https://www.youtube.com/@RyiSnow) (Thank you very much!):<br/>[How to Code Chess in Java](https://www.youtube.com/watch?v=jzCxywhTAUI&t=6148s)
+
+Images found on WikiMedia Commons:<br>
+[Table of SVG Chess Pieces](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces)

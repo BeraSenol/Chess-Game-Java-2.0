@@ -16,6 +16,7 @@ public class Board {
 	private final static int PAWN_RANK_WHITE = 6;
 	private final static int PIECE_RANK_WHITE = 7;
 	private final static int BOARD_SIZE = 8;
+	private final static ArrayList<King> KINGS = new ArrayList<>();
 	private final int LABEL_MARGIN_X = 5;
 	private final int LABEL_MARGIN_Y = 13;
 	private final int TILE_SIZE = Tile.getTileSize();
@@ -40,6 +41,19 @@ public class Board {
 		initializePieces();
 	}
 
+	// BOOLEANS
+	public boolean isAnyKingInCheck() {
+		for (Piece piece : getOnBoardPieces()) {
+			if (piece.getPieceType() == PieceType.KING) {
+				King king = (King) piece;
+				if (king.getIsKingInCheck()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	// GETTERS
 	public static Tile[][] getBoardTiles() {
 		return chessBoard;
@@ -62,14 +76,16 @@ public class Board {
 	}
 
 	public static King getKing(PieceColor kingColor) {
-		for (Piece piece : onBoardPieces) {
-			if (piece.getPieceType() == PieceType.KING) {
-				if (piece.getPieceColor() == kingColor) {
-					return (King) piece;
-				}
+		for (King king : KINGS) {
+			if (king.getPieceColor() == kingColor) {
+				return king;
 			}
 		}
 		return null;
+	}
+
+	public static ArrayList<King> getKings() {
+		return KINGS;
 	}
 
 	public static ArrayList<Piece> getOnBoardPieces() {
@@ -90,6 +106,14 @@ public class Board {
 	public static void removePieceFromBoard(Piece piece) {
 		onBoardPieces.remove(piece);
 		piece.getTile().removePiece();
+	}
+
+	private void setKings() {
+		for (Piece piece : INITIAL_PIECES) {
+			if (piece.getPieceType() == PieceType.KING) {
+				KINGS.add((King) piece);
+			}
+		}
 	}
 
 	// VOID - DRAW
@@ -167,10 +191,10 @@ public class Board {
 	}
 
 	private void createInitialPieces() {
-		int pawnRankBlack = PAWN_RANK_BLACK;
 		int pieceRankBlack = PIECE_RANK_BLACK;
-		int pieceRankWhite = PIECE_RANK_WHITE;
+		int pawnRankBlack = PAWN_RANK_BLACK;
 		int pawnRankWhite = PAWN_RANK_WHITE;
+		int pieceRankWhite = PIECE_RANK_WHITE;
 		if (PLAYER_COLOR == PlayerColor.BLACK) {
 			// Inverses ranks if playing as Black
 			pieceRankBlack = PIECE_RANK_WHITE;
@@ -218,6 +242,7 @@ public class Board {
 			}
 		}
 		setOnBoardPieces(INITIAL_PIECES);
+		setKings();
 	}
 
 	private void initializePieces() {

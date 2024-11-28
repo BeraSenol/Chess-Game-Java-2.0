@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 import board.Board;
 import board.Tile;
+import main.GameWindow;
 import piece.Piece;
 import piece.PieceColor;
 import piece.PieceType;
 import piece.PlayerColor;
 
 public class King extends Piece {
+	private boolean isKingInCheck = false;
+
 	public King(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.KING, tile);
 		pieceImage = getPieceImage(PieceType.KING, pieceColor);
@@ -27,37 +30,32 @@ public class King extends Piece {
 				}
 			}
 		}
+		for (Tile tile : GameWindow.getCaptureableTilesOpponent()) {
+			if (tiles.contains(tile)) {
+				tiles.remove(tile);
+			}
+		}
 		return tiles;
 	}
 
 	@Override
 	public ArrayList<Tile> getCaptureableTiles() {
-		ArrayList<Tile> tile = new ArrayList<Tile>();
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (isCaptureable(file, rank, i, j)) {
-					tile.add(CHESS_BOARD[file + i][rank + j]);
+					tiles.add(CHESS_BOARD[file + i][rank + j]);
 				}
 			}
 		}
-		return tile;
-	}
-
-	// GETTERS
-	public Tile getLeftCastleTile() {
-		if (canCastleLeft(getPieceColor())) {
-			return CHESS_BOARD[this.getFile() - 2][this.getRank()];
+		for (Tile tile : GameWindow.getCaptureableTilesOpponent()) {
+			if (tiles.contains(tile)) {
+				tiles.remove(tile);
+			}
 		}
-		return null;
-	}
-
-	public Tile getRightCastleTile() {
-		if (canCastleRight(getPieceColor())) {
-			return CHESS_BOARD[this.getFile() + 2][this.getRank()];
-		}
-		return null;
+		return tiles;
 	}
 
 	// BOOLEANS
@@ -86,6 +84,24 @@ public class King extends Piece {
 			return false;
 		}
 		return true;
+	}
+
+	// GETTERS
+	public boolean getIsKingInCheck() {
+		return isKingInCheck;
+	}
+
+	public Tile getLeftCastleTile() {
+		return canCastleLeft(getPieceColor()) ? CHESS_BOARD[this.getFile() - 2][this.getRank()] : null;
+	}
+
+	public Tile getRightCastleTile() {
+		return canCastleRight(getPieceColor()) ? CHESS_BOARD[this.getFile() + 2][this.getRank()] : null;
+	}
+
+	// SETTERS
+	public void setIsKingInCheck(boolean isKingInCheck) {
+		this.isKingInCheck = isKingInCheck;
 	}
 
 	// BOOLEANS - CASTLING
