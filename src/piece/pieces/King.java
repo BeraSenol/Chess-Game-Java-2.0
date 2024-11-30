@@ -21,14 +21,14 @@ public class King extends Piece {
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
 		ArrayList<Tile> tiles = allMoveableTiles();
-		tiles = removeIllegalTiles(tiles);
+		tiles = removeIllegalMoves(tiles);
 		return tiles;
 	}
 
 	@Override
 	public ArrayList<Tile> getCaptureableTiles() {
 		ArrayList<Tile> tiles = allCaptureableTiles();
-		tiles = removeIllegalTiles(tiles);
+		tiles = removeIllegalMoves(tiles);
 		return tiles;
 	}
 
@@ -60,7 +60,7 @@ public class King extends Piece {
 		return tiles;
 	}
 
-	private ArrayList<Tile> removeIllegalTiles(ArrayList<Tile> tiles) {
+	private ArrayList<Tile> removeIllegalMoves(ArrayList<Tile> tiles) {
 		for (Tile tile : GameWindow.getCaptureableTilesOpponent()) {
 			if (tiles.contains(tile)) {
 				tiles.remove(tile);

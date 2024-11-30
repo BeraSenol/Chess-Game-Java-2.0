@@ -26,7 +26,7 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 - [ ] Pinned Piece Detection
 - [x] King in Check Hightlight
 - [x] Legal Move Restriction: King Movement
-- [ ] Legal Move Restriction: Interposable Piece
+- [x] Legal Move Restriction: Interposable Piece
 - [ ] Legal Move Restriction: Checking Piece Capturable
 - [ ] Checkmate Detection
 - [ ] Draw by Stalemate

@@ -31,8 +31,11 @@ public class GameWindow extends JPanel implements Runnable {
 	private static PlayerColor turnColor = PlayerColor.WHITE;
 	private static ArrayList<Tile> moveableTilesOpponent = new ArrayList<Tile>();
 	private ArrayList<Tile> highlightedTiles = new ArrayList<Tile>();
+	private ArrayList<Tile> checkingTiles = new ArrayList<Tile>();
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
+	private Piece checkingPiece = null;
+	private King inCheckKing = null;
 	private Pawn enPassantPawn = null;
 	private Graphics2D graphics2d = null;
 	private Thread gameThread = null;
@@ -52,7 +55,7 @@ public class GameWindow extends JPanel implements Runnable {
 		super.paintComponent(g);
 		graphics2d = (Graphics2D) g;
 		CHESS_BOARD.drawChessBoard(graphics2d);
-		if (getSelectedPiece() != null) {
+		if (getInCheckKing() == null && getSelectedPiece() != null) {
 			// Draws the indicatorImage while Piece is selected
 			if (getSelectedPiece().getMoveableTiles() != null) {
 				getSelectedPiece().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
@@ -71,7 +74,16 @@ public class GameWindow extends JPanel implements Runnable {
 			if (getSelectedPiece().getPieceType() == PieceType.PAWN) {
 				highlightEnPassantTiles(getSelectedPiece());
 			}
+		} else if (getSelectedPiece() != null) {
+			if (getSelectedPiece() == getInCheckKing() && getInCheckKing().getMoveableTiles() != null) {
+				getInCheckKing().drawIndicators(graphics2d, getSelectedPiece().getMoveableTiles());
+			}
+			if (getSelectedPiece() != getInCheckKing() && getInCheckKing().getMoveableTiles() != null) {
+				getInCheckKing().drawIndicators(graphics2d,
+						calculateInterposableTiles(getSelectedPiece().getMoveableTiles()));
+			}
 		}
+
 	}
 
 	private void update() {
@@ -79,45 +91,84 @@ public class GameWindow extends JPanel implements Runnable {
 		if (PLAYER_MOUSE.isMousePressed()) {
 			// Selects the Tile the PLAYER_MOUSE is on
 			setSelectedTile(PLAYER_MOUSE.getHoveringTileChessBoard());
-			// Selects Piece if selectedTile is not empty and contains Piece of same Color
-			if (getSelectedPiece() == null) {
-				if (getSelectedTile().isPieceOnTile()) {
+			if (getInCheckKing() == null) {
+				// Selects Piece if selectedTile is not empty and contains Piece of same Color
+				if (getSelectedPiece() == null) {
+					if (getSelectedTile().isPieceOnTile()) {
+						if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
+							setSelectedPiece(getSelectedTile().getPiece());
+						}
+					}
+				}
+				// Re-selects Piece if selectedTile contains Piece of same Color
+				if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
+					if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
+						setSelectedPiece(getSelectedTile().getPiece());
+						restoreHighlightedTiles();
+					}
+				}
+				// Moves the Piece if selectedTile is in getMoveableTiles()
+				if (getSelectedPiece() != null && getSelectedPiece().getMoveableTiles() != null) {
+					if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
+						detectPawnTwoStep(getSelectedPiece(), getSelectedTile());
+						movePiece(getSelectedTile(), getSelectedPiece());
+						endTurn();
+					}
+				}
+				// Captures the Piece if selectedTile is in getCaptureableTiles()
+				if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
+					if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())) {
+						capturePiece(getSelectedTile(), getSelectedPiece());
+						endTurn();
+					}
+				}
+				// Checks if Castling is possible
+				if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.KING) {
+					checkCastling(getSelectedPiece(), getSelectedTile());
+				}
+				// Checks if EnPassant is possible
+				if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.PAWN) {
+					checkEnPassant(getSelectedPiece(), getSelectedTile());
+				}
+				setSelectedTile(null);
+			} else {
+				getInCheckKing().getTile().setTileColor(TileColor.RED);
+				if (getSelectedPiece() == null) {
+					if (getSelectedTile().isPieceOnTile()) {
+						if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
+							setSelectedPiece(getSelectedTile().getPiece());
+						}
+					}
+				}
+				if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
 					if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
 						setSelectedPiece(getSelectedTile().getPiece());
 					}
 				}
-			}
-			// Re-selects Piece if selectedTile contains Piece of same Color
-			if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
-				if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
-					setSelectedPiece(getSelectedTile().getPiece());
-					restoreHighlightedTiles();
+				if (getSelectedPiece() == getInCheckKing()
+						&& getSelectedPiece().getMoveableTiles() != null) {
+					if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
+						movePiece(getSelectedTile(), getSelectedPiece());
+						getInCheckKing().setIsKingInCheck(false);
+						setInCheckKing(null);
+						setCheckingPiece(null);
+						setCheckingTiles(null);
+						endTurn();
+					}
 				}
-			}
-			// Moves the Piece if selectedTile is in getMoveableTiles()
-			if (getSelectedPiece() != null && getSelectedPiece().getMoveableTiles() != null) {
-				if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())) {
-					detectPawnTwoStep(getSelectedPiece(), getSelectedTile());
-					movePiece(getSelectedTile(), getSelectedPiece());
-					endTurn();
+				if (getSelectedPiece() != null && getSelectedPiece().getMoveableTiles() != null) {
+					if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())
+							&& getCheckingTiles().contains(getSelectedTile())) {
+						movePiece(getSelectedTile(), getSelectedPiece());
+						getInCheckKing().setIsKingInCheck(false);
+						setInCheckKing(null);
+						setCheckingPiece(null);
+						setCheckingTiles(null);
+						endTurn();
+					}
 				}
+				setSelectedTile(null);
 			}
-			// Captures the Piece if selectedTile is in getCaptureableTiles()
-			if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
-				if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())) {
-					capturePiece(getSelectedTile(), getSelectedPiece());
-					endTurn();
-				}
-			}
-			// Checks if Castling is possible
-			if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.KING) {
-				checkCastling(getSelectedPiece(), getSelectedTile());
-			}
-			// Checks if EnPassant is possible
-			if (getSelectedPiece() != null && getSelectedPiece().getPieceType() == PieceType.PAWN) {
-				checkEnPassant(getSelectedPiece(), getSelectedTile());
-			}
-			setSelectedTile(null);
 		}
 	}
 
@@ -200,11 +251,89 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
+	private ArrayList<Tile> calculateCheckingTiles() {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		int kingFile = getInCheckKing().getFile();
+		int kingRank = getInCheckKing().getRank();
+		int checkingPieceFile = getCheckingPiece().getFile();
+		int checkingPieceRank = getCheckingPiece().getRank();
+		int delta = Math.abs(kingRank - checkingPieceRank);
+		if (Math.abs(kingRank - checkingPieceRank) + Math.abs(kingFile - checkingPieceFile) < 2) {
+			return null;
+		}
+		if (kingFile == checkingPieceFile) {
+			if (kingRank > checkingPieceRank) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile][kingRank - i]);
+				}
+			}
+			if (kingRank < checkingPieceRank) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile][kingRank + i]);
+				}
+			}
+			return tiles;
+		}
+		if (kingRank > checkingPieceRank) {
+			if (kingFile > checkingPieceFile) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile - i][kingRank - i]);
+				}
+			}
+			if (kingFile < checkingPieceFile) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile + i][kingRank - i]);
+				}
+			}
+			return tiles;
+		}
+		if (kingRank < checkingPieceRank) {
+			if (kingFile > checkingPieceFile) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile - i][kingRank + i]);
+				}
+			}
+			if (kingFile < checkingPieceFile) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile + i][kingRank + i]);
+				}
+			}
+			return tiles;
+		}
+		delta = Math.abs(kingFile - checkingPieceFile);
+		if (kingRank == checkingPieceRank) {
+			if (kingFile > checkingPieceFile) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile - i][kingRank]);
+				}
+			}
+			if (kingFile < checkingPieceFile) {
+				for (int i = 1; i < delta; i++) {
+					tiles.add(BOARD_TILES[kingFile + i][kingRank]);
+				}
+			}
+			return tiles;
+		}
+		return null;
+	}
+
+	private ArrayList<Tile> calculateInterposableTiles(ArrayList<Tile> moveableTiles) {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		for (Tile tile : moveableTiles) {
+			if (checkingTiles.contains(tile)) {
+				tiles.add(tile);
+			}
+		}
+		return tiles;
+	}
+
 	private void isPieceIsCheckingKing(Piece piece) {
 		for (King king : Board.getKings()) {
 			if (piece.getCaptureableTiles().contains(king.getTile())) {
 				king.setIsKingInCheck(true);
-				king.getTile().setTileColor(TileColor.RED);
+				setInCheckKing(king);
+				setCheckingPiece(piece);
+				setCheckingTiles(calculateCheckingTiles());
 			}
 		}
 	}
@@ -351,12 +480,24 @@ public class GameWindow extends JPanel implements Runnable {
 		return selectedPiece;
 	}
 
+	private Piece getCheckingPiece() {
+		return checkingPiece;
+	}
+
 	private Pawn getEnPassantPawn() {
 		return enPassantPawn;
 	}
 
+	private King getInCheckKing() {
+		return inCheckKing;
+	}
+
 	private ArrayList<Tile> getHighlightedTiles() {
 		return highlightedTiles;
+	}
+
+	private ArrayList<Tile> getCheckingTiles() {
+		return checkingTiles;
 	}
 
 	// SETTERS
@@ -368,11 +509,23 @@ public class GameWindow extends JPanel implements Runnable {
 		this.selectedPiece = piece;
 	}
 
+	private void setCheckingPiece(Piece piece) {
+		this.checkingPiece = piece;
+	}
+
 	private void setEnPassantPawn(Pawn pawn) {
 		this.enPassantPawn = pawn;
 	}
 
+	private void setInCheckKing(King king) {
+		this.inCheckKing = king;
+	}
+
 	private void setTurnColor(PlayerColor turnColor) {
 		GameWindow.turnColor = turnColor;
+	}
+
+	private void setCheckingTiles(ArrayList<Tile> tiles) {
+		this.checkingTiles = tiles;
 	}
 }
