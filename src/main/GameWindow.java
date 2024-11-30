@@ -46,28 +46,7 @@ public class GameWindow extends JPanel implements Runnable {
 		addMouseMotionListener(PLAYER_MOUSE);
 	}
 
-	// RUNNABLE INTERFACE
-	@Override
-	public void run() {
-		// GAME LOOP - Controls how many refreshes every nanosecond
-		double deltaTime = 0;
-		long previousTime = System.nanoTime();
-		while (gameThread != null) {
-			deltaTime += (System.nanoTime() - previousTime) / DRAW_INTERVAL;
-			previousTime = System.nanoTime();
-			if (deltaTime >= 1) {
-				update();
-				repaint();
-				deltaTime--;
-			}
-		}
-	}
-
-	protected void launchGame() {
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
-
+	// GAME WINDOW / GAME LOOP
 	protected void paintComponent(Graphics g) {
 		// GAME LOOP - Controls what gets drawn
 		super.paintComponent(g);
@@ -80,7 +59,7 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			// Highlights captureableTile while Piece is selected
 			if (getSelectedPiece().getCaptureableTiles() != null) {
-				setHighlightedTiles(getSelectedPiece().getCaptureableTiles());
+				addHighlightedTiles(getSelectedPiece().getCaptureableTiles());
 				getSelectedPiece().highlightCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
@@ -112,7 +91,7 @@ public class GameWindow extends JPanel implements Runnable {
 			if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
 				if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
 					setSelectedPiece(getSelectedTile().getPiece());
-					restoreTileColors();
+					restoreHighlightedTiles();
 				}
 			}
 			// Moves the Piece if selectedTile is in getMoveableTiles()
@@ -142,75 +121,37 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	// GETTERS
-	public static PlayerColor getPlayerColor() {
-		return playerColor;
-	}
-
-	public static PlayerColor getTurnColor() {
-		return turnColor;
-	}
-
-	public static Mouse getPlayerMouse() {
-		return PLAYER_MOUSE;
-	}
-
-	public static ArrayList<Tile> getCaptureableTilesOpponent() {
-		return moveableTilesOpponent;
-	}
-
-	private Piece getSelectedPiece() {
-		return selectedPiece;
-	}
-
-	private Pawn getEnPassantPawn() {
-		return enPassantPawn;
-	}
-
-	private Tile getSelectedTile() {
-		return selectedTile;
-	}
-
-	private ArrayList<Tile> getHighlightedTiles() {
-		return highlightedTiles;
-	}
-
-	// SETTERS
-	private void setSelectedTile(Tile tile) {
-		this.selectedTile = tile;
-	}
-
-	private void setSelectedPiece(Piece piece) {
-		this.selectedPiece = piece;
-	}
-
-	private void setEnPassantPawn(Pawn pawn) {
-		this.enPassantPawn = pawn;
-	}
-
-	private void setTurnColor(PlayerColor turnColor) {
-		GameWindow.turnColor = turnColor;
-	}
-
-	private void setHighlightedTiles(ArrayList<Tile> tiles) {
-		if (tiles != null) {
-			for (Tile tile : tiles) {
-				highlightedTiles.add(tile);
+	@Override
+	public void run() {
+		double deltaTime = 0;
+		long previousTime = System.nanoTime();
+		while (gameThread != null) {
+			deltaTime += (System.nanoTime() - previousTime) / DRAW_INTERVAL;
+			previousTime = System.nanoTime();
+			if (deltaTime >= 1) {
+				update();
+				repaint();
+				deltaTime--;
 			}
 		}
 	}
 
-	// VOID
+	protected void launchGame() {
+		gameThread = new Thread(this);
+		gameThread.start();
+	}
+
+	// MOVEMENT
 	private void movePiece(Tile tile, Piece piece) {
 		piece.getTile().removePiece();
 		piece.setTile(tile);
 		piece.incrementMoveCount();
 		tile.setPiece(piece);
 		setSelectedPiece(null);
-		restoreTileColors();
-		calculateCaptureablesTilesOppenent();
+		restoreHighlightedTiles();
 		checkPiecePromotition(piece);
-		checkPieceCheckingKing(piece);
+		isPieceIsCheckingKing(piece);
+		calculateMoveableTilesOppenent();
 	}
 
 	private void capturePiece(Tile tile, Piece piece) {
@@ -218,6 +159,7 @@ public class GameWindow extends JPanel implements Runnable {
 		movePiece(tile, piece);
 	}
 
+	// TURN MECHANIC
 	private void endTurn() {
 		if (getTurnColor() == PlayerColor.WHITE) {
 			setTurnColor(PlayerColor.BLACK);
@@ -229,22 +171,36 @@ public class GameWindow extends JPanel implements Runnable {
 		loseEnPassantRights();
 	}
 
-	private void restoreTileColors() {
+	private void addHighlightedTiles(ArrayList<Tile> tiles) {
+		if (tiles != null) {
+			for (Tile tile : tiles) {
+				highlightedTiles.add(tile);
+			}
+		}
+	}
+
+	private void restoreHighlightedTiles() {
 		if (getHighlightedTiles() != null) {
 			for (Tile tile : getHighlightedTiles()) {
 				tile.setTileColor(tile.getInitialTileColor());
 			}
 		}
-		// for (int i = 0; i < 8; i++) {
-		// for (int j = 0; j < 8; j++) {
-		// BOARD_TILES[i][j].setTileColor(BOARD_TILES[i][j].getInitialTileColor());
-		// }
-		// }
-		setHighlightedTiles(new ArrayList<Tile>());
+		addHighlightedTiles(new ArrayList<Tile>());
 	}
 
-	// VOID - CHECK
-	private void checkPieceCheckingKing(Piece piece) {
+	// CHECK
+	private void calculateMoveableTilesOppenent() {
+		moveableTilesOpponent = new ArrayList<Tile>();
+		for (Piece piece : Board.getOnBoardPieces()) {
+			if (piece.getPieceColor().name() == getTurnColor().name()) {
+				for (Tile tile : piece.getMoveableTiles()) {
+					moveableTilesOpponent.add(tile);
+				}
+			}
+		}
+	}
+
+	private void isPieceIsCheckingKing(Piece piece) {
 		for (King king : Board.getKings()) {
 			if (piece.getCaptureableTiles().contains(king.getTile())) {
 				king.setIsKingInCheck(true);
@@ -253,22 +209,7 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	private void calculateCaptureablesTilesOppenent() {
-		moveableTilesOpponent = new ArrayList<Tile>();
-		PieceColor opponentColor = turnColor != PlayerColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-		for (Piece piece : Board.getOnBoardPieces()) {
-			if (piece.getPieceColor() == opponentColor) {
-				for (Tile tile : piece.getMoveableTiles()) {
-					moveableTilesOpponent.add(tile);
-				}
-			}
-		}
-		// for (Tile tile : moveableTilesOpponent) {
-		// tile.setTileColor(TileColor.RED);
-		// }
-	}
-
-	// VOID - PROMOTION
+	// PROMOTION
 	private void checkPiecePromotition(Piece piece) {
 		if (piece.getPieceType() == PieceType.PAWN) {
 			Pawn pawn = (Pawn) piece;
@@ -285,7 +226,7 @@ public class GameWindow extends JPanel implements Runnable {
 		promotionWindow.pack();
 	}
 
-	// VOID - EN PASSANT
+	// EN PASSANT
 	private void checkEnPassant(Piece piece, Tile tile) {
 		Pawn pawn = (Pawn) piece;
 		if (pawn.getEnPassantTiles() != null) {
@@ -311,7 +252,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private void highlightEnPassantTiles(Piece piece) {
 		Pawn pawn = (Pawn) piece;
 		if (pawn.getEnPassantTiles() != null) {
-			setHighlightedTiles(pawn.getEnPassantTiles());
+			addHighlightedTiles(pawn.getEnPassantTiles());
 			pawn.highlightCaptureableTiles(graphics2d, pawn.getEnPassantTiles());
 		}
 	}
@@ -325,19 +266,7 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	// VOID - CASTLING
-	private void checkCastling(Piece piece, Tile tile) {
-		King king = (King) piece;
-		if (king.getLeftCastleTile() == tile && king.canCastleLeft(king.getPieceColor())) {
-			castleLeft(king.getPieceColor());
-			endTurn();
-		}
-		if (king.getRightCastleTile() == tile && king.canCastleRight(king.getPieceColor())) {
-			castleRight(king.getPieceColor());
-			endTurn();
-		}
-	}
-
+	// CASTLING
 	private void castleLeft(PieceColor kingColor) {
 		movePiece(Board.getBoardTiles()[Board.getKing(kingColor).getFile() - 2][Board.getKing(kingColor)
 				.getRank()], Board.getKing(kingColor));
@@ -375,6 +304,18 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
+	private void checkCastling(Piece piece, Tile tile) {
+		King king = (King) piece;
+		if (king.getLeftCastleTile() == tile && king.canCastleLeft(king.getPieceColor())) {
+			castleLeft(king.getPieceColor());
+			endTurn();
+		}
+		if (king.getRightCastleTile() == tile && king.canCastleRight(king.getPieceColor())) {
+			castleRight(king.getPieceColor());
+			endTurn();
+		}
+	}
+
 	private void drawCastleIndicators(Piece piece) {
 		King king = (King) piece;
 		ArrayList<Tile> castleTiles = new ArrayList<Tile>();
@@ -389,4 +330,49 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
+	// GETTERS
+	public static PlayerColor getPlayerColor() {
+		return playerColor;
+	}
+
+	public static PlayerColor getTurnColor() {
+		return turnColor;
+	}
+
+	public static ArrayList<Tile> getCaptureableTilesOpponent() {
+		return moveableTilesOpponent;
+	}
+
+	private Tile getSelectedTile() {
+		return selectedTile;
+	}
+
+	private Piece getSelectedPiece() {
+		return selectedPiece;
+	}
+
+	private Pawn getEnPassantPawn() {
+		return enPassantPawn;
+	}
+
+	private ArrayList<Tile> getHighlightedTiles() {
+		return highlightedTiles;
+	}
+
+	// SETTERS
+	private void setSelectedTile(Tile tile) {
+		this.selectedTile = tile;
+	}
+
+	private void setSelectedPiece(Piece piece) {
+		this.selectedPiece = piece;
+	}
+
+	private void setEnPassantPawn(Pawn pawn) {
+		this.enPassantPawn = pawn;
+	}
+
+	private void setTurnColor(PlayerColor turnColor) {
+		GameWindow.turnColor = turnColor;
+	}
 }

@@ -31,8 +31,8 @@ public class Board {
 	private final Color DARK_COLOR = TileColor.DARK.getColor();
 	private final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
 
-	private static ArrayList<Piece> onBoardPieces = new ArrayList<>();
 	public static Tile[][] chessBoard = new Tile[BOARD_SIZE][BOARD_SIZE];
+	private static ArrayList<Piece> onBoardPieces = new ArrayList<>();
 
 	// CONSTRUCTOR
 	public Board() {
@@ -41,17 +41,77 @@ public class Board {
 		initializePieces();
 	}
 
-	// BOOLEANS
-	public boolean isAnyKingInCheck() {
-		for (Piece piece : getOnBoardPieces()) {
-			if (piece.getPieceType() == PieceType.KING) {
-				King king = (King) piece;
-				if (king.getIsKingInCheck()) {
-					return true;
-				}
+	private void initializeTiles() {
+		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
+				// Creates Tiles object for the chessBoard
+				chessBoard[i][j] = (i + j) % 2 == 0
+						? new Tile(i, j, LIGHT_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null)
+						: new Tile(i, j, DARK_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null);
 			}
 		}
-		return false;
+	}
+
+	private void createInitialPieces() {
+		int pieceRankBlack = PIECE_RANK_BLACK;
+		int pawnRankBlack = PAWN_RANK_BLACK;
+		int pawnRankWhite = PAWN_RANK_WHITE;
+		int pieceRankWhite = PIECE_RANK_WHITE;
+		if (PLAYER_COLOR == PlayerColor.BLACK) {
+			// Inverses ranks if playing as Black
+			pieceRankBlack = PIECE_RANK_WHITE;
+			pawnRankBlack = PAWN_RANK_WHITE;
+			pawnRankWhite = PAWN_RANK_BLACK;
+			pieceRankWhite = PIECE_RANK_BLACK;
+		}
+		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
+			// Creates Pieces
+			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][pawnRankWhite]));
+			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][pawnRankBlack]));
+			switch (i) {
+			case 0, 7 -> {
+				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+			}
+			case 1, 6 -> {
+				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+			}
+			case 2, 5 -> {
+				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+			}
+			case 3 -> {
+				// Queen-King if playing as White
+				if (PLAYER_COLOR == PlayerColor.WHITE) {
+					INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				} else {
+					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				}
+			}
+			case 4 -> {
+				// King-Queen if playing as Black
+				if (PLAYER_COLOR == PlayerColor.WHITE) {
+					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				} else {
+					INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
+					INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
+				}
+			}
+			}
+		}
+		setOnBoardPieces(INITIAL_PIECES);
+		setKings();
+	}
+
+	private void initializePieces() {
+		for (Piece piece : INITIAL_PIECES) {
+			// Adds created Pieces to chessBoard
+			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
+		}
 	}
 
 	// GETTERS
@@ -178,77 +238,4 @@ public class Board {
 		}
 	}
 
-	// VOID - BOARD CONSTRUCTOR
-	private void initializeTiles() {
-		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-			for (int j = PIECE_RANK_BLACK; j <= PIECE_RANK_WHITE; j++) {
-				// Creates Tiles object for the chessBoard
-				chessBoard[i][j] = (i + j) % 2 == 0
-						? new Tile(i, j, LIGHT_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null)
-						: new Tile(i, j, DARK_TILE_COLOR, FILE_LABELS[i], RANK_LABELS[j], null);
-			}
-		}
-	}
-
-	private void createInitialPieces() {
-		int pieceRankBlack = PIECE_RANK_BLACK;
-		int pawnRankBlack = PAWN_RANK_BLACK;
-		int pawnRankWhite = PAWN_RANK_WHITE;
-		int pieceRankWhite = PIECE_RANK_WHITE;
-		if (PLAYER_COLOR == PlayerColor.BLACK) {
-			// Inverses ranks if playing as Black
-			pieceRankBlack = PIECE_RANK_WHITE;
-			pawnRankBlack = PAWN_RANK_WHITE;
-			pawnRankWhite = PAWN_RANK_BLACK;
-			pieceRankWhite = PIECE_RANK_BLACK;
-		}
-		for (int i = PIECE_RANK_BLACK; i <= PIECE_RANK_WHITE; i++) {
-			// Creates Pieces
-			INITIAL_PIECES.add(new Pawn(PieceColor.WHITE, chessBoard[i][pawnRankWhite]));
-			INITIAL_PIECES.add(new Pawn(PieceColor.BLACK, chessBoard[i][pawnRankBlack]));
-			switch (i) {
-			case 0, 7 -> {
-				INITIAL_PIECES.add(new Rook(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-				INITIAL_PIECES.add(new Rook(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
-			}
-			case 1, 6 -> {
-				INITIAL_PIECES.add(new Knight(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-				INITIAL_PIECES.add(new Knight(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
-			}
-			case 2, 5 -> {
-				INITIAL_PIECES.add(new Bishop(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-				INITIAL_PIECES.add(new Bishop(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
-			}
-			case 3 -> {
-				// Queen-King if playing as White
-				if (PLAYER_COLOR == PlayerColor.WHITE) {
-					INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-					INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
-				} else {
-					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
-				}
-			}
-			case 4 -> {
-				// King-Queen if playing as Black
-				if (PLAYER_COLOR == PlayerColor.WHITE) {
-					INITIAL_PIECES.add(new King(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-					INITIAL_PIECES.add(new King(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
-				} else {
-					INITIAL_PIECES.add(new Queen(PieceColor.WHITE, chessBoard[i][pieceRankWhite]));
-					INITIAL_PIECES.add(new Queen(PieceColor.BLACK, chessBoard[i][pieceRankBlack]));
-				}
-			}
-			}
-		}
-		setOnBoardPieces(INITIAL_PIECES);
-		setKings();
-	}
-
-	private void initializePieces() {
-		for (Piece piece : INITIAL_PIECES) {
-			// Adds created Pieces to chessBoard
-			chessBoard[piece.getFile()][piece.getRank()].setPiece(piece);
-		}
-	}
 }

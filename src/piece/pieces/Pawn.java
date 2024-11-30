@@ -223,6 +223,9 @@ public class Pawn extends Piece {
 
 	private ArrayList<Tile> getMoveableTilesPlayer(int file, int rank) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (!isWithinBounds(rank - 1)) {
+			return new ArrayList<Tile>();
+		}
 		if (CHESS_BOARD[file][rank - 1].isPieceOnTile()) {
 			// if Piece is in front Pawn, it can't move
 			return new ArrayList<Tile>();
@@ -240,6 +243,9 @@ public class Pawn extends Piece {
 
 	private ArrayList<Tile> getMoveableTilesOpponent(int file, int rank) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (!isWithinBounds(rank + 1)) {
+			return new ArrayList<Tile>();
+		}
 		if (CHESS_BOARD[file][rank + 1].isPieceOnTile()) {
 			// if Piece is in front Pawn, it can't move
 			return new ArrayList<Tile>();

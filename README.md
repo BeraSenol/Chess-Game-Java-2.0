@@ -6,7 +6,7 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 <br/>
 <br/>
 
-# Features [(Screenshots)](https://github.com/BeraSenol/Chess-Game-Java-2.0b/wiki/Screenshots#features)
+# Features [(Screenshots)](https://github.com/BeraSenol/Chess-Game-Java-2.0/wiki/Screenshots#features)
 
 - [x] Game Panel
 - [x] Game Loop
@@ -24,7 +24,10 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 - [x] En Passant Mechanic
 - [x] Promotion Panel
 - [ ] Pinned Piece Detection
-- [ ] Check Detection
+- [x] King in Check Hightlight
+- [x] Legal Move Restriction: King Movement
+- [ ] Legal Move Restriction: Interposable Piece
+- [ ] Legal Move Restriction: Checking Piece Capturable
 - [ ] Checkmate Detection
 - [ ] Draw by Stalemate
 - [ ] Draw by Repetition

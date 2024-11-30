@@ -20,6 +20,19 @@ public class King extends Piece {
 
 	@Override
 	public ArrayList<Tile> getMoveableTiles() {
+		ArrayList<Tile> tiles = allMoveableTiles();
+		tiles = removeIllegalTiles(tiles);
+		return tiles;
+	}
+
+	@Override
+	public ArrayList<Tile> getCaptureableTiles() {
+		ArrayList<Tile> tiles = allCaptureableTiles();
+		tiles = removeIllegalTiles(tiles);
+		return tiles;
+	}
+
+	private ArrayList<Tile> allMoveableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
@@ -30,16 +43,10 @@ public class King extends Piece {
 				}
 			}
 		}
-		for (Tile tile : GameWindow.getCaptureableTilesOpponent()) {
-			if (tiles.contains(tile)) {
-				tiles.remove(tile);
-			}
-		}
 		return tiles;
 	}
 
-	@Override
-	public ArrayList<Tile> getCaptureableTiles() {
+	private ArrayList<Tile> allCaptureableTiles() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
@@ -50,6 +57,10 @@ public class King extends Piece {
 				}
 			}
 		}
+		return tiles;
+	}
+
+	private ArrayList<Tile> removeIllegalTiles(ArrayList<Tile> tiles) {
 		for (Tile tile : GameWindow.getCaptureableTilesOpponent()) {
 			if (tiles.contains(tile)) {
 				tiles.remove(tile);
@@ -220,4 +231,5 @@ public class King extends Piece {
 		}
 		return false;
 	}
+
 }
