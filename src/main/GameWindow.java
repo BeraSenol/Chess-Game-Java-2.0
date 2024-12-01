@@ -30,7 +30,6 @@ public class GameWindow extends JPanel implements Runnable {
 	private static PlayerColor playerColor = PlayerColor.WHITE;
 	private static PlayerColor turnColor = PlayerColor.WHITE;
 	private static ArrayList<Tile> moveableTilesOpponent = new ArrayList<Tile>();
-	private ArrayList<Tile> highlightedTiles = new ArrayList<Tile>();
 	private ArrayList<Tile> checkingTiles = new ArrayList<Tile>();
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
@@ -62,7 +61,6 @@ public class GameWindow extends JPanel implements Runnable {
 			}
 			// Highlights captureableTile while Piece is selected
 			if (getSelectedPiece().getCaptureableTiles() != null) {
-				addHighlightedTiles(getSelectedPiece().getCaptureableTiles());
 				getSelectedPiece().highlightCaptureableTiles(graphics2d,
 						getSelectedPiece().getCaptureableTiles());
 			}
@@ -82,9 +80,7 @@ public class GameWindow extends JPanel implements Runnable {
 				getInCheckKing().drawIndicators(graphics2d,
 						calculateInterposableTiles(getSelectedPiece().getMoveableTiles()));
 			}
-			if (getSelectedPiece().getCaptureableTiles() != null) {
-				addHighlightedTiles(calculateCaptureableCheckingTile(
-						getSelectedPiece().getCaptureableTiles()));
+			if (calculateCaptureableCheckingTile(getSelectedPiece().getCaptureableTiles()) != null) {
 				getSelectedPiece().highlightCaptureableTiles(graphics2d,
 						calculateCaptureableCheckingTile(
 								getSelectedPiece().getCaptureableTiles()));
@@ -185,6 +181,7 @@ public class GameWindow extends JPanel implements Runnable {
 						endTurn();
 					}
 				}
+
 				setSelectedTile(null);
 			}
 		}
@@ -240,21 +237,12 @@ public class GameWindow extends JPanel implements Runnable {
 		loseEnPassantRights();
 	}
 
-	private void addHighlightedTiles(ArrayList<Tile> tiles) {
-		if (tiles != null) {
-			for (Tile tile : tiles) {
-				highlightedTiles.add(tile);
-			}
-		}
-	}
-
 	private void restoreHighlightedTiles() {
-		if (getHighlightedTiles() != null) {
-			for (Tile tile : getHighlightedTiles()) {
-				tile.setTileColor(tile.getInitialTileColor());
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				BOARD_TILES[i][j].setTileColor(BOARD_TILES[i][j].getInitialTileColor());
 			}
 		}
-		addHighlightedTiles(new ArrayList<Tile>());
 	}
 
 	// CHECK
@@ -287,9 +275,6 @@ public class GameWindow extends JPanel implements Runnable {
 		int checkingPieceFile = getCheckingPiece().getFile();
 		int checkingPieceRank = getCheckingPiece().getRank();
 		int delta = Math.abs(kingRank - checkingPieceRank);
-		if (Math.abs(kingRank - checkingPieceRank) + Math.abs(kingFile - checkingPieceFile) < 2) {
-			return null;
-		}
 		if (kingFile == checkingPieceFile) {
 			if (kingRank > checkingPieceRank) {
 				for (int i = 1; i < delta; i++) {
@@ -410,7 +395,6 @@ public class GameWindow extends JPanel implements Runnable {
 	private void highlightEnPassantTiles(Piece piece) {
 		Pawn pawn = (Pawn) piece;
 		if (pawn.getEnPassantTiles() != null) {
-			addHighlightedTiles(pawn.getEnPassantTiles());
 			pawn.highlightCaptureableTiles(graphics2d, pawn.getEnPassantTiles());
 		}
 	}
@@ -519,10 +503,6 @@ public class GameWindow extends JPanel implements Runnable {
 
 	private King getInCheckKing() {
 		return inCheckKing;
-	}
-
-	private ArrayList<Tile> getHighlightedTiles() {
-		return highlightedTiles;
 	}
 
 	private ArrayList<Tile> getCheckingTiles() {

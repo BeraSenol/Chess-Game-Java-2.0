@@ -6,7 +6,7 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 <br/>
 <br/>
 
-# Features [(Screenshots)](https://github.com/BeraSenol/Chess-Game-Java-2.0/wiki/Screenshots#features)
+# Features [(Screenshots)](https://github.com/BeraSenol/Chess-Game-Java-2.0/wiki/Screenshots)
 
 - [x] Game Panel
 - [x] Game Loop
@@ -39,7 +39,6 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 - [ ] Undo/Redo
 - [ ] PGN Notation
 - [ ] Database Logging
-      <br/>
       <br/>
 
 # Installation

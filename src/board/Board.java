@@ -104,7 +104,7 @@ public class Board {
 			}
 		}
 		setOnBoardPieces(INITIAL_PIECES);
-		setKings();
+		initializeKings();
 	}
 
 	private void initializePieces() {
@@ -168,7 +168,7 @@ public class Board {
 		piece.getTile().removePiece();
 	}
 
-	private void setKings() {
+	private void initializeKings() {
 		for (Piece piece : INITIAL_PIECES) {
 			if (piece.getPieceType() == PieceType.KING) {
 				KINGS.add((King) piece);
