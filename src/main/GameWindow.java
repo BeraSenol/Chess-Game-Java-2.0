@@ -82,6 +82,13 @@ public class GameWindow extends JPanel implements Runnable {
 				getInCheckKing().drawIndicators(graphics2d,
 						calculateInterposableTiles(getSelectedPiece().getMoveableTiles()));
 			}
+			if (getSelectedPiece().getCaptureableTiles() != null) {
+				addHighlightedTiles(calculateCaptureableCheckingTile(
+						getSelectedPiece().getCaptureableTiles()));
+				getSelectedPiece().highlightCaptureableTiles(graphics2d,
+						calculateCaptureableCheckingTile(
+								getSelectedPiece().getCaptureableTiles()));
+			}
 		}
 
 	}
@@ -160,6 +167,17 @@ public class GameWindow extends JPanel implements Runnable {
 					if (getSelectedPiece().getMoveableTiles().contains(getSelectedTile())
 							&& getCheckingTiles().contains(getSelectedTile())) {
 						movePiece(getSelectedTile(), getSelectedPiece());
+						getInCheckKing().setIsKingInCheck(false);
+						setInCheckKing(null);
+						setCheckingPiece(null);
+						setCheckingTiles(null);
+						endTurn();
+					}
+				}
+				if (getSelectedPiece() != null && getSelectedPiece().getCaptureableTiles() != null) {
+					if (getSelectedPiece().getCaptureableTiles().contains(getSelectedTile())
+							&& getSelectedTile().getPiece() == getCheckingPiece()) {
+						capturePiece(getSelectedTile(), getSelectedPiece());
 						getInCheckKing().setIsKingInCheck(false);
 						setInCheckKing(null);
 						setCheckingPiece(null);
@@ -249,6 +267,17 @@ public class GameWindow extends JPanel implements Runnable {
 				}
 			}
 		}
+	}
+
+	private ArrayList<Tile> calculateCaptureableCheckingTile(ArrayList<Tile> captureableTiles) {
+		ArrayList<Tile> captureTile = new ArrayList<Tile>();
+		for (Tile tile : captureableTiles) {
+			if (tile.getPiece() == getCheckingPiece()) {
+				captureTile.add(tile);
+				return captureTile;
+			}
+		}
+		return null;
 	}
 
 	private ArrayList<Tile> calculateCheckingTiles() {

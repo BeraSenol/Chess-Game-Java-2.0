@@ -23,12 +23,13 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 - [x] Castling Mechanic
 - [x] En Passant Mechanic
 - [x] Promotion Panel
-- [ ] Pinned Piece Detection
 - [x] King in Check Hightlight
 - [x] Legal Move Restriction: King Movement
 - [x] Legal Move Restriction: Interposable Piece
-- [ ] Legal Move Restriction: Checking Piece Capturable
+- [x] Legal Move Restriction: Re-capturable Checking Piece
 - [ ] Checkmate Detection
+- [ ] Castle Restriction: Out, Through or Into Check
+- [ ] Pinned Piece Detection
 - [ ] Draw by Stalemate
 - [ ] Draw by Repetition
 - [ ] Draw by Insufficient Material
