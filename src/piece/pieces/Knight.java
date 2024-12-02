@@ -37,19 +37,6 @@ public class Knight extends Piece {
 		return tiles;
 	}
 
-	@Override
-	public ArrayList<Tile> getDefendingTiles() {
-		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		for (Tile tile : getTilesInSight(getFile(), getRank())) {
-			if (tile.isPieceOnTile()) {
-				if (tile.getPiece().isPieceColorTurnColor()) {
-					tiles.add(tile);
-				}
-			}
-		}
-		return tiles;
-	}
-
 	private ArrayList<Tile> getTilesInSight(int file, int rank) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		for (Tile tile : getTilesInSightLongLeft(file, rank)) {

@@ -61,7 +61,7 @@ public class King extends Piece {
 	}
 
 	private ArrayList<Tile> removeIllegalMoves(ArrayList<Tile> tiles) {
-		for (Tile tile : GameWindow.getMoveableTilesOpponent()) {
+		for (Tile tile : GameWindow.getCaptureableTilesOpponent()) {
 			if (tiles.contains(tile)) {
 				tiles.remove(tile);
 			}
@@ -91,8 +91,7 @@ public class King extends Piece {
 			return false;
 		}
 		if (!CHESS_BOARD[file + i][rank + j].isPieceOnTile()
-				|| CHESS_BOARD[file + i][rank + j].getPiece().isPieceColorTurnColor()
-				|| CHESS_BOARD[file + i][rank + j].getPiece().getIsDefended()) {
+				|| CHESS_BOARD[file + i][rank + j].getPiece().isPieceColorTurnColor()) {
 			return false;
 		}
 		return true;

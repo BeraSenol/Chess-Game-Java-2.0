@@ -219,7 +219,6 @@ public class GameWindow extends JPanel implements Runnable {
 		checkPiecePromotition(piece);
 		isPieceIsCheckingKing(piece);
 		calculateMoveableTilesOppenent();
-		calculateDefendedPieces(piece);
 	}
 
 	private void capturePiece(Tile tile, Piece piece) {
@@ -255,14 +254,6 @@ public class GameWindow extends JPanel implements Runnable {
 				for (Tile tile : piece.getMoveableTiles()) {
 					moveableTilesOpponent.add(tile);
 				}
-			}
-		}
-	}
-
-	private void calculateDefendedPieces(Piece movedPiece) {
-		if (movedPiece.getDefendingTiles() != null) {
-			for (Tile tile : movedPiece.getDefendingTiles()) {
-				tile.getPiece().setIsDefeneded(true);
 			}
 		}
 	}

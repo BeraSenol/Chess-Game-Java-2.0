@@ -21,7 +21,6 @@ public class Piece implements Moveable {
 	protected final Tile[][] CHESS_BOARD = Board.getBoardTiles();
 	protected final PlayerColor PLAYER_COLOR = GameWindow.getPlayerColor();
 
-	private boolean isDefended = false;
 	private int file, rank, x, y, moveCount = 0;
 	private PieceColor pieceColor = null;
 	private PieceType pieceType = null;
@@ -42,6 +41,7 @@ public class Piece implements Moveable {
 
 	public BufferedImage getPieceImage(PieceType pieceType, PieceColor pieceColor) {
 		// Loads the image for each PieceType and PieceColor
+		pieceImage = null;
 		try {
 			pieceImage = ImageIO.read(new FileInputStream(
 					"res/pieces/" + pieceType.getName() + "_" + pieceColor.getName() + ".png"));
@@ -81,36 +81,7 @@ public class Piece implements Moveable {
 		}
 	}
 
-	// VOID
-	public void incrementMoveCount() {
-		this.moveCount++;
-	}
-
-	public void highlightCaptureableTiles(Graphics2D g2, ArrayList<Tile> tiles) {
-		for (Tile tile : tiles) {
-			tile.setTileColor(TileColor.RED);
-		}
-	}
-
-	// VOID - DRAW
-	public void drawPiece(Graphics2D g2) {
-		g2.drawImage(pieceImage, x, y, TILE_SIZE, TILE_SIZE, null);
-	}
-
-	public void drawIndicators(Graphics2D g2, ArrayList<Tile> tiles) {
-		for (Tile tile : tiles) {
-			// Sets the transparancy of indicatorImage to ALPHA (0.15f)
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA));
-			g2.drawImage(getMoveableTileImage(), tile.getX() + INDICATOR_OFFSET,
-					tile.getY() + INDICATOR_OFFSET, INDICATOR_SIZE, INDICATOR_SIZE, null);
-		}
-	}
-
 	// GETTERS
-	public boolean getIsDefended() {
-		return isDefended;
-	}
-
 	public int getFile() {
 		return file;
 	}
@@ -151,15 +122,7 @@ public class Piece implements Moveable {
 		throw new UnsupportedOperationException("Unimplemented method 'getCaptureableTiles'");
 	}
 
-	public ArrayList<Tile> getDefendingTiles() {
-		throw new UnsupportedOperationException("Unimplemented method 'getDefendedTiles'");
-	}
-
 	// SETTERS
-	public void setIsDefeneded(boolean isDefended) {
-		this.isDefended = isDefended;
-	}
-
 	public void setFile(int file) {
 		this.file = file;
 	}
@@ -188,4 +151,28 @@ public class Piece implements Moveable {
 		setY(tile.getY());
 	}
 
+	// VOID
+	public void incrementMoveCount() {
+		this.moveCount++;
+	}
+
+	public void highlightCaptureableTiles(Graphics2D g2, ArrayList<Tile> tiles) {
+		for (Tile tile : tiles) {
+			tile.setTileColor(TileColor.RED);
+		}
+	}
+
+	// VOID - DRAW
+	public void drawPiece(Graphics2D g2) {
+		g2.drawImage(pieceImage, x, y, TILE_SIZE, TILE_SIZE, null);
+	}
+
+	public void drawIndicators(Graphics2D g2, ArrayList<Tile> tiles) {
+		for (Tile tile : tiles) {
+			// Sets the transparancy of indicatorImage to ALPHA (0.15f)
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA));
+			g2.drawImage(getMoveableTileImage(), tile.getX() + INDICATOR_OFFSET,
+					tile.getY() + INDICATOR_OFFSET, INDICATOR_SIZE, INDICATOR_SIZE, null);
+		}
+	}
 }

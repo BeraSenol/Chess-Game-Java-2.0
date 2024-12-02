@@ -2,6 +2,7 @@ package piece.pieces;
 
 import java.util.ArrayList;
 
+
 import board.Board;
 import board.Tile;
 import main.GameWindow;
@@ -15,6 +16,7 @@ public class Pawn extends Piece {
 	final int PAWN_RANK_WHITE = Board.getPawnRankWhite();
 	private boolean hasTwoStepped = false;
 	private PlayerColor playerColor = GameWindow.getPlayerColor();
+	
 
 	public Pawn(PieceColor pieceColor, Tile tile) {
 		super(pieceColor, PieceType.PAWN, tile);
@@ -76,48 +78,6 @@ public class Pawn extends Piece {
 					tiles.add(CHESS_BOARD[file - 1][rank - 1]);
 				}
 				if (canCaptureRightUp(file, rank, PieceColor.WHITE)) {
-					tiles.add(CHESS_BOARD[file + 1][rank - 1]);
-				}
-			}
-		}
-		return tiles;
-	}
-
-	@Override
-	public ArrayList<Tile> getDefendingTiles() {
-		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		String pieceColorName = this.getPieceColor().getName();
-		int file = this.getFile();
-		int rank = this.getRank();
-		if (playerColor == PlayerColor.WHITE) {
-			if (pieceColorName == PieceColor.WHITE.name()) {
-				if (!canCaptureLeftUp(file, rank, PieceColor.BLACK)) {
-					tiles.add(CHESS_BOARD[file - 1][rank - 1]);
-				}
-				if (!canCaptureRightUp(file, rank, PieceColor.BLACK)) {
-					tiles.add(CHESS_BOARD[file + 1][rank - 1]);
-				}
-			} else {
-				if (!canCaptureLeftBellow(file, rank, PieceColor.WHITE)) {
-					tiles.add(CHESS_BOARD[file - 1][rank + 1]);
-				}
-				if (!canCaptureRightBellow(file, rank, PieceColor.WHITE)) {
-					tiles.add(CHESS_BOARD[file + 1][rank + 1]);
-				}
-			}
-		} else {
-			if (pieceColorName == PieceColor.WHITE.name()) {
-				if (!canCaptureLeftBellow(file, rank, PieceColor.BLACK)) {
-					tiles.add(CHESS_BOARD[file - 1][rank + 1]);
-				}
-				if (!canCaptureRightBellow(file, rank, PieceColor.BLACK)) {
-					tiles.add(CHESS_BOARD[file + 1][rank + 1]);
-				}
-			} else {
-				if (!canCaptureLeftUp(file, rank, PieceColor.WHITE)) {
-					tiles.add(CHESS_BOARD[file - 1][rank - 1]);
-				}
-				if (!canCaptureRightUp(file, rank, PieceColor.WHITE)) {
 					tiles.add(CHESS_BOARD[file + 1][rank - 1]);
 				}
 			}
