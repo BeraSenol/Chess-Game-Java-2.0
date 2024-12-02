@@ -38,22 +38,50 @@ public class Rook extends Piece {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
-		if (getCapturableTileLeft(file, rank) != null) {
-			tiles.add(getCapturableTileLeft(file, rank));
+		if (getOccupiedTileLeft(file, rank) != null
+				&& !getOccupiedTileLeft(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeft(file, rank));
 		}
-		if (getCapturableTileRight(file, rank) != null) {
-			tiles.add(getCapturableTileRight(file, rank));
+		if (getOccupiedTileRight(file, rank) != null
+				&& !getOccupiedTileRight(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRight(file, rank));
 		}
-		if (getCapturableTileAbove(file, rank) != null) {
-			tiles.add(getCapturableTileAbove(file, rank));
+		if (getOccupiedTileAbove(file, rank) != null
+				&& !getOccupiedTileAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileAbove(file, rank));
 		}
-		if (getCapturableTileBellow(file, rank) != null) {
-			tiles.add(getCapturableTileBellow(file, rank));
+		if (getOccupiedTileBellow(file, rank) != null
+				&& !getOccupiedTileBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileBellow(file, rank));
 		}
 		return tiles;
 	}
 
-	private Tile getCapturableTileLeft(int file, int rank) {
+	@Override
+	public ArrayList<Tile> getDefendingTiles() {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		int file = this.getFile();
+		int rank = this.getRank();
+		if (getOccupiedTileLeft(file, rank) != null
+				&& getOccupiedTileLeft(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeft(file, rank));
+		}
+		if (getOccupiedTileRight(file, rank) != null
+				&& getOccupiedTileRight(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRight(file, rank));
+		}
+		if (getOccupiedTileAbove(file, rank) != null
+				&& getOccupiedTileAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileAbove(file, rank));
+		}
+		if (getOccupiedTileBellow(file, rank) != null
+				&& getOccupiedTileBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileBellow(file, rank));
+		}
+		return tiles;
+	}
+
+	private Tile getOccupiedTileLeft(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file - i)) {
 			if (CHESS_BOARD[file - i][rank].isPieceOnTile()) {
@@ -68,7 +96,7 @@ public class Rook extends Piece {
 		return null;
 	}
 
-	private Tile getCapturableTileRight(int file, int rank) {
+	private Tile getOccupiedTileRight(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file + i)) {
 			if (CHESS_BOARD[file + i][rank].isPieceOnTile()) {
@@ -84,7 +112,7 @@ public class Rook extends Piece {
 
 	}
 
-	private Tile getCapturableTileAbove(int file, int rank) {
+	private Tile getOccupiedTileAbove(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(rank + i)) {
 			if (CHESS_BOARD[file][rank + i].isPieceOnTile()) {
@@ -99,7 +127,7 @@ public class Rook extends Piece {
 		return null;
 	}
 
-	private Tile getCapturableTileBellow(int file, int rank) {
+	private Tile getOccupiedTileBellow(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(rank - i)) {
 			if (CHESS_BOARD[file][rank - i].isPieceOnTile()) {

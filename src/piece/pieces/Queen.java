@@ -50,29 +50,77 @@ public class Queen extends Piece {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		int file = this.getFile();
 		int rank = this.getRank();
-		if (getCapturableTileRightAbove(file, rank) != null) {
-			tiles.add(getCapturableTileRightAbove(file, rank));
+		if (getOccupiedTileRightAbove(file, rank) != null
+				&& !getOccupiedTileRightAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRightAbove(file, rank));
 		}
-		if (getCapturableTileLeftAbove(file, rank) != null) {
-			tiles.add(getCapturableTileLeftAbove(file, rank));
+		if (getOccupiedTileLeftAbove(file, rank) != null
+				&& !getOccupiedTileLeftAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeftAbove(file, rank));
 		}
-		if (getCapturableTileLeftBellow(file, rank) != null) {
-			tiles.add(getCapturableTileLeftBellow(file, rank));
+		if (getOccupiedTileLeftBellow(file, rank) != null
+				&& !getOccupiedTileLeftBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeftBellow(file, rank));
 		}
-		if (getCapturableTileRightBellow(file, rank) != null) {
-			tiles.add(getCapturableTileRightBellow(file, rank));
+		if (getOccupiedTileRightBellow(file, rank) != null
+				&& !getOccupiedTileRightBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRightBellow(file, rank));
 		}
-		if (getCapturableTileLeft(file, rank) != null) {
-			tiles.add(getCapturableTileLeft(file, rank));
+		if (getOccupiedTileLeft(file, rank) != null
+				&& !getOccupiedTileLeft(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeft(file, rank));
 		}
-		if (getCapturableTileRight(file, rank) != null) {
-			tiles.add(getCapturableTileRight(file, rank));
+		if (getOccupiedTileRight(file, rank) != null
+				&& !getOccupiedTileRight(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRight(file, rank));
 		}
-		if (getCapturableTileAbove(file, rank) != null) {
-			tiles.add(getCapturableTileAbove(file, rank));
+		if (getOccupiedTileAbove(file, rank) != null
+				&& !getOccupiedTileAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileAbove(file, rank));
 		}
-		if (getCapturableTileBellow(file, rank) != null) {
-			tiles.add(getCapturableTileBellow(file, rank));
+		if (getOccupiedTileBellow(file, rank) != null
+				&& !getOccupiedTileBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileBellow(file, rank));
+		}
+		return tiles;
+	}
+
+	@Override
+	public ArrayList<Tile> getDefendingTiles() {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		int file = this.getFile();
+		int rank = this.getRank();
+		if (getOccupiedTileRightAbove(file, rank) != null
+				&& getOccupiedTileRightAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRightAbove(file, rank));
+		}
+		if (getOccupiedTileLeftAbove(file, rank) != null
+				&& getOccupiedTileLeftAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeftAbove(file, rank));
+		}
+		if (getOccupiedTileLeftBellow(file, rank) != null
+				&& getOccupiedTileLeftBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeftBellow(file, rank));
+		}
+		if (getOccupiedTileRightBellow(file, rank) != null
+				&& getOccupiedTileRightBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRightBellow(file, rank));
+		}
+		if (getOccupiedTileLeft(file, rank) != null
+				&& getOccupiedTileLeft(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileLeft(file, rank));
+		}
+		if (getOccupiedTileRight(file, rank) != null
+				&& getOccupiedTileRight(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileRight(file, rank));
+		}
+		if (getOccupiedTileAbove(file, rank) != null
+				&& getOccupiedTileAbove(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileAbove(file, rank));
+		}
+		if (getOccupiedTileBellow(file, rank) != null
+				&& getOccupiedTileBellow(file, rank).getPiece().isPieceColorTurnColor()) {
+			tiles.add(getOccupiedTileBellow(file, rank));
 		}
 		return tiles;
 	}
@@ -169,30 +217,22 @@ public class Queen extends Piece {
 		return tiles;
 	}
 
-	private Tile getCapturableTileLeft(int file, int rank) {
+	private Tile getOccupiedTileLeft(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file - i)) {
 			if (CHESS_BOARD[file - i][rank].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - i][rank].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile left of THE ROOK if PieceColor is not TurnColor
-					return CHESS_BOARD[file - i][rank];
-				}
-				break;
+				return CHESS_BOARD[file - i][rank];
 			}
 			i++;
 		}
 		return null;
 	}
 
-	private Tile getCapturableTileRight(int file, int rank) {
+	private Tile getOccupiedTileRight(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file + i)) {
 			if (CHESS_BOARD[file + i][rank].isPieceOnTile()) {
-				if (!CHESS_BOARD[file + i][rank].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile right of THE ROOK if PieceColor is not TurnColor
-					return CHESS_BOARD[file + i][rank];
-				}
-				break;
+				return CHESS_BOARD[file + i][rank];
 			}
 			i++;
 		}
@@ -200,90 +240,66 @@ public class Queen extends Piece {
 
 	}
 
-	private Tile getCapturableTileAbove(int file, int rank) {
+	private Tile getOccupiedTileAbove(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(rank + i)) {
 			if (CHESS_BOARD[file][rank + i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file][rank + i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile above of THE ROOK if PieceColor is not TurnColor
-					return CHESS_BOARD[file][rank + i];
-				}
-				break;
+				return CHESS_BOARD[file][rank + i];
 			}
 			i++;
 		}
 		return null;
 	}
 
-	private Tile getCapturableTileBellow(int file, int rank) {
+	private Tile getOccupiedTileBellow(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(rank - i)) {
 			if (CHESS_BOARD[file][rank - i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file][rank - i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile above of THE ROOK if PieceColor is not TurnColor
-					return CHESS_BOARD[file][rank - i];
-				}
-				break;
+				return CHESS_BOARD[file][rank - i];
 			}
 			i++;
 		}
 		return null;
 	}
 
-	private Tile getCapturableTileRightAbove(int file, int rank) {
+	private Tile getOccupiedTileRightAbove(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank - i)) {
 			if (CHESS_BOARD[file + i][rank - i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file + i][rank - i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
-					return CHESS_BOARD[file + i][rank - i];
-				}
-				break;
+				return CHESS_BOARD[file + i][rank - i];
 			}
 			i++;
 		}
 		return null;
 	}
 
-	private Tile getCapturableTileLeftAbove(int file, int rank) {
+	private Tile getOccupiedTileLeftAbove(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank - i)) {
 			if (CHESS_BOARD[file - i][rank - i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - i][rank - i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
-					return CHESS_BOARD[file - i][rank - i];
-				}
-				break;
+				return CHESS_BOARD[file - i][rank - i];
 			}
 			i++;
 		}
 		return null;
 	}
 
-	private Tile getCapturableTileLeftBellow(int file, int rank) {
+	private Tile getOccupiedTileLeftBellow(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file - i) && isWithinBounds(rank + i)) {
 			if (CHESS_BOARD[file - i][rank + i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file - i][rank + i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
-					return CHESS_BOARD[file - i][rank + i];
-				}
-				break;
+				return CHESS_BOARD[file - i][rank + i];
 			}
 			i++;
 		}
 		return null;
 	}
 
-	private Tile getCapturableTileRightBellow(int file, int rank) {
+	private Tile getOccupiedTileRightBellow(int file, int rank) {
 		int i = 1;
 		while (isWithinBounds(file + i) && isWithinBounds(rank + i)) {
 			if (CHESS_BOARD[file + i][rank + i].isPieceOnTile()) {
-				if (!CHESS_BOARD[file + i][rank + i].getPiece().isPieceColorTurnColor()) {
-					// Adds unobstructed Tile right-above the Bishop PieceColor is not TurnColor
-					return CHESS_BOARD[file + i][rank + i];
-				}
-				break;
+				return CHESS_BOARD[file + i][rank + i];
 			}
 			i++;
 		}

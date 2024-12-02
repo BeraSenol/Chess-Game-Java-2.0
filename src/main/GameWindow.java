@@ -20,7 +20,7 @@ import piece.promotion.PromotionPanel;
 public class GameWindow extends JPanel implements Runnable {
 	private final static Mouse PLAYER_MOUSE = new Mouse();
 	private final int INTERVAL = 100000000;
-	private final int FPS = 5;
+	private final int FPS = 6;
 	private final int WINDOW_SIZE = Tile.getTileSize() * 8;
 	private final double DRAW_INTERVAL = INTERVAL / FPS;
 	private final Board CHESS_BOARD = new Board();
@@ -30,6 +30,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private static PlayerColor playerColor = PlayerColor.WHITE;
 	private static PlayerColor turnColor = PlayerColor.WHITE;
 	private static ArrayList<Tile> moveableTilesOpponent = new ArrayList<Tile>();
+	private static ArrayList<Tile> captureableTilesOpponent = new ArrayList<Tile>();
 	private ArrayList<Tile> checkingTiles = new ArrayList<Tile>();
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
@@ -136,6 +137,7 @@ public class GameWindow extends JPanel implements Runnable {
 				setSelectedTile(null);
 			} else {
 				getInCheckKing().getTile().setTileColor(TileColor.RED);
+				// if (getInCheckKing().getMoveableTiles() == null)
 				if (getSelectedPiece() == null) {
 					if (getSelectedTile().isPieceOnTile()) {
 						if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
@@ -181,7 +183,6 @@ public class GameWindow extends JPanel implements Runnable {
 						endTurn();
 					}
 				}
-
 				setSelectedTile(null);
 			}
 		}
@@ -218,6 +219,7 @@ public class GameWindow extends JPanel implements Runnable {
 		checkPiecePromotition(piece);
 		isPieceIsCheckingKing(piece);
 		calculateMoveableTilesOppenent();
+		calculateDefendedPieces(piece);
 	}
 
 	private void capturePiece(Tile tile, Piece piece) {
@@ -253,6 +255,14 @@ public class GameWindow extends JPanel implements Runnable {
 				for (Tile tile : piece.getMoveableTiles()) {
 					moveableTilesOpponent.add(tile);
 				}
+			}
+		}
+	}
+
+	private void calculateDefendedPieces(Piece movedPiece) {
+		if (movedPiece.getDefendingTiles() != null) {
+			for (Tile tile : movedPiece.getDefendingTiles()) {
+				tile.getPiece().setIsDefeneded(true);
 			}
 		}
 	}
@@ -481,8 +491,12 @@ public class GameWindow extends JPanel implements Runnable {
 		return turnColor;
 	}
 
-	public static ArrayList<Tile> getCaptureableTilesOpponent() {
+	public static ArrayList<Tile> getMoveableTilesOpponent() {
 		return moveableTilesOpponent;
+	}
+
+	public static ArrayList<Tile> getCaptureableTilesOpponent() {
+		return captureableTilesOpponent;
 	}
 
 	private Tile getSelectedTile() {
