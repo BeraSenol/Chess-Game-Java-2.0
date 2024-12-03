@@ -31,7 +31,7 @@ public class GameWindow extends JPanel implements Runnable {
 	private static PlayerColor turnColor = PlayerColor.WHITE;
 	private static ArrayList<Tile> moveableTilesOpponent = new ArrayList<Tile>();
 	private static ArrayList<Tile> captureableTilesOpponent = new ArrayList<Tile>();
-	private ArrayList<Tile> checkingTiles = new ArrayList<Tile>();
+	private static ArrayList<Tile> checkingTiles = new ArrayList<Tile>();
 	private Tile selectedTile = null;
 	private Piece selectedPiece = null;
 	private Piece checkingPiece = null;
@@ -137,7 +137,7 @@ public class GameWindow extends JPanel implements Runnable {
 				setSelectedTile(null);
 			} else {
 				getInCheckKing().getTile().setTileColor(TileColor.RED);
-				// if (getInCheckKing().getMoveableTiles() == null)
+				// Selects Piece if selectedTile is not empty and contains Piece of same Color
 				if (getSelectedPiece() == null) {
 					if (getSelectedTile().isPieceOnTile()) {
 						if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
@@ -145,9 +145,11 @@ public class GameWindow extends JPanel implements Runnable {
 						}
 					}
 				}
+				// Re-selects Piece if selectedTile contains Piece of same Color
 				if (getSelectedPiece() != null && getSelectedTile().isPieceOnTile()) {
 					if (getSelectedTile().getPiece().isPieceColorTurnColor()) {
 						setSelectedPiece(getSelectedTile().getPiece());
+						restoreHighlightedTiles();
 					}
 				}
 				if (getSelectedPiece() == getInCheckKing()
@@ -216,9 +218,9 @@ public class GameWindow extends JPanel implements Runnable {
 		tile.setPiece(piece);
 		setSelectedPiece(null);
 		restoreHighlightedTiles();
+		calculateMoveableTilesOppenent(true);
 		checkPiecePromotition(piece);
 		isPieceIsCheckingKing(piece);
-		calculateMoveableTilesOppenent();
 	}
 
 	private void capturePiece(Tile tile, Piece piece) {
@@ -246,13 +248,22 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 
-	// CHECK
-	private void calculateMoveableTilesOppenent() {
+	// CHECK(MATE)
+	private void calculateMoveableTilesOppenent(boolean includingKings) {
 		moveableTilesOpponent = new ArrayList<Tile>();
 		for (Piece piece : Board.getOnBoardPieces()) {
-			if (piece.getPieceColor().name() == getTurnColor().name()) {
-				for (Tile tile : piece.getMoveableTiles()) {
-					moveableTilesOpponent.add(tile);
+			if (includingKings) {
+				if (piece.getPieceColor().name() == getTurnColor().name()) {
+					for (Tile tile : piece.getMoveableTiles()) {
+						moveableTilesOpponent.add(tile);
+					}
+				}
+			} else {
+				if (piece.getPieceColor().name() == getTurnColor().name()
+						&& piece.getPieceType() != PieceType.KING) {
+					for (Tile tile : piece.getMoveableTiles()) {
+						moveableTilesOpponent.add(tile);
+					}
 				}
 			}
 		}
@@ -490,6 +501,10 @@ public class GameWindow extends JPanel implements Runnable {
 		return captureableTilesOpponent;
 	}
 
+	public static ArrayList<Tile> getCheckingTiles() {
+		return checkingTiles;
+	}
+
 	private Tile getSelectedTile() {
 		return selectedTile;
 	}
@@ -510,11 +525,11 @@ public class GameWindow extends JPanel implements Runnable {
 		return inCheckKing;
 	}
 
-	private ArrayList<Tile> getCheckingTiles() {
-		return checkingTiles;
+	// SETTERS
+	private static void setCheckingTiles(ArrayList<Tile> tiles) {
+		GameWindow.checkingTiles = tiles;
 	}
 
-	// SETTERS
 	private void setSelectedTile(Tile tile) {
 		this.selectedTile = tile;
 	}
@@ -537,9 +552,5 @@ public class GameWindow extends JPanel implements Runnable {
 
 	private void setTurnColor(PlayerColor turnColor) {
 		GameWindow.turnColor = turnColor;
-	}
-
-	private void setCheckingTiles(ArrayList<Tile> tiles) {
-		this.checkingTiles = tiles;
 	}
 }

@@ -66,6 +66,11 @@ public class King extends Piece {
 				tiles.remove(tile);
 			}
 		}
+		for (Tile tile : GameWindow.getCheckingTiles()) {
+			if (tiles.contains(tile)) {
+				tiles.remove(tile);
+			}
+		}
 		return tiles;
 	}
 
@@ -231,5 +236,4 @@ public class King extends Piece {
 		}
 		return false;
 	}
-
 }

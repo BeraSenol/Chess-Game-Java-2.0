@@ -27,18 +27,8 @@ Fully functional chess game written in Java with Spring/AWT GUI & official rule 
 - [x] Legal Move Restriction: King Movement
 - [x] Legal Move Restriction: Interposable Piece
 - [x] Legal Move Restriction: Re-capturable Checking Piece
-- [ ] Checkmate Detection
 - [ ] Castle Restriction: Out, Through or Into Check
-- [ ] Pinned Piece Detection
-- [ ] Draw by Stalemate
-- [ ] Draw by Repetition
-- [ ] Draw by Insufficient Material
-- [ ] Draw by 50 Move Rule
-- [ ] Time Control
-- [ ] Options/Settings
-- [ ] Undo/Redo
-- [ ] PGN Notation
-- [ ] Database Logging
+- [ ] Checkmate Detection
       <br/>
 
 # Installation
